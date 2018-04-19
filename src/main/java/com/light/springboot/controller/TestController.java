@@ -12,8 +12,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.*;
 
 @Controller
@@ -155,5 +158,16 @@ public class TestController {
 		ArrayList<DbResponeBean> dbResponeBeans = userService.mQuerylianhcx();
 		if (dbResponeBeans==null) return "我是空的";
 		return dbResponeBeans;
+	}
+
+	//Session存储：可以利用HttpServletReequest的getSession()方法
+	@RequestMapping("/sessiontest")
+	public String sessionTest(String name, String pwd  , ModelMap model, HttpServletRequest request){
+
+		HttpSession session = request.getSession();
+		session.setAttribute("user","我的user名字，会保留");
+		model.addAttribute("one","不会在页面之间保留");
+		model.put("one", "之间");
+		return "myfirst";
 	}
 }
