@@ -1,0 +1,16 @@
+html, body {
+	margin: 0 auto;
+	width: 100%;
+	overflow-x: hidden;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+}
+h2{
+    background-color: red;
+}
+.uyou{
+	background-color: red;
+}
