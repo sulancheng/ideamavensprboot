@@ -4,8 +4,23 @@
     <script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
     <link rel="stylesheet" href="../css/my.css">
     <script>
-        function qingqiu(data) {
+        function qingqiu(data,json) {
             alert("开始ajax请求"+data);
+            if (json==null)return;
+            $.ajax({
+                url: "/test/helloworld",
+                type: "POST",
+                async: true,
+                contentType: "application/json",
+                data: JSON.stringify(json),
+                dataType: 'json',
+                success: function (data) {
+                    alert(JSON.stringify(data))
+                },
+                errer: function (data) {
+
+                }
+            });
         }
         $(function(){
             $(".right .getid").click(function(){
@@ -14,27 +29,14 @@
                 qingqiu($(this).prop("id"));
             });
             $(".right .request").click(function(){
-                $(this).parent().css("background-color","#0c7cb5");
+                //$(this).parent().css("background-color","#0c7cb5");动态改变点击的背景色
                 alert("nihohkl");
-                alert($(this).attr("data-action"));
+                alert($(this).attr("data-age"));
                 var json = {
                     "username": "admin",
                     "password": 123
                 };
-                $.ajax({
-                    url: "/test/helloworld",
-                    type: "POST",
-                    async: true,
-                    contentType: "application/json",
-                    data: JSON.stringify(json),
-                    dataType: 'json',
-                    success: function (data) {
-                        alert(JSON.stringify(data))
-                    },
-                    errer: function (data) {
-
-                    }
-                });
+                qingqiu("nihao",json);
             });
         });
     </script>
@@ -86,9 +88,9 @@
             <img src="../imgs/ic.png">
         </div>
         <div class="right">
-            <h6>Hello World!</h6>
-            <span class='uyou' th:text="${prod.name}">你好的</span>
-            <button class="request"  th:data-action="${prod.age}">请求</button>
+            <span class='name' th:text="${prod.name}"></span>
+            <div class="myclass"  th:data-myclass="${prod.myclass}" th:text="${prod.myclass}+班"></div>
+            <div class="request"  th:data-age="${prod.age}" th:text="${prod.age}+岁"></div>
             <button class="getid" th:id="${prod.id}">获取id</button>
         </div>
     </div>
