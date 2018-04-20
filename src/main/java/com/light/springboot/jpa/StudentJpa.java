@@ -36,6 +36,7 @@ public interface StudentJpa extends BaseRepository<Student, Integer> , JpaSpecif
 	 * @return
 	 */
 	List<Student> findByname(String name);
+	List<Student> findByMyclass(String myclass);
 
     /**
      * 分页查询id不是传入id的用户
@@ -52,4 +53,14 @@ public interface StudentJpa extends BaseRepository<Student, Integer> , JpaSpecif
 	 * @return
 	 */
 	Page<Student> findByName(String name,Pageable pageable);
+
+
+	//Student findTopByOrderByAgeDesc();
+
+	/**
+	 * 找name  并按照id排序
+	 * @param name
+	 * @return
+	 */
+	List<Student> findByNameOrderByIdDesc(String name);
 }

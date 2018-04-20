@@ -14,7 +14,7 @@ public class Student implements Serializable{
 	@Column(name="name")
 	private String name;
 	
-	@Column(name="class")
+	@Column(name="tfclass")
 	private String myclass;
 	
 	@Column(name="age")

@@ -1,36 +1,98 @@
-
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <script src="http://cdn.static.runoob.com/libs/jquery/1.8.3/jquery.js"></script>
     <script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
-    <link rel="stylesheet" href="../static/my.css">
+    <link rel="stylesheet" href="../css/my.css">
     <script>
-        function qingqiu() {
-            alert("nihohkl");
-            var json = {
-                "username":"admin",
-                "password":123
-            };
-            $.ajax({
-                url: "/test/helloworld",
-                type: "POST",
-                async: true,
-                contentType: "application/json",
-                data: JSON.stringify(json),
-                dataType: 'json',
-                success: function (data) {
-                    alert(JSON.stringify(data))
-                },
-                errer:function (data) {
-                    
-                }
-            });
+        function qingqiu(data) {
+            alert("开始ajax请求"+data);
         }
+        $(function(){
+            $(".right .getid").click(function(){
+                alert("段落被点击了。");
+                alert($(this).prop("id"));
+                qingqiu($(this).prop("id"));
+            });
+            $(".right .request").click(function(){
+                $(this).parent().css("background-color","#0c7cb5");
+                alert("nihohkl");
+                alert($(this).attr("data-action"));
+                var json = {
+                    "username": "admin",
+                    "password": 123
+                };
+                $.ajax({
+                    url: "/test/helloworld",
+                    type: "POST",
+                    async: true,
+                    contentType: "application/json",
+                    data: JSON.stringify(json),
+                    dataType: 'json',
+                    success: function (data) {
+                        alert(JSON.stringify(data))
+                    },
+                    errer: function (data) {
+
+                    }
+                });
+            });
+        });
     </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .zong {
+            display: -webkit-flex; /* Safari */
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .request {
+            width: 60px;
+        }
+
+        div.one {
+            display: -webkit-flex; /* Safari */
+            display: flex;
+            flex-direction: row;
+        }
+
+        .one .left {
+            flex: 1;
+        }
+
+        .one .left img {
+            margin: 6px;
+            width: 120px;
+            height: 120px;
+        }
+
+        .one .right {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    </style>
 </head>
 <body>
-<h2>Hello World!</h2>
-<span class='uyou'>你好的</span>
-<button class="qingq" onclick="qingqiu()">请求</button>
+<div class="zong">
+    <div class="one" th:each="prod : ${prods}">
+        <div class="left">
+            <img src="../imgs/ic.png">
+        </div>
+        <div class="right">
+            <h6>Hello World!</h6>
+            <span class='uyou' th:text="${prod.name}">你好的</span>
+            <button class="request"  th:data-action="${prod.age}">请求</button>
+            <button class="getid" th:id="${prod.id}">获取id</button>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

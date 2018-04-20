@@ -1,40 +1,50 @@
 package com.light.springboot.Interceptor;
 
+import ch.qos.logback.classic.Logger;
+import com.light.springboot.utils.HttpHelper;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
 @Component
 public class MyInterceptor implements HandlerInterceptor {
-	@Override
-	public boolean preHandle(HttpServletRequest request,
-			HttpServletResponse response, Object handler) throws Exception {
-		System.out.println("========preHandle=========");
-		request.setAttribute("startTime", System.currentTimeMillis());
-		return true; // 如果false，停止流程，api被拦截
-	}
+    private final static Logger logger = (Logger) LoggerFactory
+            .getLogger(MyInterceptor.class);
+    @Autowired
+    HttpHelper myhttphelper;
 
-	@Override
-	public void postHandle(HttpServletRequest request,
-			HttpServletResponse response, Object handler,
-			ModelAndView modelAndView) throws Exception {
-		System.out.println("========postHandle=========");
-		Long start = (Long) request.getAttribute("startTime");
-		System.out.println("耗时:" + (System.currentTimeMillis() - start));
-	}
+    @Override
+    public boolean preHandle(HttpServletRequest request,
+                             HttpServletResponse response, Object handler) throws Exception {
+        String jsondata = myhttphelper.readJson(request);
+        logger.info("preHandlegetdata=" + jsondata);
+        logger.info("========preHandle=========");
+        request.setAttribute("mydata",jsondata);//通过这个传给controll
+        request.setAttribute("startTime", System.currentTimeMillis());
+        return true; // 如果false，停止流程，api被拦截
+    }
 
-	@Override
-	public void afterCompletion(HttpServletRequest request,
-			HttpServletResponse response, Object handler, Exception ex)
-			throws Exception {
+    @Override
+    public void postHandle(HttpServletRequest request,
+                           HttpServletResponse response, Object handler,
+                           ModelAndView modelAndView) throws Exception {
+        logger.info("========postHandle=========");
+        Long start = (Long) request.getAttribute("startTime");
+        logger.info("耗时:" + (System.currentTimeMillis() - start));
+    }
 
-		System.out.println("========afterCompletion=========");
-		Long start = (Long) request.getAttribute("startTime");
-		System.out.println("耗时:" + (System.currentTimeMillis() - start));
-		System.out.println(ex);
-	}
+    @Override
+    public void afterCompletion(HttpServletRequest request,
+                                HttpServletResponse response, Object handler, Exception ex)
+            throws Exception {
+        logger.info("========afterCompletion=========");
+        Long start = (Long) request.getAttribute("startTime");
+        logger.info("耗时:" + (System.currentTimeMillis() - start));
+    }
 
 }

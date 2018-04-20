@@ -8,7 +8,7 @@
     <meta name="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
-	<link rel="stylesheet" href="../my.css">
+    <link rel="stylesheet" href="../css/my.css">
     <!--360 browser -->
     <meta name="renderer" content="webkit">
     <meta name="author" content="wos">
@@ -266,7 +266,10 @@
     </div>
 </header>
 <div id="shujuid">
-	<h2 class="shujuidtext" th:text="${msg}"></h2>
+    <h2 class="shujuidtext" th:text="${session.user}"></h2>
+    <h2 class="shujuidtext" th:text="${onetwo}"></h2>
+    <h2 class="shujuidtext" th:text="${msg}"></h2>
+	<h2 class="shujuidtext" th:text="${one}"></h2>
 </div>
 <div data-am-widget="slider" class="am-slider am-slider-c2" data-am-slider='{"directionNav":false}'>
     <ul class="am-slides">

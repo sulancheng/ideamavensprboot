@@ -77,7 +77,6 @@
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
         </dependency>
-
         <!--配置jsp jstl的支持 -->
         <dependency>
             <groupId>javax.servlet</groupId>
