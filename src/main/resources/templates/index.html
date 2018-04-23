@@ -7,6 +7,7 @@
         function qingqiu(data,json) {
             alert("开始ajax请求"+data);
             if (json==null)return;
+            alert("开始ajax请求1"+data);
             $.ajax({
                 url: "/test/helloworld",
                 type: "POST",
@@ -30,8 +31,8 @@
             });
             $(".right .request").click(function(){
                 //$(this).parent().css("background-color","#0c7cb5");动态改变点击的背景色
-                alert("nihohkl");
-                alert($(this).attr("data-age"));
+                alert($(this).attr("data-age"));//成功
+                alert($(this).attr("data-obj"));//成功
                 var json = {
                     "username": "admin",
                     "password": 123
@@ -55,6 +56,10 @@
 
         .request {
             width: 60px;
+        }
+        .getid{
+            width: 120px;
+            height: 33px;
         }
 
         div.one {
@@ -83,15 +88,15 @@
 </head>
 <body>
 <div class="zong">
-    <div class="one" th:each="prod : ${prods}">
+    <div class="one" th:each="item : ${datas}">
         <div class="left">
             <img src="../imgs/ic.png">
         </div>
         <div class="right">
-            <span class='name' th:text="${prod.name}"></span>
-            <div class="myclass"  th:data-myclass="${prod.myclass}" th:text="${prod.myclass}+班"></div>
-            <div class="request"  th:data-age="${prod.age}" th:text="${prod.age}+岁"></div>
-            <button class="getid" th:id="${prod.id}">获取id</button>
+            <span class='name' th:text="${item.name}"></span>
+            <div class="myclass"  th:data-myclass="${item.myclass}" th:text="${item.myclass}+班"></div>
+            <div class="request"  th:data-age="${item.age}" th:text="${item.age}+岁" th:data-obj ="${item}" ></div>
+            <button class="getid" th:id="${item.id}">获取id</button>
         </div>
     </div>
 </div>

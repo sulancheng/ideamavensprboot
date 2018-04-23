@@ -43,6 +43,7 @@ public class TestController {
     @ResponseBody
     public String helloworld(@RequestBody String data) {
         logger.info("json数据" + data);
+//        Object parse = JSON.parse(data);
         return "helloworlds";
     }
 
@@ -172,7 +173,7 @@ public class TestController {
     public String index(ModelMap model) {
         List<Student> byClass = studentJpa.findByMyclass("9");
         logger.info("取出的数据"+byClass);
-        model.put("prods",byClass);
+        model.put("datas",byClass);
         return "index";
     }
 
