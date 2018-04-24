@@ -58,7 +58,7 @@ public class UserService  {
 	@SuppressWarnings("unused")//成功
 	public ArrayList<DbResponeBean> mQuerylianhcx() {
 		Query createNativeQuery = entityManager
-				.createNativeQuery("SELECT b.message ,b.tfclass,s.name,a.guo,a.sheng FROM banji b,student s ,address a " +
+				.createNativeQuery("SELECT b.message ,b.class,s.name,a.guo,a.sheng FROM banji b,student s ,address a " +
 						"WHERE a.bid = b.id and a.sid = s.id");
 		List resultList = createNativeQuery.getResultList();
 		if (resultList.size()<=0){

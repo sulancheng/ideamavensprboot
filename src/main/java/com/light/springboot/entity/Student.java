@@ -7,6 +7,7 @@ import java.io.Serializable;
 @Table(name="student")
 public class Student implements Serializable{
 
+	private static final long serialVersionUID = -6826119197709479975L;
 	@Id
 	@Column(name="id")
 	private Integer id;
@@ -19,12 +20,25 @@ public class Student implements Serializable{
 	
 	@Column(name="age")
 	private Integer age;
-	
+
+	@Version
+	private int version;
 
 	@Transient
 	private Integer sumid;
-	
-	
+
+	public static long getSerialVersionUID() {
+		return serialVersionUID;
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
+	}
+
 	public Integer getSumid() {
 		return sumid;
 	}

@@ -1,12 +1,12 @@
 package com.light.springboot.controller;
 
 import bean.User;
-import ch.qos.logback.classic.Logger;
 import com.light.springboot.entity.Student;
 import com.light.springboot.jpa.DbResponeBean;
 import com.light.springboot.jpa.StudentJpa;
 import com.light.springboot.jpa.UserService;
 import com.light.springboot.utils.HttpHelper;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,7 +30,15 @@ public class TestController {
     private UserService userService;
     @Autowired
     private HttpHelper myhttphelper;
-    private final static Logger logger = (Logger) LoggerFactory
+
+    //    @CrossOrigin(origins="http://localhost:63343")//成功
+    @RequestMapping("/hellky")
+    @ResponseBody
+    public String helloworld() {
+        return "跨域访问";
+    }
+
+    private final static Logger logger = LoggerFactory
             .getLogger(TestController.class);
 
     /**
@@ -66,6 +74,42 @@ public class TestController {
         List<Student> myQuery = (List<Student>) studentJpa.myQuery(999);
         logger.info(" student记录数量自己:" + myQuery.toString());
         return findAll;
+    }
+
+    //乐观锁的测试
+    @RequestMapping("/userlg")
+    @ResponseBody
+    public Object getUserlg() {
+        User myUser = new User();
+        myUser.setAge("26");
+        myUser.setName("大傻逼");
+        Optional<Student> byId = studentJpa.findById(19);
+        Student student = byId.get();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Optional<Student> byId1 = studentJpa.findById(19);
+                    Student student1 = byId1.get();
+                    student1.setName("在吗");
+                    student1.setAge(35);
+                    studentJpa.save(student1);
+                } catch (Exception e) {
+                    logger.info("修改已经被人捷足先登了。抢到第一了");
+                    e.printStackTrace();
+                }
+
+            }
+        }).start();
+        try {
+            student.setAge(12);
+            student.setName("我是老大");
+            studentJpa.save(student);
+        } catch (Exception e) {//乐观锁异常
+            logger.info("修改已经被人捷足先登了。");
+            return "修改失败";
+        }
+        return student;
     }
 
     @RequestMapping("/userzong")
@@ -126,7 +170,7 @@ public class TestController {
     @RequestMapping("/map")
     @ResponseBody
     public Map getMap(HttpServletRequest request) {
-        logger.info("myjson2 = "+request.getAttribute("mydata"));
+        logger.info("myjson2 = " + request.getAttribute("mydata"));
 //        String bodyString = myhttphelper.getBodyString(request);
 //        logger.info(request.getRequestURI()+bodyString);
         Map<String, Object> myMap = new HashMap<String, Object>();
@@ -172,8 +216,8 @@ public class TestController {
     @RequestMapping("/wo")
     public String index(ModelMap model) {
         List<Student> byClass = studentJpa.findByMyclass("9");
-        logger.info("取出的数据"+byClass);
-        model.put("datas",byClass);
+        logger.info("取出的数据" + byClass);
+        model.put("datas", byClass);
         return "index";
     }
 
@@ -184,23 +228,29 @@ public class TestController {
         if (dbResponeBeans == null) return "我是空的";
         return dbResponeBeans;
     }
+
     @RequestMapping("/zidiyxz") //成功
     @ResponseBody
     public Object mQueryxz() {
         List<Student> byNameOrderByIdDesc = studentJpa.findByNameOrderByIdDesc("sdas");
-        if (byNameOrderByIdDesc == null||byNameOrderByIdDesc.size()<=0) return "我是空的";
+        if (byNameOrderByIdDesc == null || byNameOrderByIdDesc.size() <= 0) return "我是空的";
         return byNameOrderByIdDesc;
     }
+
     //Session存储：可以利用HttpServletReequest的getSession()方法
     @RequestMapping("/sessiontest")
     public String sessionTest(String name, String pwd, ModelMap model, HttpServletRequest request) {
 
         HttpSession session = request.getSession();
         session.setAttribute("user", "我的user名字，会保留");
-        request.setAttribute("onetwo","request不会被保留");
+        request.setAttribute("onetwo", "request不会被保留");
         model.addAttribute("msg", "不会在页面之间保留");
         model.put("one", "之间");
         return "myfirst";
     }
 
+    @RequestMapping("/con")
+    public String conn() {
+        return "websocket";
+    }
 }

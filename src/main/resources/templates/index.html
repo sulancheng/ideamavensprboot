@@ -14,7 +14,24 @@
                 async: true,
                 contentType: "application/json",
                 data: JSON.stringify(json),
-                dataType: 'json',
+                dataType: 'text',
+                success: function (data) {
+                    alert(JSON.stringify(data))
+                },
+                errer: function (data) {
+
+                }
+            });
+        }
+        function kuay() {
+            alert("开始ajax请求跨域");
+            $.ajax({
+                url: " http://localhost:8081/test/hellky",
+                type: "POST",
+                async: true,
+                contentType: "application/json",
+                data: "我能跨域吗",
+                dataType: 'text',
                 success: function (data) {
                     alert(JSON.stringify(data))
                 },
@@ -27,10 +44,20 @@
             $(".right .getid").click(function(){
                 alert("段落被点击了。");
                 alert($(this).prop("id"));
-                qingqiu($(this).prop("id"));
+                // qingqiu($(this).prop("id"));
+                kuay();
             });
-            $(".right .request").click(function(){
-                //$(this).parent().css("background-color","#0c7cb5");动态改变点击的背景色
+            // $(".right .request").click(function(){//成功
+            //     //$(this).parent().css("background-color","#0c7cb5");动态改变点击的背景色
+            //     alert($(this).attr("data-age"));//成功
+            //     alert($(this).attr("data-obj"));//成功
+            //     var json = {
+            //         "username": "admin",
+            //         "password": 123
+            //     };
+            //     qingqiu("nihao",json);
+            // });
+            $(".right .request").on("click",function(){
                 alert($(this).attr("data-age"));//成功
                 alert($(this).attr("data-obj"));//成功
                 var json = {

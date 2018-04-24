@@ -62,8 +62,8 @@ public class FileController {
         File localFiletwo = null;
         for (MultipartFile f : file) {
             // 图片的名字用毫秒数+图片原来的名字拼接
-            System.out.println(f.getSize());
-            System.out.println(f.getBytes());
+//            System.out.println(f.getSize());
+//            System.out.println(f.getBytes());
             String imgName = System.currentTimeMillis() + f.getOriginalFilename();
             if (!f.isEmpty()) {
                 //获取跟目录
