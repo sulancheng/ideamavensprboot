@@ -9,6 +9,23 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+/**
+ * @Transactional事务使用总结：
+ *
+ * 1、异常在A方法内抛出，则A方法就得加注解
+ * 2、多个方法嵌套调用，如果都有 @Transactional 注解，则产生事务传递，默认 Propagation.REQUIRED
+ * 3、如果注解上只写 @Transactional  默认只对 RuntimeException 回滚，而非 Exception 进行回滚
+ * 如果要对 checked Exceptions 进行回滚，则需要 @Transactional(rollbackFor = Exception.class)
+ *
+ * org.springframework.orm.jpa.JpaTransactionManager
+ *
+ * org.springframework.jdbc.datasource.DataSourceTransactionManager
+ *
+ * org.springframework.transaction.jta.JtaTransactionManager
+ *
+ */
+
 //实现JpaSpecificationExecutor接口实现复杂查询
 public interface StudentJpa extends BaseRepository<Student, Integer> , JpaSpecificationExecutor<Student> {
 	@Modifying
@@ -26,10 +43,14 @@ public interface StudentJpa extends BaseRepository<Student, Integer> , JpaSpecif
 
 	
 	@Modifying
-	@Transactional
+	@Transactional//事务
 	@Query(value="delete  from student where age=?",nativeQuery=true)
 	public int deleteQuery(Integer age);
 
+	@Modifying
+	@Transactional//事务
+	@Query(value="update student set name=? where id=?",nativeQuery=true)
+	public int updataQuery(String name,Integer id);
 	/**
 	 * 查询name
 	 * @param name

@@ -4,7 +4,7 @@ import bean.User;
 import com.light.springboot.entity.Student;
 import com.light.springboot.jpa.DbResponeBean;
 import com.light.springboot.jpa.StudentJpa;
-import com.light.springboot.jpa.UserService;
+import com.light.springboot.jpa.UserServiceImpl;
 import com.light.springboot.utils.HttpHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +27,7 @@ public class TestController {
     @Autowired
     private StudentJpa studentJpa;
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
     @Autowired
     private HttpHelper myhttphelper;
 
@@ -155,7 +155,7 @@ public class TestController {
     @RequestMapping("/userfyby/{susu}")
     @ResponseBody
     public List<Object> getUserfypath(@PathVariable("susu") Integer susu) {
-        List<Object> findpages = userService.findpages("student", "class", 9, 1, 5);
+        List<Object> findpages = userServiceImpl.findpages("student", "class", 9, 1, 5);
         logger.info("/userfystudent记录数量自己:" + findpages.toString());
         return findpages;
     }
@@ -167,6 +167,17 @@ public class TestController {
         return "删除成功" + issu;
     }
 
+    /**
+     * 测试数据库jpa的事务。
+     * @param id
+     * @return
+     */
+    @RequestMapping("/upuser")
+    @ResponseBody
+    public String upUser(@RequestParam("id") Integer id) {
+        boolean shiwu = userServiceImpl.updataById("我顶你肺", id);
+        return "更新成功" + shiwu;
+    }
     @RequestMapping("/map")
     @ResponseBody
     public Map getMap(HttpServletRequest request) {
@@ -224,7 +235,7 @@ public class TestController {
     @RequestMapping("/zidiy") //成功
     @ResponseBody
     public Object mQuery() {
-        ArrayList<DbResponeBean> dbResponeBeans = userService.mQuerylianhcx();
+        List<DbResponeBean> dbResponeBeans = userServiceImpl.mQuerylianhcx();
         if (dbResponeBeans == null) return "我是空的";
         return dbResponeBeans;
     }
