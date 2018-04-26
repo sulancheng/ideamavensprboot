@@ -175,8 +175,8 @@ public class TestController {
     @RequestMapping("/upuser")
     @ResponseBody
     public String upUser(@RequestParam("id") Integer id) {
-        boolean shiwu = userServiceImpl.updataById("我顶你肺", id);
-        return "更新成功" + shiwu;
+        boolean sucess = userServiceImpl.updataById("我顶你肺你妹的", id);
+        return "更新成功与否"+sucess;
     }
     @RequestMapping("/map")
     @ResponseBody
@@ -260,8 +260,5 @@ public class TestController {
         return "myfirst";
     }
 
-    @RequestMapping("/con")
-    public String conn() {
-        return "websocket";
-    }
+
 }

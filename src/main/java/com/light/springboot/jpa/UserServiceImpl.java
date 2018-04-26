@@ -85,13 +85,15 @@ public class UserServiceImpl implements UserServiceInt {
         return dbResponeBeans;
     }
 
-    @Transactional(rollbackFor = Exception.class)//事务与回滚
+    @Transactional(rollbackFor = Exception.class)//事务与回滚  成功
     public boolean updataById(String name, Integer id) {
         int shiwu = studentJpa.updataQuery(name, id);
+//        throw  new RuntimeException("模拟异常触发回滚");
         if (shiwu >= 1) {
             return true;
         } else {
             return false;
         }
+
     }
 }
