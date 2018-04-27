@@ -1,7 +1,9 @@
 package com.light.springboot.controller;
 
 import bean.FileInfo;
+import bean.ReturnDataBean;
 import ch.qos.logback.classic.Logger;
+import com.light.springboot.utils.JavaLocalUtils;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.List;
 
 /**
  * upload文件and下载文件
@@ -22,9 +25,45 @@ import java.io.*;
 @Controller
 @RequestMapping("/file")
 public class FileController {
+
     private final String path = "d:\\springbootupload\\imgs";
     private final static Logger logger = (Logger) LoggerFactory
             .getLogger(FileController.class);
+
+    //搜索目标文件夹的所有的文件
+    @RequestMapping("/getmove")
+    @ResponseBody
+    public Object getMove() {
+        List<File> files = JavaLocalUtils.delDir(new File("G:\\电影电视剧"));
+        for (File f1 : files) {
+            logger.info("搜索的文件名字：" + f1.getAbsolutePath() + "  名字" + f1.getName());
+        }
+        return getBean(files, "1");
+    }
+
+    public ReturnDataBean getBean(List list, String code) {
+        ReturnDataBean returnDataBean = new ReturnDataBean();
+        returnDataBean.setCode(code);
+        returnDataBean.setList(list);
+        return returnDataBean;
+    }
+    //播放目标文件夹的所有的文件
+    @RequestMapping("/startmove")
+    @ResponseBody
+    public void startMove( HttpServletResponse response) {
+//        logger.info("收到的地址:"+filePath);
+        File file = new File("G:\\电影电视剧\\个人\\玉生烟 练习室版--音悦Tai.mp4");
+        try {
+            InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+            ServletOutputStream outputStream = response.getOutputStream();
+            OutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
+            response.setContentType("application/x-download");
+            IOUtils.copy(inputStream, outputStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @PostMapping("/upload")
     @ResponseBody

@@ -4,10 +4,10 @@
     <script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
     <link rel="stylesheet" href="../css/my.css">
     <script>
-        function qingqiu(data,json) {
-            alert("开始ajax请求"+data);
-            if (json==null)return;
-            alert("开始ajax请求1"+data);
+        function qingqiu(data, json) {
+            alert("开始ajax请求" + data);
+            if (json == null) return;
+            alert("开始ajax请求1" + data);
             $.ajax({
                 url: "/test/helloworld",
                 type: "POST",
@@ -23,6 +23,7 @@
                 }
             });
         }
+
         function kuay() {
             alert("开始ajax请求跨域");
             $.ajax({
@@ -40,8 +41,9 @@
                 }
             });
         }
-        $(function(){
-            $(".right .getid").click(function(){
+
+        $(function () {
+            $(".right .getid").click(function () {
                 alert("段落被点击了。");
                 alert($(this).prop("id"));
                 // qingqiu($(this).prop("id"));
@@ -57,14 +59,14 @@
             //     };
             //     qingqiu("nihao",json);
             // });
-            $(".right .request").on("click",function(){
+            $(".right .request").on("click", function () {
                 alert($(this).attr("data-age"));//成功
                 alert($(this).attr("data-obj"));//成功
                 var json = {
                     "username": "admin",
                     "password": 123
                 };
-                qingqiu("nihao",json);
+                qingqiu("nihao", json);
             });
         });
     </script>
@@ -81,14 +83,34 @@
             flex: 1;
         }
 
+        .divtitle {
+            padding: 6px;
+            width: 100%;
+            display: -webkit-flex; /* Safari */
+            display: flex;
+            flex-direction: column;
+            background-color: #e56c0c;
+        }
+
+        .divtitle h7 {
+            color: red;
+            margin: 8px;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
         .request {
             width: 60px;
         }
-        .getid{
+
+        .getid {
             width: 120px;
             height: 33px;
         }
-
+        div.xunahun{
+            margin-top: 2px;
+        }
         div.one {
             display: -webkit-flex; /* Safari */
             display: flex;
@@ -111,20 +133,34 @@
             flex-direction: column;
             justify-content: center;
         }
+
+        .divplayer video {
+            margin-top: 20px;
+            width: 100%;
+            height: auto;
+        }
     </style>
 </head>
 <body>
 <div class="zong">
-    <div class="one" th:each="item : ${datas}">
-        <div class="left">
-            <img src="../imgs/ic.png">
+    <div class="divtitle">
+        <h7>视频标题</h7>
+    </div>
+    <div class="xunahun">
+        <div class="one" th:each="item : ${datas}">
+            <div class="left">
+                <img src="../imgs/ic.png">
+            </div>
+            <div class="right">
+                <span class='name' th:text="${item.name}"></span>
+                <div class="myclass" th:data-myclass="${item.myclass}" th:text="${item.myclass}+班"></div>
+                <div class="request" th:data-age="${item.age}" th:text="${item.age}+岁" th:data-obj="${item}"></div>
+                <button class="getid" th:id="${item.id}">获取id</button>
+            </div>
         </div>
-        <div class="right">
-            <span class='name' th:text="${item.name}"></span>
-            <div class="myclass"  th:data-myclass="${item.myclass}" th:text="${item.myclass}+班"></div>
-            <div class="request"  th:data-age="${item.age}" th:text="${item.age}+岁" th:data-obj ="${item}" ></div>
-            <button class="getid" th:id="${item.id}">获取id</button>
-        </div>
+    </div>
+    <div class="divplayer">
+        <video src="/file/startmove" autoplay controls></video>
     </div>
 </div>
 
