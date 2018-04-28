@@ -7,7 +7,7 @@ import java.util.List;
  * on 2018/4/25.
  */
 
-public interface UserServiceInt {
+public interface UserService {
     public  void testQuery();
 
     public List<DbResponeBean> mQuerylianhcx();

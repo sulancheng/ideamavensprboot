@@ -1,5 +1,6 @@
 package com.light.springboot.controller;
 
+import bean.FileInfo;
 import bean.User;
 import com.light.springboot.entity.Student;
 import com.light.springboot.jpa.DbResponeBean;
@@ -49,10 +50,11 @@ public class TestController {
      */
     @RequestMapping("/helloworld")
     @ResponseBody
-    public String helloworld(@RequestBody String data) {
+    public FileInfo helloworld(@RequestBody String data) {
         logger.info("json数据" + data);
 //        Object parse = JSON.parse(data);
-        return "helloworlds";
+        FileInfo fileInfo = new FileInfo("dsadsad", "ssssss", 99);
+        return fileInfo;
     }
 
     @RequestMapping("/user")

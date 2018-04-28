@@ -2,11 +2,12 @@ package com.light.springboot.controller;
 
 import bean.FileInfo;
 import bean.ReturnDataBean;
-import ch.qos.logback.classic.Logger;
 import com.light.springboot.utils.JavaLocalUtils;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +16,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,18 +29,24 @@ import java.util.List;
 public class FileController {
 
     private final String path = "d:\\springbootupload\\imgs";
-    private final static Logger logger = (Logger) LoggerFactory
+    private final static Logger logger = LoggerFactory
             .getLogger(FileController.class);
 
     //搜索目标文件夹的所有的文件
     @RequestMapping("/getmove")
-    @ResponseBody
-    public Object getMove() {
-        List<File> files = JavaLocalUtils.delDir(new File("G:\\电影电视剧"));
+    public Object getMove(HttpServletRequest request,ModelMap model) {
+        JavaLocalUtils.fileList.clear();
+        List<File> files = JavaLocalUtils.delDir(new File("D:\\网易云音乐"));
+        List<FileInfo> fileInfos= new ArrayList<>();
         for (File f1 : files) {
             logger.info("搜索的文件名字：" + f1.getAbsolutePath() + "  名字" + f1.getName());
         }
-        return getBean(files, "1");
+        request.getSession().setAttribute("mypc_moves",files);
+        for (int x=0;x<files.size();x++) {
+            fileInfos.add(new FileInfo(files.get(x).getAbsolutePath(), files.get(x).getName(), x));
+        }
+        model.put("datas",fileInfos);
+        return "index";
     }
 
     public ReturnDataBean getBean(List list, String code) {
@@ -47,12 +55,35 @@ public class FileController {
         returnDataBean.setList(list);
         return returnDataBean;
     }
+
     //播放目标文件夹的所有的文件
-    @RequestMapping("/startmove")
-    @ResponseBody
-    public void startMove( HttpServletResponse response) {
-//        logger.info("收到的地址:"+filePath);
-        File file = new File("G:\\电影电视剧\\个人\\玉生烟 练习室版--音悦Tai.mp4");
+    @RequestMapping("/player/{id}/{name}")
+    public String startMove(HttpServletRequest request,ModelMap model,@PathVariable int id,@PathVariable String name) {
+        logger.info("收到的id:"+id);
+        List<FileInfo> fileInfos= new ArrayList<>();
+        List<File> files = (List<File>) request.getSession().getAttribute("mypc_moves");
+        if (files!=null&&files.size()>0){
+            for (int x=0;x<files.size();x++) {
+                fileInfos.add(new FileInfo(files.get(x).getAbsolutePath(), files.get(x).getName(), x));
+            }
+            model.put("datas",fileInfos);
+        }
+        model.put("id",id);
+        model.put("name",name);
+        return "play";
+    }
+
+    //播放目标文件夹的所有的文件
+    @RequestMapping("/startmove/{moveid}")
+    public String startMove(HttpServletRequest request, HttpServletResponse response, @PathVariable int moveid) {
+        logger.info("收到的moveid:"+moveid);
+        List<File> files = (List<File>) request.getSession().getAttribute("mypc_moves");
+        if (files==null||files.size()<=0){
+            return "throwerro";
+        }
+        File file = files.get(moveid);
+        logger.info("收到的moveid:"+moveid+"  地址："+file.getName());
+//        File file = new File("G:\\电影电视剧\\个人\\玉生烟 练习室版--音悦Tai.mp4");
         try {
             InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
             ServletOutputStream outputStream = response.getOutputStream();
@@ -62,6 +93,7 @@ public class FileController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
 

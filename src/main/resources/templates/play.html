@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="http://cdn.static.runoob.com/libs/jquery/1.8.3/jquery.js"></script>
+    <script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="../css/my.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .zong {
+            display: -webkit-flex; /* Safari */
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .divtitle {
+            padding: 6px;
+            width: 100%;
+            display: -webkit-flex; /* Safari */
+            display: flex;
+            flex-direction: column;
+            background-color: green;
+        }
+
+        .divtitle h7 {
+            color: black;
+            margin: 8px;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .divplayer video {
+            margin-top: 20px;
+            width: 100%;
+            height: auto;
+        }
+
+        div .tuijian {
+            width: 100%;
+        }
+
+        div .tuijian h7 {
+            color: red;
+            margin: 6px 8px;
+            text-align: center;
+        }
+
+        div.one {
+            margin-top: 12px;
+            display: -webkit-flex; /* Safari */
+            display: flex;
+            flex-direction: row;
+        }
+
+        .one .left {
+            flex: 1;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .one .left img {
+            width: 80px;
+            height: 80px;
+        }
+
+        .one .right {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .one .right:active {
+            background-color: red;
+        }
+
+        .one .right button {
+            width: 120px;
+            height: 32px;
+        }
+    </style>
+    <script>
+        // $(document).ready(function(){
+        //     $(".getid").on("click",function(){
+        //         alert("在点吗？");
+        //         var id = $(this).attr("data-id");
+        //         alert(id);
+        //         $(".divplayer video").prop("src", "/file/startmove/" + id);
+        //         // $(".divplayer video").play();
+        //     });
+        // });
+        $(function () {
+            $(".divplayer video").click(function () {
+                alert("段落被点击了。");
+                alert($(this).prop("src"));
+            });
+
+            $("body").delegate(".getid", "click", function () {//这种方式解决ajax动态添加item点击事件失效的问题
+                alert("在点吗？");
+                var id = $(this).attr("data-id");
+                alert(id);
+                $(".divplayer video").prop("src", "/file/startmove/" + id);
+                // $(".divplayer video").play();
+            });
+            // $(".getid").click(function () {
+            //     alert("在点吗？");
+            //     var id = $(this).attr("data-id");
+            //     alert(id);
+            //     $(".divplayer video").prop("src","/file/startmove/"+id);
+            //     // $(".divplayer video").play();
+            // });
+
+            // $(".getid").on("click", function () {
+            //
+            // });
+            var index = 1009;
+            $(".tuijiantest").click(function () {
+                alert("推荐。");
+                var padd = " <div class=\"one\" >\n" +
+                    "                <div class=\"left\">\n" +
+                    "                    <img src=\"/imgs/ic.png\">\n" +
+                    "                </div>\n" +
+                    "                <div class=\"right\">\n" +
+                    "                    <span class='name' >ajax name</span>\n" +
+                    "                    <div class=\"myclass\" >ajax 地址</div>\n" +
+                    "                    <!--<div class=\"request\" th:data-age=\"${item.age}\" th:text=\"${item.age}+岁\" th:data-obj=\"${item}\"></div>-->\n" +
+                    "                    <button class='getid' data-id=" + index + " data-test='" + index + "'>ajax id</button>\n" +
+                    "                </div>\n" +
+                    "            </div>";
+                index++;
+                $(".tuijian").append(padd);
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="zong">
+
+    <div class="divtitle">
+        <h7 th:text="视频标题：+${name}">视频标题</h7>
+    </div>
+    <div class="divplayer">
+        <!--下面是th src 或者href的使用方法-->
+        <video th:src="@{/file/startmove/{id}(id=${id})}" autoplay controls>
+
+        </video>
+    </div>
+    <div class="tuijian">
+        <h7 class="tuijiantest">推荐:</h7>
+        <div class="one" th:each="item : ${datas}">
+            <div class="left">
+                <img src="/imgs/ic.png">
+            </div>
+            <div class="right">
+                <span class='name' th:text="${item.name}"></span>
+                <div class="myclass" th:data-myclass="${item.path}" th:text="${item.path}+班"></div>
+                <!--<div class="request" th:data-age="${item.age}" th:text="${item.age}+岁" th:data-obj="${item}"></div>-->
+                <button class="getid" th:data-id="${item.id}" th:data-objb="${item}" th:data-name="${item.name}">获取id
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -14,9 +14,9 @@
                 async: true,
                 contentType: "application/json",
                 data: JSON.stringify(json),
-                dataType: 'text',
+                dataType: 'json',
                 success: function (data) {
-                    alert(JSON.stringify(data))
+                    alert(data.name)
                 },
                 errer: function (data) {
 
@@ -43,12 +43,12 @@
         }
 
         $(function () {
-            $(".right .getid").click(function () {
-                alert("段落被点击了。");
-                alert($(this).prop("id"));
-                // qingqiu($(this).prop("id"));
-                kuay();
-            });
+            // $(".right .getid").click(function () {
+            //     alert("段落被点击了。");
+            //     alert($(this).prop("id"));
+            //     // qingqiu($(this).prop("id"));
+            //     kuay();
+            // });
             // $(".right .request").click(function(){//成功
             //     //$(this).parent().css("background-color","#0c7cb5");动态改变点击的背景色
             //     alert($(this).attr("data-age"));//成功
@@ -68,6 +68,14 @@
                 };
                 qingqiu("nihao", json);
             });
+
+            /*点击跳转到*/
+            $(".right .getid").on("click", function () {
+                alert($(this).attr("data-name"));//成功
+                alert($(this).attr("data-objb"));//成功
+                var obj = $(this).attr("data-objb");
+                window.location.href = "/file/player/" + $(this).attr("data-id") +"/"+ $(this).attr("data-name");
+            });
         });
     </script>
     <style>
@@ -83,23 +91,6 @@
             flex: 1;
         }
 
-        .divtitle {
-            padding: 6px;
-            width: 100%;
-            display: -webkit-flex; /* Safari */
-            display: flex;
-            flex-direction: column;
-            background-color: #e56c0c;
-        }
-
-        .divtitle h7 {
-            color: red;
-            margin: 8px;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-
         .request {
             width: 60px;
         }
@@ -108,9 +99,11 @@
             width: 120px;
             height: 33px;
         }
-        div.xunahun{
+
+        div.xunahun {
             margin-top: 2px;
         }
+
         div.one {
             display: -webkit-flex; /* Safari */
             display: flex;
@@ -134,18 +127,10 @@
             justify-content: center;
         }
 
-        .divplayer video {
-            margin-top: 20px;
-            width: 100%;
-            height: auto;
-        }
     </style>
 </head>
 <body>
 <div class="zong">
-    <div class="divtitle">
-        <h7>视频标题</h7>
-    </div>
     <div class="xunahun">
         <div class="one" th:each="item : ${datas}">
             <div class="left">
@@ -153,15 +138,13 @@
             </div>
             <div class="right">
                 <span class='name' th:text="${item.name}"></span>
-                <div class="myclass" th:data-myclass="${item.myclass}" th:text="${item.myclass}+班"></div>
-                <div class="request" th:data-age="${item.age}" th:text="${item.age}+岁" th:data-obj="${item}"></div>
-                <button class="getid" th:id="${item.id}">获取id</button>
+                <div class="myclass" th:data-myclass="${item.path}" th:text="${item.path}+班"></div>
+                <div class="request">json</div>
+                <button class="getid" th:data-id="${item.id}" th:data-objb="${item}" th:data-name="${item.name}">获取id</button>
             </div>
         </div>
     </div>
-    <div class="divplayer">
-        <video src="/file/startmove" autoplay controls></video>
-    </div>
+
 </div>
 
 </body>

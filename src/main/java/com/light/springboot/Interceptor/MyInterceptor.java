@@ -1,7 +1,8 @@
 package com.light.springboot.Interceptor;
 
-import ch.qos.logback.classic.Logger;
+
 import com.light.springboot.utils.HttpHelper;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,8 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Component
 public class MyInterceptor implements HandlerInterceptor {
-    private final static Logger logger = (Logger) LoggerFactory
-            .getLogger(MyInterceptor.class);
+    private final static Logger logger = LoggerFactory.getLogger(MyInterceptor.class);
     @Autowired
     HttpHelper myhttphelper;
 

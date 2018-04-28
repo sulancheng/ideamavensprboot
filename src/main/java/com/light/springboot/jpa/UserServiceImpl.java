@@ -1,5 +1,6 @@
 package com.light.springboot.jpa;
 
+import com.light.springboot.entity.Student;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service//dao层使用@repository注解
-public class UserServiceImpl implements UserServiceInt {
+public class UserServiceImpl implements UserService {
     @PersistenceContext
     private EntityManager entityManager;
     @Autowired
@@ -90,6 +91,16 @@ public class UserServiceImpl implements UserServiceInt {
         int shiwu = studentJpa.updataQuery(name, id);
 //        throw  new RuntimeException("模拟异常触发回滚");
         if (shiwu >= 1) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+    @Transactional(rollbackFor = Exception.class)//事务与回滚  成功
+    public boolean inssrtList(List<Student> list) {
+        List<Student> students = studentJpa.saveAll(list);
+        if (students.size() >= 1) {
             return true;
         } else {
             return false;
