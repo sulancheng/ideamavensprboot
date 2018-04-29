@@ -71,8 +71,8 @@
 
             /*点击跳转到*/
             $(".right .getid").on("click", function () {
-                alert($(this).attr("data-name"));//成功
-                alert($(this).attr("data-objb"));//成功
+                // alert($(this).attr("data-name"));//成功
+                // alert($(this).attr("data-objb"));//成功
                 var obj = $(this).attr("data-objb");
                 window.location.href = "/file/player/" + $(this).attr("data-id") +"/"+ $(this).attr("data-name");
             });
@@ -112,6 +112,9 @@
 
         .one .left {
             flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .one .left img {
@@ -125,6 +128,8 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            align-items: flex-start;
+            align-content: flex-start;
         }
 
     </style>
@@ -137,8 +142,8 @@
                 <img src="../imgs/ic.png">
             </div>
             <div class="right">
-                <span class='name' th:text="${item.name}"></span>
-                <div class="myclass" th:data-myclass="${item.path}" th:text="${item.path}+班"></div>
+                <span class='name' th:text="名字：+${item.name}"></span>
+                <div class="myclass" th:data-myclass="${item.path}" th:text="地址：+${item.path}"></div>
                 <div class="request">json</div>
                 <button class="getid" th:data-id="${item.id}" th:data-objb="${item}" th:data-name="${item.name}">获取id</button>
             </div>

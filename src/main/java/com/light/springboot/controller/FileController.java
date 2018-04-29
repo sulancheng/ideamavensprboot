@@ -34,18 +34,18 @@ public class FileController {
 
     //搜索目标文件夹的所有的文件
     @RequestMapping("/getmove")
-    public Object getMove(HttpServletRequest request,ModelMap model) {
+    public Object getMove(HttpServletRequest request, ModelMap model) {
         JavaLocalUtils.fileList.clear();
-        List<File> files = JavaLocalUtils.delDir(new File("D:\\网易云音乐"));
-        List<FileInfo> fileInfos= new ArrayList<>();
-        for (File f1 : files) {
-            logger.info("搜索的文件名字：" + f1.getAbsolutePath() + "  名字" + f1.getName());
-        }
-        request.getSession().setAttribute("mypc_moves",files);
-        for (int x=0;x<files.size();x++) {
+        List<File> files = JavaLocalUtils.delDir(new File("D:\\电影"));
+        List<FileInfo> fileInfos = new ArrayList<>();
+//        for (File f1 : files) {
+//            logger.info("搜索的文件名字：" + f1.getAbsolutePath() + "  名字" + f1.getName());
+//        }
+        request.getSession().setAttribute("mypc_moves", files);
+        for (int x = 0; x < files.size(); x++) {
             fileInfos.add(new FileInfo(files.get(x).getAbsolutePath(), files.get(x).getName(), x));
         }
-        model.put("datas",fileInfos);
+        model.put("datas", fileInfos);
         return "index";
     }
 
@@ -58,40 +58,72 @@ public class FileController {
 
     //播放目标文件夹的所有的文件
     @RequestMapping("/player/{id}/{name}")
-    public String startMove(HttpServletRequest request,ModelMap model,@PathVariable int id,@PathVariable String name) {
-        logger.info("收到的id:"+id);
-        List<FileInfo> fileInfos= new ArrayList<>();
+    public String startMove(HttpServletRequest request, ModelMap model, @PathVariable int id, @PathVariable String name) {
+//        logger.info("收到的id:" + id);
+        List<FileInfo> fileInfos = new ArrayList<>();
         List<File> files = (List<File>) request.getSession().getAttribute("mypc_moves");
-        if (files!=null&&files.size()>0){
-            for (int x=0;x<files.size();x++) {
+        if (files != null && files.size() > 0) {
+            for (int x = 0; x < files.size(); x++) {
                 fileInfos.add(new FileInfo(files.get(x).getAbsolutePath(), files.get(x).getName(), x));
             }
-            model.put("datas",fileInfos);
+            model.put("datas", fileInfos);
         }
-        model.put("id",id);
-        model.put("name",name);
+        model.put("id", id);
+        model.put("name", name);
         return "play";
     }
 
     //播放目标文件夹的所有的文件
     @RequestMapping("/startmove/{moveid}")
     public String startMove(HttpServletRequest request, HttpServletResponse response, @PathVariable int moveid) {
-        logger.info("收到的moveid:"+moveid);
+//        logger.info("收到的moveid:" + moveid);
         List<File> files = (List<File>) request.getSession().getAttribute("mypc_moves");
-        if (files==null||files.size()<=0){
+        if (files == null || files.size() <= 0) {
             return "throwerro";
         }
         File file = files.get(moveid);
-        logger.info("收到的moveid:"+moveid+"  地址："+file.getName());
+        logger.warn("正在播放的moveid:" + file.getName() + "  地址：" + file.getName());
 //        File file = new File("G:\\电影电视剧\\个人\\玉生烟 练习室版--音悦Tai.mp4");
+        InputStream inputStream = null;
+        OutputStream bufferedOutputStream = null;
         try {
-            InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+            inputStream = new BufferedInputStream(new FileInputStream(file));
             ServletOutputStream outputStream = response.getOutputStream();
-            OutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
-            response.setContentType("application/x-download");
-            IOUtils.copy(inputStream, outputStream);
+            bufferedOutputStream = new BufferedOutputStream(outputStream);
+//            response.setContentType("application/x-download");
+            IOUtils.copyLarge(inputStream, bufferedOutputStream);
         } catch (Exception e) {
             e.printStackTrace();
+//            if (inputStream != null) {
+//                try {
+//                    inputStream.close();
+//                } catch (IOException e1) {
+//                    e1.printStackTrace();
+//                }
+//            }
+//            if (bufferedOutputStream != null) {
+//                try {
+//                    bufferedOutputStream.close();
+//                } catch (IOException e1) {
+//                    e1.printStackTrace();
+//                }
+//            }
+            logger.error("正在播放的moveid:已经停止播放");
+        }finally {
+//            if (inputStream != null) {
+//                try {
+//                    inputStream.close();
+//                } catch (IOException e1) {
+//                    e1.printStackTrace();
+//                }
+//            }
+//            if (bufferedOutputStream != null) {
+//                try {
+//                    bufferedOutputStream.close();
+//                } catch (IOException e1) {
+//                    e1.printStackTrace();
+//                }
+//            }
         }
         return null;
     }
