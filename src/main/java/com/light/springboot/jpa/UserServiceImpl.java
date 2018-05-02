@@ -1,6 +1,10 @@
 package com.light.springboot.jpa;
 
+import bean.Result;
 import com.light.springboot.entity.Student;
+import com.light.springboot.enums.ResultEnum;
+import com.light.springboot.exception.MyException;
+import com.light.springboot.utils.ResultUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,18 +89,46 @@ public class UserServiceImpl implements UserService {
         entityManager.close();
         return dbResponeBeans;
     }
-
-    @Transactional(rollbackFor = Exception.class)//事务与回滚  成功
-    public boolean updataById(String name, Integer id) {
-        int shiwu = studentJpa.updataQuery(name, id);
-//        throw  new RuntimeException("模拟异常触发回滚");
-        if (shiwu >= 1) {
-            return true;
-        } else {
-            return false;
+    @Transactional(rollbackFor = Exception.class)//事务与回滚  成功  默认只有runtimeexception才会进行事务回滚
+    @Override
+    public Result addBean(Object o) throws Exception {
+//        updataById("我的测试",32);//测试看会不会回滚 成功
+        Student student = (Student) o;
+        if (student.getName().equals("23")){
+//            throw new MyException(ResultEnum.ERROR);
+            return ResultUtils.erro("保存失败，名字重复");
         }
-
+        studentJpa.save(student);
+        return ResultUtils.erro("保存成功！");
     }
+
+    @Transactional(rollbackFor = Exception.class)//事务与回滚  成功  默认只有runtimeexception才会进行事务回滚
+    public Object updataById(String name, Integer id) throws Exception {
+//        int shiwu =  studentJpa.updataQuery(name, id);
+//        if (true)
+//            throw  new RuntimeException("模拟异常触发回滚");
+//        return  ResultUtils.sucess((shiwu >= 1 ? true : false) + "");
+        //上面的的情况未用try catch捕获 设置rollbackFor，在该异常等级下会进行事务回滚，会自动在异常时候进行捕获
+        //下面的使用try catch，使用之后属于自定义捕获，rollbackFor会失效，事务不进行回滚需要手动回滚。
+//        int shiwu = 0;
+//        try {
+//            shiwu = studentJpa.updataQuery(name, id);
+////        if (true)
+////            throw  new RuntimeException("模拟异常触发回滚");
+//        } catch (Exception e) {
+//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();//手动回滚
+//            return ResultUtils.erro("回滚成功，保存失败");
+//        }
+//        return ResultUtils.sucess((shiwu >= 1 ? true : false) + "");
+        //第三，是将异常往上面抛出，在handle中统一进行收集。
+        int shiwu = studentJpa.updataQuery(name, id);
+        if (shiwu <= 1)
+            throw new MyException(ResultEnum.ERROR);
+        return ResultUtils.sucess((shiwu >= 1 ? true : false) + " 受影响的行：" + shiwu);
+
+        //第四，Exception参数只能传递msg，所以我们只能自定义异常 如MyException
+    }
+
     @Transactional(rollbackFor = Exception.class)//事务与回滚  成功
     public boolean inssrtList(List<Student> list) {
         List<Student> students = studentJpa.saveAll(list);
@@ -105,6 +137,5 @@ public class UserServiceImpl implements UserService {
         } else {
             return false;
         }
-
     }
 }

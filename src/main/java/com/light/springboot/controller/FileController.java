@@ -1,7 +1,6 @@
 package com.light.springboot.controller;
 
 import bean.FileInfo;
-import bean.ReturnDataBean;
 import com.light.springboot.utils.JavaLocalUtils;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.Logger;
@@ -17,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -47,13 +47,6 @@ public class FileController {
         }
         model.put("datas", fileInfos);
         return "index";
-    }
-
-    public ReturnDataBean getBean(List list, String code) {
-        ReturnDataBean returnDataBean = new ReturnDataBean();
-        returnDataBean.setCode(code);
-        returnDataBean.setList(list);
-        return returnDataBean;
     }
 
     //播放目标文件夹的所有的文件
@@ -131,8 +124,8 @@ public class FileController {
 
     @PostMapping("/upload")
     @ResponseBody
-    public Object upload(@RequestParam("file") MultipartFile file) throws Exception {
-        logger.info("是空的吗？" + (file == null));
+    public Object upload(@RequestParam("file") MultipartFile file,@RequestParam String name) throws Exception {//成功
+        logger.info("是空的吗？" + (file == null)+"   name="+name);
         File localFile = null;
         File localFiletwo = null;
         if (!file.isEmpty()) {
@@ -146,8 +139,11 @@ public class FileController {
             if (!path.exists()) {
                 path.mkdirs();
             }
+            String originalFilename = file.getOriginalFilename();
+            String prefix=originalFilename.substring(originalFilename.lastIndexOf("."));//如果想获得不带点的后缀，变为fileName.lastIndexOf(".")+1
             logger.info("动态获取classpath:" + path.getAbsolutePath());
-            localFiletwo = new File(path, file.getOriginalFilename());
+//            localFiletwo = new File(path, file.getOriginalFilename());
+            localFiletwo = new File(path, String.valueOf(new Date().getTime())+prefix);
 //            file.transferTo(localFile);
             file.transferTo(localFiletwo);
 //           成功

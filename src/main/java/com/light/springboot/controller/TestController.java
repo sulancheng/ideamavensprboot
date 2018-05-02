@@ -1,12 +1,14 @@
 package com.light.springboot.controller;
 
 import bean.FileInfo;
+import bean.Result;
 import bean.User;
 import com.light.springboot.entity.Student;
 import com.light.springboot.jpa.DbResponeBean;
 import com.light.springboot.jpa.StudentJpa;
 import com.light.springboot.jpa.UserServiceImpl;
 import com.light.springboot.utils.HttpHelper;
+import com.light.springboot.utils.ResultUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +17,19 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.*;
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
-@Controller
+@Controller  //@RestController 的意思就是controller里面的方法都以json格式输出，不用再写什么jackjson配置的了！
 @RequestMapping("test")
 public class TestController {
     @Autowired
@@ -56,35 +63,40 @@ public class TestController {
         FileInfo fileInfo = new FileInfo("dsadsad", "ssssss", 99);
         return fileInfo;
     }
+    @RequestMapping("/addstu")
+    @ResponseBody
+    public Result addstu(@Valid Student student) throws Exception {
+        return userServiceImpl.addBean(student);
+    }
 
+    //表单验证 与aop的demo   统一异常的类
     @RequestMapping("/user")
     @ResponseBody
-    public List<Student> getUser() {
-        User myUser = new User();
-        myUser.setAge("26");
-        myUser.setName("大傻逼");
+    public Result<Object> getUser(@Valid Student studentcs, BindingResult bindingResult) {//表示要验证此参数对象,二。获取错误信息  postman用x-www发送
+        if (bindingResult.hasErrors()) {
+            String defaultMessage = bindingResult.getFieldError().getDefaultMessage();
+            logger.info("表单错误信息：" + defaultMessage);//打印错误信息成功
+            return ResultUtils.error(1,defaultMessage);
+        }
         List<Student> findAll = studentJpa.findAll();
         // logger.info(findAll.toString());
         try {
-            Optional<Student> myfnd = studentJpa.findById(15);
+            Optional<Student> myfnd = studentJpa.findById(19);
             Student student = myfnd.get();
+            long count = studentJpa.count();
+            logger.info(" student记录数量:" + count + "   student=" + student.toString());
+//            List<Student> myQuery = (List<Student>) studentJpa.myQuery(999);
+//            logger.info(" student记录数量自己:" + myQuery.toString());
         } catch (Exception e) {
             logger.error("取出数据异常" + e.getMessage());
         }
-        long count = studentJpa.count();
-        logger.info(" student记录数量:" + count);
-        List<Student> myQuery = (List<Student>) studentJpa.myQuery(999);
-        logger.info(" student记录数量自己:" + myQuery.toString());
-        return findAll;
+        return ResultUtils.sucess("sucessed",findAll);
     }
 
     //乐观锁的测试
     @RequestMapping("/userlg")
     @ResponseBody
     public Object getUserlg() {
-        User myUser = new User();
-        myUser.setAge("26");
-        myUser.setName("大傻逼");
         Optional<Student> byId = studentJpa.findById(19);
         Student student = byId.get();
         new Thread(new Runnable() {
@@ -171,15 +183,16 @@ public class TestController {
 
     /**
      * 测试数据库jpa的事务。
+     *
      * @param id
      * @return
      */
     @RequestMapping("/upuser")
     @ResponseBody
-    public String upUser(@RequestParam("id") Integer id) {
-        boolean sucess = userServiceImpl.updataById("我顶你肺你妹的", id);
-        return "更新成功与否"+sucess;
+    public Object upUser(@RequestParam("id") Integer id) throws Exception {
+        return  userServiceImpl.updataById("业务逻辑到抛出异常1", id);
     }
+
     @RequestMapping("/map")
     @ResponseBody
     public Map getMap(HttpServletRequest request) {

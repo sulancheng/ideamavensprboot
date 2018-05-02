@@ -1,4 +1,4 @@
-package com.light.springboot;
+package com.light.springboot.config;
 
 import com.light.springboot.Interceptor.MyInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;

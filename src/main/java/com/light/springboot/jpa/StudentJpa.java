@@ -48,7 +48,7 @@ public interface StudentJpa extends BaseRepository<Student, Integer> , JpaSpecif
 	public int deleteQuery(Integer age);
 
 	@Modifying
-	@Transactional//事务
+	@Transactional//事务 UPDATE 或 DELETE 操作需要使用事务，此时需要定义 Service 层，在 Service 层的方法上添加事务操作；
 	@Query(value="update student set name=? where id=?",nativeQuery=true)
 	public int updataQuery(String name,Integer id);
 	/**
