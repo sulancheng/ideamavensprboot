@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>网页非AJAX访问异常</title>
+    <link href="/css/index.css" rel="stylesheet"/>
+</head>
+<body>
+    <div class="container">
+        <h2>找不到页面</h2>
+        <h4  th:text="异常：+${exp.message}"></h4>
+        <h4  th:text="地址：+${url}"></h4>
+    </div>
+</body>
+</html>

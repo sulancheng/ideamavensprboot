@@ -36,7 +36,7 @@ public class FileController {
     @RequestMapping("/getmove")
     public Object getMove(HttpServletRequest request, ModelMap model) {
         JavaLocalUtils.fileList.clear();
-        List<File> files = JavaLocalUtils.delDir(new File("D:\\电影"));
+        List<File> files = JavaLocalUtils.delDir(new File("D:\\网易云音乐"));
         List<FileInfo> fileInfos = new ArrayList<>();
 //        for (File f1 : files) {
 //            logger.info("搜索的文件名字：" + f1.getAbsolutePath() + "  名字" + f1.getName());

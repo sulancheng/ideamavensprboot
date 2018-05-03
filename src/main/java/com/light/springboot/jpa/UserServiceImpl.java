@@ -89,12 +89,13 @@ public class UserServiceImpl implements UserService {
         entityManager.close();
         return dbResponeBeans;
     }
+
     @Transactional(rollbackFor = Exception.class)//事务与回滚  成功  默认只有runtimeexception才会进行事务回滚
     @Override
     public Result addBean(Object o) throws Exception {
 //        updataById("我的测试",32);//测试看会不会回滚 成功
         Student student = (Student) o;
-        if (student.getName().equals("23")){
+        if (student.getName().equals("23")) {
 //            throw new MyException(ResultEnum.ERROR);
             return ResultUtils.erro("保存失败，名字重复");
         }

@@ -57,7 +57,11 @@ public class StudentTest {
     public void fileout(String data){
         BufferedWriter bufferedWriter = null;
         try {
-            bufferedWriter = new BufferedWriter(new FileWriter("e://test.txt",true));
+            File file = new File("D:\\springbootupload\\txt");
+            if (!file.exists()) file.mkdirs();
+            FileWriter fileWriter = new FileWriter(file, true);
+
+            bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(data+"\r\n");
             bufferedWriter.close();
 
