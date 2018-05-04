@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,6 +39,12 @@ public class TestController {
     private UserServiceImpl userServiceImpl;
     @Autowired
     private HttpHelper myhttphelper;
+
+    @GetMapping("")
+    @ResponseBody
+    public Result defaultpage(){
+       return ResultUtils.sucess("测试默认网页或者json");
+    }
 
     //    @CrossOrigin(origins="http://localhost:63343")//成功
     @RequestMapping("/hellky")
@@ -206,12 +213,20 @@ public class TestController {
     }
 
     // 有view的
-    @GetMapping("hello")
-    public String hello(Map<String, Object> map) {
-        map.put("msg", "Hello Thymeleaf");
+    @GetMapping("hello/{id}")//id可以是...html
+    public String hello(ModelMap map,@PathVariable String id) {
+        logger.info("id="+id);
+        map.put("msg", "Hello Thymeleaf ModelMap");
         return "myfirst";
     }
-
+    // 有view的
+    @GetMapping("hello2")
+    public ModelAndView hello2() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("myfirst");
+        modelAndView.addObject("msg","Hello Thymeleaf ModelAndView");
+        return modelAndView;
+    }
 
     //	@RequestMapping   和  @GetMapping @PostMapping 区别
 //	@GetMapping是一个组合注解，是@RequestMapping(method = RequestMethod.GET)的缩写。
