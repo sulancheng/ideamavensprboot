@@ -1,5 +1,7 @@
 package com.light.springboot.exception;
 
+import com.light.springboot.enums.ResultEnum;
+
 /**
  * Created by Administrator
  * on 2018/5/2.
@@ -17,6 +19,7 @@ public class NoPermissions extends RuntimeException {
     }
 
     public NoPermissions() {
-        super("无权限");
+        super(ResultEnum.NOPERMISSION.getMsg());
+        this.code = ResultEnum.NOPERMISSION.getCode();
     }
 }

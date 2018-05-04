@@ -10,7 +10,7 @@ import java.util.concurrent.BlockingQueue;
 //@Repository
 public class QueueQuests {
     // 篮子，能够容纳3个苹果
-   static BlockingQueue<Object> basket = new ArrayBlockingQueue<>(9999);
+   private static BlockingQueue<Object> basket = new ArrayBlockingQueue<>(9999);
 
     // 生产苹果，放入篮子
     public static void produce(Object obj) throws InterruptedException{

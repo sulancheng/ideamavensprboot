@@ -50,7 +50,7 @@ public class GlobalDefaultExceptionHandler {
             MyException myException = (MyException) e;
             return ResultUtils.error(myException.getCode(), "服务器罢工了," + myException.getMessage());
         } else if (e instanceof NoPermissions) {
-            logger.error("【自定义异常】 {}", e);//方便定位异常  成功
+            logger.error("【自定义异常无权限】 {}", e);//方便定位异常  成功
             NoPermissions myException = (NoPermissions) e;
             return ResultUtils.error(myException.getCode(), "服务器罢工了你去权限," + myException.getMessage());
         } else {

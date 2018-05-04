@@ -1,7 +1,10 @@
 package com.light.springboot.controller;
 
 import bean.FileInfo;
+import com.light.springboot.exception.MyException;
 import com.light.springboot.utils.JavaLocalUtils;
+import com.light.springboot.utils.ResultUtils;
+import com.light.springboot.utils.UtilTools;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +13,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -34,13 +38,19 @@ public class FileController {
 
     //搜索目标文件夹的所有的文件
     @RequestMapping("/getmove")
-    public Object getMove(HttpServletRequest request, ModelMap model) {
+    public Object getMove(HttpServletRequest request, ModelMap model) throws FileNotFoundException {
         JavaLocalUtils.fileList.clear();
-        List<File> files = JavaLocalUtils.delDir(new File("D:\\网易云音乐"));
+        //获取跟目录
+        File path = new File(ResourceUtils.getURL("src/main/resources/static/moves").getPath());//成功
+//        List<File> files = JavaLocalUtils.delDir(new File("D:\\网易云音乐"));
+        List<File> files = JavaLocalUtils.delDir(path);
+        if (files == null || files.size() <= 0) {
+            throw new MyException(path.getAbsolutePath() + "文件夹无数据无数据", 3);
+        }
         List<FileInfo> fileInfos = new ArrayList<>();
-//        for (File f1 : files) {
-//            logger.info("搜索的文件名字：" + f1.getAbsolutePath() + "  名字" + f1.getName());
-//        }
+        for (File f1 : files) {
+            logger.info("搜索的文件名字：" + f1.getAbsolutePath() + "  名字" + f1.getName());
+        }
         request.getSession().setAttribute("mypc_moves", files);
         for (int x = 0; x < files.size(); x++) {
             fileInfos.add(new FileInfo(files.get(x).getAbsolutePath(), files.get(x).getName(), x));
@@ -51,20 +61,32 @@ public class FileController {
 
     //播放目标文件夹的所有的文件
     @RequestMapping("/player/{id}/{name}")
-    public String startMove(HttpServletRequest request, ModelMap model, @PathVariable int id, @PathVariable String name) {
-//        logger.info("收到的id:" + id);
+    @ResponseBody
+    public Object startMove(HttpServletRequest request, @PathVariable int id, @PathVariable String name) {
         List<FileInfo> fileInfos = new ArrayList<>();
         List<File> files = (List<File>) request.getSession().getAttribute("mypc_moves");
+        File playing = files.get(id);
+        String absolutePath = playing.getAbsolutePath();
+        logger.info("正需要播放的地址：" + absolutePath);
         if (files != null && files.size() > 0) {
             for (int x = 0; x < files.size(); x++) {
-                fileInfos.add(new FileInfo(files.get(x).getAbsolutePath(), files.get(x).getName(), x));
+                String fileNameWithSuffix = "/moves/" + UtilTools.getFileNameWithSuffixtwo(files.get(x).getAbsolutePath());
+                fileInfos.add(new FileInfo(fileNameWithSuffix, files.get(x).getName(), x));
             }
-            model.put("datas", fileInfos);
         }
-        model.put("id", id);
-        model.put("name", name);
-        return "play";
+        if (name.contains("web") && !UtilTools.isAjax(request)) {
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.addObject("datas", fileInfos);
+            modelAndView.addObject("id", id);
+            modelAndView.addObject("name", name);
+            String fileNameWithSuffix = UtilTools.getFileNameWithSuffixtwo(absolutePath);
+            modelAndView.addObject("playingpath", "/moves/" + fileNameWithSuffix);
+            modelAndView.setViewName("play");
+            return modelAndView;
+        }
+        return  ResultUtils.sucess("sucess", fileInfos.get(id));
     }
+
 
     //播放目标文件夹的所有的文件
     @RequestMapping("/startmove/{moveid}")
@@ -87,36 +109,7 @@ public class FileController {
             IOUtils.copyLarge(inputStream, bufferedOutputStream);
         } catch (Exception e) {
             e.printStackTrace();
-//            if (inputStream != null) {
-//                try {
-//                    inputStream.close();
-//                } catch (IOException e1) {
-//                    e1.printStackTrace();
-//                }
-//            }
-//            if (bufferedOutputStream != null) {
-//                try {
-//                    bufferedOutputStream.close();
-//                } catch (IOException e1) {
-//                    e1.printStackTrace();
-//                }
-//            }
             logger.error("正在播放的moveid:已经停止播放");
-        }finally {
-//            if (inputStream != null) {
-//                try {
-//                    inputStream.close();
-//                } catch (IOException e1) {
-//                    e1.printStackTrace();
-//                }
-//            }
-//            if (bufferedOutputStream != null) {
-//                try {
-//                    bufferedOutputStream.close();
-//                } catch (IOException e1) {
-//                    e1.printStackTrace();
-//                }
-//            }
         }
         return null;
     }
@@ -124,8 +117,8 @@ public class FileController {
 
     @PostMapping("/upload")
     @ResponseBody
-    public Object upload(@RequestParam("file") MultipartFile file,@RequestParam String name) throws Exception {//成功
-        logger.info("是空的吗？" + (file == null)+"   name="+name);
+    public Object upload(@RequestParam("file") MultipartFile file, @RequestParam String name) throws Exception {//成功
+        logger.info("是空的吗？" + (file == null) + "   name=" + name);
         File localFile = null;
         File localFiletwo = null;
         if (!file.isEmpty()) {
@@ -140,10 +133,10 @@ public class FileController {
                 path.mkdirs();
             }
             String originalFilename = file.getOriginalFilename();
-            String prefix=originalFilename.substring(originalFilename.lastIndexOf("."));//如果想获得不带点的后缀，变为fileName.lastIndexOf(".")+1
+            String prefix = originalFilename.substring(originalFilename.lastIndexOf("."));//如果想获得不带点的后缀，变为fileName.lastIndexOf(".")+1
             logger.info("动态获取classpath:" + path.getAbsolutePath());
 //            localFiletwo = new File(path, file.getOriginalFilename());
-            localFiletwo = new File(path, String.valueOf(new Date().getTime())+prefix);
+            localFiletwo = new File(path, String.valueOf(new Date().getTime()) + prefix);
 //            file.transferTo(localFile);
             file.transferTo(localFiletwo);
 //           成功

@@ -102,12 +102,11 @@
             //     alert("段落被点击了。");
             //     alert($(this).prop("src"));
             // });
-
             $("body").delegate(".getid", "click", function () {//这种方式解决ajax动态添加item点击事件失效的问题
                 // alert("在点吗？");
                 var id = $(this).attr("data-id");
-                // alert(id);
-                $(".divplayer video").prop("src", "/file/startmove/" + id);
+                var path = $(".myclass").attr("data-myclass");
+                $(".divplayer video").prop("src", path).play();
                 // $(".divplayer video").play();
             });
             // $(".getid").click(function () {
@@ -149,7 +148,8 @@
     </div>
     <div class="divplayer">
         <!--下面是th src 或者href的使用方法-->
-        <video th:src="@{/file/startmove/{id}(id=${id})}"  controls>
+      <!--  <video th:src="@{/file/startmove/{id}(id=${id})}"  controls>-->
+        <video th:src="@{{id}(id=${playingpath})}"  controls>
 
         </video>
     </div>
