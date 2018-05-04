@@ -17,4 +17,4 @@ mvnw
 mvnw.cmd
 target/
 src/main/java/META-INF/
-src/main/resources/static/moves/
+src/main/resources/static/moves

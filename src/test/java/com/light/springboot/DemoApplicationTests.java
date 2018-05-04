@@ -29,7 +29,7 @@ public class DemoApplicationTests {
 	@Test
 	public void testjava() {
 		JavaLocalUtils.fileList.clear();
-		List<File> files = JavaLocalUtils.delDir(new File("G:\\电影电视剧"));
+		List<File> files = JavaLocalUtils.forDir(new File("G:\\电影电视剧"));
 		for (File f1 : files) {
 			logger.info("搜索的文件名字："+f1.getAbsolutePath()+"  名字"+f1.getName());
 		}

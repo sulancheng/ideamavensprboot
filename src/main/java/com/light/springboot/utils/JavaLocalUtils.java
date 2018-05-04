@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class JavaLocalUtils {
     public static List<File> fileList = new ArrayList<File>();
-    public static List<File> delDir(File f) {
+    public static List<File> forDir(File f) {
         if (f == null) return null;
         File[] files = f.listFiles();
         if (files == null) return null;
@@ -19,7 +19,7 @@ public class JavaLocalUtils {
             if (file.isFile()) {
                 fileList.add(file);
             }else if (file.isDirectory()){
-                delDir(file);
+                forDir(file);
             }
         }
         return fileList;

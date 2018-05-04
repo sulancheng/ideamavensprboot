@@ -43,14 +43,14 @@ public class FileController {
         //获取跟目录
         File path = new File(ResourceUtils.getURL("src/main/resources/static/moves").getPath());//成功
 //        List<File> files = JavaLocalUtils.delDir(new File("D:\\网易云音乐"));
-        List<File> files = JavaLocalUtils.delDir(path);
+        List<File> files = JavaLocalUtils.forDir(path);
         if (files == null || files.size() <= 0) {
             throw new MyException(path.getAbsolutePath() + "文件夹无数据无数据", 3);
         }
         List<FileInfo> fileInfos = new ArrayList<>();
-        for (File f1 : files) {
-            logger.info("搜索的文件名字：" + f1.getAbsolutePath() + "  名字" + f1.getName());
-        }
+//        for (File f1 : files) {
+//            logger.info("搜索的文件名字：" + f1.getAbsolutePath() + "  名字" + f1.getName());
+//        }
         request.getSession().setAttribute("mypc_moves", files);
         for (int x = 0; x < files.size(); x++) {
             fileInfos.add(new FileInfo(files.get(x).getAbsolutePath(), files.get(x).getName(), x));
