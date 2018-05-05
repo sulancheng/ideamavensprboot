@@ -36,12 +36,31 @@ public class FileController {
     private final static Logger logger = LoggerFactory
             .getLogger(FileController.class);
 
+    @RequestMapping("/zjplay")
+    public ModelAndView rejPlay(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("datas", "1");
+        modelAndView.addObject("id", "1");
+        modelAndView.addObject("name", "1");
+        modelAndView.addObject("playingpath", "/moves/五十度黑未分级版.720p.BD中英双字[www.66ys.tv].mp4");
+        modelAndView.setViewName("play");
+        return modelAndView;
+    }
+
+
     //搜索目标文件夹的所有的文件
     @RequestMapping("/getmove")
     public Object getMove(HttpServletRequest request, ModelMap model) throws FileNotFoundException {
         JavaLocalUtils.fileList.clear();
         //获取跟目录
-        File path = new File(ResourceUtils.getURL("src/main/resources/static/moves").getPath());//成功
+//        File path = new File(ResourceUtils.getURL("src/main/resources/static/moves").getPath());
+        File path = new File("G:\\chengxunyuan\\springboot\\mydemo\\target\\springboot-0.0.1\\WEB-INF\\classes\\static\\moves");//相对地址
+//        File path = new File(ResourceUtils.getURL("target/springboot-0.0.1/WEB-INF/classes/static/moves").getPath());//绝对地址
+        //注意  所有的相对地址，在tomcat中失效。 要用绝对地址
+//        URL resource = this.getClass().getResource("/");
+//        logger.info("地址是1resource："+resource.getPath());
+//        logger.info("地址是2path："+path.getPath());
+//        logger.info("地址是2 path1："+path1.getPath());
 //        List<File> files = JavaLocalUtils.delDir(new File("D:\\网易云音乐"));
         List<File> files = JavaLocalUtils.forDir(path);
         if (files == null || files.size() <= 0) {
