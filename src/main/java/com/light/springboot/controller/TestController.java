@@ -2,6 +2,7 @@ package com.light.springboot.controller;
 
 import bean.FileInfo;
 import bean.Result;
+import bean.StudentBean;
 import bean.User;
 import com.light.springboot.entity.Student;
 import com.light.springboot.jpa.DbResponeBean;
@@ -25,10 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Controller  //@RestController 的意思就是controller里面的方法都以json格式输出，不用再写什么jackjson配置的了！
 @RequestMapping("test")
@@ -43,7 +41,26 @@ public class TestController {
     @GetMapping("")
     @ResponseBody
     public Result defaultpage(){
-       return ResultUtils.sucess("测试默认网页或者json");
+        List<Student> all = userServiceImpl.findAll();
+        HashMap<String, List<Student>> stringListHashMap = new HashMap<>();
+        for (Student student:all){
+            List<Student> studentset = stringListHashMap.get(student.getMyclass());
+            if (studentset==null){
+                studentset = new ArrayList<>();
+            }
+            studentset.add(student);
+            stringListHashMap.put(student.getMyclass(),studentset);
+        }
+        ArrayList<Object> objects = new ArrayList<>();//以班级来区分开
+        for (String str:stringListHashMap.keySet()){
+            StudentBean<Student> objectStudentBean = new StudentBean<Student>();
+            objectStudentBean.setBanji(str);
+            List<Student> students = stringListHashMap.get(str);
+            objectStudentBean.setList(students);
+            objects.add(objectStudentBean);
+        }
+
+        return ResultUtils.sucess("测试默认网页或者json",objects);
     }
 
     //    @CrossOrigin(origins="http://localhost:63343")//成功

@@ -103,6 +103,12 @@ public class UserServiceImpl implements UserService {
         return ResultUtils.erro("保存成功！");
     }
 
+    @Override
+    public List<Student> findAll() {
+       return studentJpa.findAll();
+    }
+
+
     @Transactional(rollbackFor = Exception.class)//事务与回滚  成功  默认只有runtimeexception才会进行事务回滚
     public Object updataById(String name, Integer id) throws Exception {
 //        int shiwu =  studentJpa.updataQuery(name, id);
