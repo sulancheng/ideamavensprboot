@@ -42,7 +42,7 @@ public class TestController {
     @ResponseBody
     public Result defaultpage(){
         List<Student> all = userServiceImpl.findAll();
-        HashMap<String, List<Student>> stringListHashMap = new HashMap<>();
+        HashMap<String, List<Student>> stringListHashMap = new LinkedHashMap<>();
         for (Student student:all){
             List<Student> studentset = stringListHashMap.get(student.getMyclass());
             if (studentset==null){

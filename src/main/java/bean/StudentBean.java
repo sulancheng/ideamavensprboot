@@ -1,5 +1,6 @@
 package bean;
 
+import javax.swing.text.View;
 import java.util.List;
 
 /**
@@ -24,5 +25,9 @@ public class StudentBean <T>{
 
     public void setList(List<T> list) {
         this.list = list;
+    }
+
+    public <A extends View> A getdata(Object o){
+        return (A) o;
     }
 }

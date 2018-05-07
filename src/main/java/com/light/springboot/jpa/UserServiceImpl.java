@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Student> findAll() {
-       return studentJpa.findAll();
+       return studentJpa.findByOrderByMyclassAsc();
     }
 
 

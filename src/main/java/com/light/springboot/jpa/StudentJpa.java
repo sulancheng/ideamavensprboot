@@ -58,6 +58,7 @@ public interface StudentJpa extends BaseRepository<Student, Integer> , JpaSpecif
 	 */
 	List<Student> findByname(String name);
 	List<Student> findByMyclass(String myclass);
+	List<Student> findByOrderByMyclassAsc(); //排序
 
     /**
      * 分页查询id不是传入id的用户
