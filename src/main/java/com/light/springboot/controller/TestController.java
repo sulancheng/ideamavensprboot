@@ -173,15 +173,21 @@ public class TestController {
      */
     @RequestMapping("/userfy")
     @ResponseBody
-    public List<Student> getUserfy(@RequestParam("susu") Integer susu) {
+    public Result getUserfy(@RequestParam("susu") Integer susu) {
         PageRequest of = PageRequest.of(susu - 1, 4, new Sort(
                 Sort.Direction.ASC, "id"));
-//		Page<Student> findAll = studentJpa.findAll(of);
-        Page<Student> findAll = studentJpa.findByName("nide", of);
+		Page<Student> findAll = studentJpa.findAll(of);
+//        Page<Student> findAll = studentJpa.findByName("nide", of);
         List<Student> content = findAll.getContent();
+
+//        Timer timer = new Timer();
+//        timer.schedule(new TimerTask() {
+//            public void run() {
+//                logger.error("split后数据的长度调度了");
+//            }
+//        }, 2000,1000 );
         logger.info("/userfystudent记录数量自己:" + content.toString());
-//		userService.testQuery();
-        return content;
+        return ResultUtils.sucess("成功",content);
     }
 
     /**

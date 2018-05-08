@@ -1,10 +1,10 @@
 package com.light.springboot;
 
-import ch.qos.logback.classic.Logger;
 import com.light.springboot.jpa.StudentJpa;
 import com.light.springboot.jpa.UserServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,7 +23,7 @@ public class StudentTest {
     private StudentJpa studentJpa;
     @Autowired
     private UserServiceImpl userServiceImpl;
-    private final static Logger logger = (Logger) LoggerFactory.getLogger(StudentTest.class);
+    private final static Logger logger = LoggerFactory.getLogger(StudentTest.class);
     @Test
     public void testmyinquery() {
 //        List<DbResponeBean> dbResponeBeans = userServiceImpl.mQuerylianhcx();
