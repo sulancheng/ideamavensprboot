@@ -1,14 +1,14 @@
 package com.light.springboot;
 
+import com.light.springboot.javatest.Animal;
+import com.light.springboot.javatest.Cat;
+import com.light.springboot.javatest.Dog;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by Administrator
@@ -27,6 +27,26 @@ public class JavaTest {
     }
     @Test
     public void timerDemo(){
+        Animal cat = new Cat();
 
+        cat.eat();
+        cat.work();
+        Animal animal = new Animal() {
+            @Override
+            public void work() {
+                logger.info("匿名cat儿子");
+            }
+
+            @Override
+            public void eat() {
+//                super.eat();
+                logger.info("匿名cat儿子吃东西");
+            }
+        };
+        animal.eat();
+        animal.work();
+        Animal dog = new Dog();
+        dog.work();
+        dog.eat();
     }
 }
