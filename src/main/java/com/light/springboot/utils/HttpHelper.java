@@ -2,7 +2,7 @@ package com.light.springboot.utils;
 
 import ch.qos.logback.classic.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -15,8 +15,9 @@ import java.nio.charset.Charset;
 /**
  * Created by Administrator
  * on 2018/4/20.
+ * 因为在持久层、业务层和控制层中，分别采用@Repository、@Service和@Controller对分层中的类进行凝视，而用@Component对那些比较中立的类进行凝视。
  */
-@Repository
+@Component
 public class HttpHelper {
     private final static Logger logger = (Logger) LoggerFactory
             .getLogger(HttpHelper.class);
