@@ -3,10 +3,7 @@ package com.light.springboot.config;
 import com.light.springboot.Interceptor.MyInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
@@ -22,9 +19,18 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	}
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-	    //在这里设置spring boot配置静态资源访问路径：
-//        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
-    }
+	    //在这里设置spring boot配置静态资源访问路径：addResourceLocations指的是文件放置的目录，addResoureHandler指的是对外暴露的访问路径
+//        registry.addResourceHandler("/static/js/**").addResourceLocations("classpath:/static/js/");
+	}
+	/**
+	 * 以前要访问一个页面需要先创建个Controller控制类，再写方法跳转到页面
+	 * 在这里配置后就不需要那么麻烦了，直接访问http://localhost:8080/toLogin就跳转到login.jsp页面了
+	 * @param registry
+	 */
+	@Override
+	public void addViewControllers(ViewControllerRegistry registry) {
+//		registry.addViewController("/toLogin").setViewName("login");
+	}
 
 	/**
 	 * 作用是解决跨域的问题

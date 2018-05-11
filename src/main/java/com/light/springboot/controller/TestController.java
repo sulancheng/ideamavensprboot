@@ -5,11 +5,15 @@ import bean.Result;
 import bean.StudentBean;
 import bean.User;
 import com.light.springboot.entity.Student;
+import com.light.springboot.enums.ResultEnum;
+import com.light.springboot.exception.MyException;
+import com.light.springboot.jpa.BeanServiceImpl;
 import com.light.springboot.jpa.DbResponeBean;
 import com.light.springboot.jpa.StudentJpa;
-import com.light.springboot.jpa.UserServiceImpl;
+import com.light.springboot.jpa.TicketServiceImpl;
 import com.light.springboot.utils.HttpHelper;
 import com.light.springboot.utils.ResultUtils;
+import com.light.springboot.utils.UtilTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,25 +38,27 @@ public class TestController {
     @Autowired
     private StudentJpa studentJpa;
     @Autowired
-    private UserServiceImpl userServiceImpl;
+    private BeanServiceImpl userServiceImpl;
+    @Autowired
+    private TicketServiceImpl ticketService;
     @Autowired
     private HttpHelper myhttphelper;
 
     @GetMapping("")
     @ResponseBody
-    public Result defaultpage(){
+    public Result defaultpage() {
         List<Student> all = userServiceImpl.findAll();
         HashMap<String, List<Student>> stringListHashMap = new LinkedHashMap<>();
-        for (Student student:all){
+        for (Student student : all) {
             List<Student> studentset = stringListHashMap.get(student.getMyclass());
-            if (studentset==null){
+            if (studentset == null) {
                 studentset = new ArrayList<>();
             }
             studentset.add(student);
-            stringListHashMap.put(student.getMyclass(),studentset);
+            stringListHashMap.put(student.getMyclass(), studentset);
         }
         ArrayList<Object> objects = new ArrayList<>();//以班级来区分开
-        for (String str:stringListHashMap.keySet()){
+        for (String str : stringListHashMap.keySet()) {
             StudentBean<Student> objectStudentBean = new StudentBean<Student>();
             objectStudentBean.setBanji(str);
             List<Student> students = stringListHashMap.get(str);
@@ -60,7 +66,17 @@ public class TestController {
             objects.add(objectStudentBean);
         }
 
-        return ResultUtils.sucess("测试默认网页或者json",objects);
+        //此种比较简便  不用new 对象
+        ArrayList<Object> objectstwo = new ArrayList<>();//以班级来区分开
+        for (String str : stringListHashMap.keySet()) {
+            ModelMap modelMap = new ModelMap();
+            List<Student> students = stringListHashMap.get(str);
+            modelMap.put("banjitwo", str);
+            modelMap.put("listtwo", students);
+            objectstwo.add(modelMap);
+        }
+
+        return ResultUtils.sucess("测试默认网页或者json", objectstwo);
     }
 
     //    @CrossOrigin(origins="http://localhost:63343")//成功
@@ -87,6 +103,7 @@ public class TestController {
         FileInfo fileInfo = new FileInfo("dsadsad", "ssssss", 99);
         return fileInfo;
     }
+
     @RequestMapping("/addstu")
     @ResponseBody
     public Result addstu(@Valid Student student) throws Exception {
@@ -100,21 +117,17 @@ public class TestController {
         if (bindingResult.hasErrors()) {
             String defaultMessage = bindingResult.getFieldError().getDefaultMessage();
             logger.info("表单错误信息：" + defaultMessage);//打印错误信息成功
-            return ResultUtils.error(1,defaultMessage);
+            return ResultUtils.error(ResultEnum.ERROR.getCode(), defaultMessage);
         }
         List<Student> findAll = studentJpa.findAll();
         // logger.info(findAll.toString());
-        try {
-            Optional<Student> myfnd = studentJpa.findById(19);
-            Student student = myfnd.get();
-            long count = studentJpa.count();
-            logger.info(" student记录数量:" + count + "   student=" + student.toString());
-//            List<Student> myQuery = (List<Student>) studentJpa.myQuery(999);
-//            logger.info(" student记录数量自己:" + myQuery.toString());
-        } catch (Exception e) {
-            logger.error("取出数据异常" + e.getMessage());
+//        Optional<Student> myfnd = studentJpa.findById(19);
+//        Student student = myfnd.get();
+        if (findAll == null || findAll.size() <= 0) {
+            throw new MyException(ResultEnum.NULLDATA);
         }
-        return ResultUtils.sucess("sucessed",findAll);
+        long count = studentJpa.count();
+        return ResultUtils.sucess("sucessed", findAll);
     }
 
     //乐观锁的测试
@@ -176,7 +189,7 @@ public class TestController {
     public Result getUserfy(@RequestParam("susu") Integer susu) {
         PageRequest of = PageRequest.of(susu - 1, 4, new Sort(
                 Sort.Direction.ASC, "id"));
-		Page<Student> findAll = studentJpa.findAll(of);
+        Page<Student> findAll = studentJpa.findAll(of);
 //        Page<Student> findAll = studentJpa.findByName("nide", of);
         List<Student> content = findAll.getContent();
 
@@ -187,7 +200,11 @@ public class TestController {
 //            }
 //        }, 2000,1000 );
         logger.info("/userfystudent记录数量自己:" + content.toString());
-        return ResultUtils.sucess("成功",content);
+        Map modelMap = new HashMap<>();
+        modelMap.put("one", "你好");
+        modelMap.put("two", "你好2");
+        modelMap.put("list", content);
+        return ResultUtils.sucess("成功", modelMap);
     }
 
     /**
@@ -220,34 +237,34 @@ public class TestController {
     @RequestMapping("/upuser")
     @ResponseBody
     public Object upUser(@RequestParam("id") Integer id) throws Exception {
-        return  userServiceImpl.updataById("业务逻辑到抛出异常1", id);
+        return userServiceImpl.updataById("业务逻辑到抛出异常1", id);
     }
 
     @RequestMapping("/map")
     @ResponseBody
-    public Map getMap(HttpServletRequest request) {
+    public Result getMap(HttpServletRequest request) {
         logger.info("myjson2 = " + request.getAttribute("mydata"));
 //        String bodyString = myhttphelper.getBodyString(request);
-//        logger.info(request.getRequestURI()+bodyString);
         Map<String, Object> myMap = new HashMap<String, Object>();
         myMap.put("one", "认识到has哦");// { "one":"认识到has哦", "name":"大傻逼" }
         myMap.put("name", "大傻逼");
-        return myMap;
+        return ResultUtils.sucess("成功", myMap);
     }
 
     // 有view的
     @GetMapping("hello/{id}")//id可以是...html
-    public String hello(ModelMap map,@PathVariable String id) {
-        logger.info("id="+id);
+    public String hello(ModelMap map, @PathVariable String id) {
+        logger.info("id=" + id);
         map.put("msg", "Hello Thymeleaf ModelMap");
         return "myfirst";
     }
+
     // 有view的
     @GetMapping("hello2")
     public ModelAndView hello2() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("myfirst");
-        modelAndView.addObject("msg","Hello Thymeleaf ModelAndView");
+        modelAndView.addObject("msg", "Hello Thymeleaf ModelAndView");
         return modelAndView;
     }
 
@@ -276,13 +293,23 @@ public class TestController {
         return request.getRequestURI();
     }
 
+    @Autowired
+    UtilTools utilTools;
 
     @RequestMapping("/wo")
-    public String index(ModelMap model) {
-        List<Student> byClass = studentJpa.findByMyclass("9");
-        logger.info("取出的数据" + byClass);
-        model.put("datas", byClass);
-        return "index";
+    @ResponseBody
+    public Object index() {
+//        List<Student> byClass = studentJpa.findByMyclass("9");
+//        logger.info("取出的数据" + byClass);
+//        model.put("data-toggle", byClass);
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                utilTools.sell();
+//            }
+//        }).start();
+//        utilTools.sell();
+        return "nimei";
     }
 
     @RequestMapping("/zidiy") //成功

@@ -8,22 +8,27 @@ import com.light.springboot.utils.ResultUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service//dao层使用@repository注解
-public class UserServiceImpl implements UserService {
+public class BeanServiceImpl implements BeanService {
     @PersistenceContext
     private EntityManager entityManager;
     @Autowired
     private StudentJpa studentJpa;
-    private final static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+    private final static Logger logger = LoggerFactory.getLogger(BeanServiceImpl.class);
 
     @Override
     @SuppressWarnings("unused")
@@ -105,7 +110,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Student> findAll() {
-       return studentJpa.findByOrderByMyclassAsc();
+        return studentJpa.findByOrderByMyclassAsc();
     }
 
 
@@ -144,5 +149,16 @@ public class UserServiceImpl implements UserService {
         } else {
             return false;
         }
+    }
+
+
+    //使用JpaSpecificationExecutor中的Specification来进行复杂查询
+    public void findBySpecAndPaginate() {
+        studentJpa.findAll(new Specification<Student>() {
+            @Override
+            public Predicate toPredicate(Root<Student> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+                return null;
+            }
+        });
     }
 }
