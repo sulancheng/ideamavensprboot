@@ -1,7 +1,7 @@
 package com.light.springboot;
 
 import com.light.springboot.jpa.StudentJpa;
-import com.light.springboot.jpa.UserServiceImpl;
+import com.light.springboot.jpa.BeanServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -22,7 +22,7 @@ public class StudentTest {
     @Autowired
     private StudentJpa studentJpa;
     @Autowired
-    private UserServiceImpl userServiceImpl;
+    private BeanServiceImpl userServiceImpl;
     private final static Logger logger = LoggerFactory.getLogger(StudentTest.class);
     @Test
     public void testmyinquery() {

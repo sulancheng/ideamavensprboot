@@ -25,6 +25,7 @@ public class ResultUtils {
     public static Result sucess(String msg){
         return sucess(msg,null);
     }
+
     public static Result erro(String erromsg){
        return error(1,erromsg);
     }

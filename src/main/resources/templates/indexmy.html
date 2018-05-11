@@ -224,7 +224,7 @@
             <div class="right">
                 <span class='name' th:text="名字：+${item.name}"></span>
                 <div class="myclass" th:data-myclass="${item.path}" th:text="地址：+${item.path}"></div>
-                <div class="request">json</div>
+                <div class="request" th:data-age="${item.id}" th:data-objb="${item}">json</div>
                 <button class="getid" th:data-id="${item.id}" th:data-objb="${item}" th:data-name="${item.name}">获取id
                 </button>
             </div>

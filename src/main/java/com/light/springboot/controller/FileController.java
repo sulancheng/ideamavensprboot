@@ -8,6 +8,7 @@ import com.light.springboot.utils.UtilTools;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.ResourceUtils;
@@ -31,7 +32,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/file")
 public class FileController {
-
+    @Autowired
+    UtilTools utilTools;
     private final String path = "d:\\springbootupload\\img";
     private final static Logger logger = LoggerFactory
             .getLogger(FileController.class);
@@ -89,16 +91,16 @@ public class FileController {
         logger.info("正需要播放的地址：" + absolutePath);
         if (files != null && files.size() > 0) {
             for (int x = 0; x < files.size(); x++) {
-                String fileNameWithSuffix = "/moves/" + UtilTools.getFileNameWithSuffixtwo(files.get(x).getAbsolutePath());
+                String fileNameWithSuffix = "/moves/" + utilTools.getFileNameWithSuffixtwo(files.get(x).getAbsolutePath());
                 fileInfos.add(new FileInfo(fileNameWithSuffix, files.get(x).getName(), x));
             }
         }
-        if (name.contains("web") && !UtilTools.isAjax(request)) {
+        if (name.contains("web") && !utilTools.isAjax(request)) {
             ModelAndView modelAndView = new ModelAndView();
             modelAndView.addObject("datas", fileInfos);
             modelAndView.addObject("id", id);
             modelAndView.addObject("name", name);
-            String fileNameWithSuffix = UtilTools.getFileNameWithSuffixtwo(absolutePath);
+            String fileNameWithSuffix = utilTools.getFileNameWithSuffixtwo(absolutePath);
             modelAndView.addObject("playingpath", "/moves/" + fileNameWithSuffix);
             modelAndView.setViewName("play");
             return modelAndView;

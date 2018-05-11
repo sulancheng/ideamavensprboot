@@ -31,30 +31,29 @@ public class StudentAspect {
     //
     @Before("aoplogone()")
     public void logbeforeOne(JoinPoint joinPoint){
-        logger.info("aop调用getUserlogbeforeOne");
+        logger.info("logbeforeOneaop调用getUserlogbeforeOne");
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = servletRequestAttributes.getRequest();
         //url
-        logger.info("url={}",request.getRequestURL());
+        logger.info("logbeforeOneurl={}",request.getRequestURL());
 
-        logger.info("method={}",request.getMethod());
+        logger.info("logbeforeOnemethod={}",request.getMethod());
         //ip
-        logger.info("ip={}",request.getRemoteAddr()+"  port=" +request.getRemotePort()+"  host=" +request.getRemoteHost());
+        logger.info("logbeforeOneip={}",request.getRemoteAddr()+"  port=" +request.getRemotePort()+"  host=" +request.getRemoteHost());
 
         //类方法
-        logger.info("class_method={}",joinPoint.getSignature()
+        logger.info("logbeforeOneclass_method={}",joinPoint.getSignature()
         .getDeclaringTypeName()+"."+joinPoint.getSignature().getName());
         //参数
-        logger.info("args={}",joinPoint.getArgs());
-
+        logger.info("logbeforeOneargs={}",joinPoint.getArgs());
     }
     @After("aoplogone()")
     public void logafterOne(){
-        logger.info("aop调用getUserlogafterOne");
+        logger.info("logbeforeOneaop调用getUserlogafterOne");
     }
     @AfterReturning(returning = "object",pointcut = "aoplog()")//返回的参数拦截
     public void doAfterReturning(Object object){
         if (object==null)return;
-        logger.info("doAfterReturning={}",object.toString());
+        logger.info("logbeforeOnedoAfterReturning={}",object.toString());
     }
 }

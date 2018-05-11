@@ -1,6 +1,6 @@
 package com.light.springboot.utils;
 
-import ch.qos.logback.classic.Logger;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +19,7 @@ import java.nio.charset.Charset;
  */
 @Component
 public class HttpHelper {
-    private final static Logger logger = (Logger) LoggerFactory
+    private final static Logger logger = LoggerFactory
             .getLogger(HttpHelper.class);
     /**
      * 获取请求Body

@@ -1,7 +1,7 @@
 package com.light.springboot.enums;
 
 /**
- * Created by Administrator
+ * Created by slc
  * on 2018/5/2.
  */
 
@@ -10,6 +10,7 @@ public enum ResultEnum  {
     SUCCESS(0,"成功"),
     ERROR(1,"失败"),
     NOPERMISSION(2,"无权限"),
+    NULLDATA(4,"无数据"),
     ;
     private Integer code;
     private String msg;

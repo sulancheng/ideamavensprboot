@@ -1,11 +1,13 @@
 package com.light.springboot.handle;
 
+import com.light.springboot.enums.ResultEnum;
 import com.light.springboot.exception.MyException;
 import com.light.springboot.exception.NoPermissions;
 import com.light.springboot.utils.ResultUtils;
 import com.light.springboot.utils.UtilTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,6 +24,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 @ControllerAdvice
 public class GlobalDefaultExceptionHandler {
+    @Autowired
+    UtilTools utilTools;
     private final static Logger logger = LoggerFactory.getLogger(GlobalDefaultExceptionHandler.class);
 
     /**
@@ -36,7 +40,7 @@ public class GlobalDefaultExceptionHandler {
         //除了我们定义的异常只能返回json数据，当时页面时，我们可以返回自己定义的异常页面
         //试验成功 可以判断是不是ajax 请求
         //判断是否为ajax请求，默认不是
-        boolean ajax = UtilTools.isAjax(request);
+        boolean ajax = utilTools.isAjax(request);
         if (!ajax) {
             ModelAndView modelAndView = new ModelAndView();
             logger.error("【自定义异常网页】 {}", e);//方便定位异常  成功
@@ -55,7 +59,7 @@ public class GlobalDefaultExceptionHandler {
             return ResultUtils.error(myException.getCode(), "服务器罢工了你去权限," + myException.getMessage());
         } else {
             logger.error("【系统异常】 {}", e);//方便定位异常  成功
-            return ResultUtils.error(-1, "服务器罢工了," + e.getMessage());
+            return ResultUtils.error(ResultEnum.UNKNOW_ERROR.getCode(), "服务器罢工了," + e.getMessage());
         }
 //			Map<String, Object> map = new HashMap<String, Object>();
 //			map.put("code", 500);

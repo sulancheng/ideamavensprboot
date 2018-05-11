@@ -1,7 +1,7 @@
 package com.light.springboot.controller;
 
 import com.light.springboot.jpa.StudentJpa;
-import com.light.springboot.jpa.UserServiceImpl;
+import com.light.springboot.jpa.BeanServiceImpl;
 import com.light.springboot.utils.HttpHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +19,7 @@ public class AngularJSController {
     @Autowired
     private StudentJpa studentJpa;
     @Autowired
-    private UserServiceImpl userServiceImpl;
+    private BeanServiceImpl userServiceImpl;
     @Autowired
     private HttpHelper myhttphelper;
     @RequestMapping("first")

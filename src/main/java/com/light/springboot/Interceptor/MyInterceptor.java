@@ -24,7 +24,7 @@ public class MyInterceptor implements HandlerInterceptor {
         String jsondata = myhttphelper.readJson(request);
         logger.info("preHandlegetdata=" + jsondata);
         logger.info("========preHandle=========");
-        request.setAttribute("mydata",jsondata);//通过这个传给controll
+//        request.setAttribute("mydata",jsondata);//通过这个传给controll
         request.setAttribute("startTime", System.currentTimeMillis());
         return true; // 如果false，停止流程，api被拦截
     }

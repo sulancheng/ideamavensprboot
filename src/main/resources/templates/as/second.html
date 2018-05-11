@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>firstas</title>
@@ -7,7 +7,7 @@
     <script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
     <script src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
     <link rel="stylesheet" href="../css/my.css">
-    <script src="../js/namesController.js"></script>
+    <!--<script  th:src="@{/js/namesController.js}"></script>-->
     <style>
         * {
             margin: 0;
@@ -32,14 +32,76 @@
             align-items: center;
             justify-content: center;
         }
-    </style>
+        .tabbox{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        table.imagetable {
+            font-family: verdana, arial, sans-serif;
+            font-size: 11px;
+            width: 100%;
+            height: 100%;
+            color: #333333;
+            border-width: 1px;
+            border-color: #999999;
+            border-collapse: collapse;
+        }
 
+        table.imagetable th {
+            background: #b5cfd2 url('/img/cell-blue.jpg');
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #999999;
+        }
+
+        table.imagetable td {
+            background: #dcddc0 url('/img/cell-grey.jpg');
+            border-width: 1px;
+            text-align: center;
+            padding: 8px;
+            border-style: solid;
+            border-color: #999999;
+        }
+    </style>
+    <SCRIPT>
+        var app = angular.module('myApp', []);
+        app.controller('namesCtrl', function($scope) {
+            $scope.names = [
+                {name:'Jani',country:'Norway'},
+                {name:'Hege',country:'Sweden'},
+                {name:'Kai',country:'Denmark'}
+            ];
+            $scope.name = "John Doe";
+        });
+        app.controller('namesCtrlTwo', function($scope) {
+            $scope.firstName = "John";
+            $scope.lastName = "Doe";
+            $scope.fullName = function() {
+                return $scope.firstName + " " + $scope.lastName;
+            }
+        });
+        var userfy={
+            method: 'GET',
+            url: '/test/userfy?susu=1'
+        };
+        app.controller('userfy', function($scope, $http) {
+            $http(userfy).then(function successCallback(response) {
+                $scope.yours = response.data.data.list;
+            }, function errorCallback(response) {
+                // 请求失败执行代码
+                $scope.yours = response.data;
+            });
+
+        });
+    </SCRIPT>
 
 </head>
 <body>
-<div class="zong" ng-app="myApp" >
+<div class="zong" ng-app="myApp">
 
-    <div  ng-controller="namesCtrl">
+    <div ng-controller="namesCtrl">
         名字: <input ng-model="name">
         <h1>你输入了: {{name}}</h1>
         <ul>
@@ -49,20 +111,44 @@
         </ul>
 
     </div>
-    <div  ng-controller="namesCtrlTwo">
+    <div ng-controller="namesCtrlTwo">
         名: <input type="text" ng-model="firstName"><br>
         姓: <input type="text" ng-model="lastName"><br>
         <br>
         姓名: {{fullName()}}
     </div>
-    <div  ng-controller="userfy">
-        请求: {{names}}
+    <div ng-controller="userfy">
+        请求:  {{yours}}
         <ul>
-            <li ng-repeat="x in names">
+            <li ng-repeat="x in yours">
                 {{ x.id + ', ' + x.name+","+x.age }}
             </li>
         </ul>
     </div>
+
+
+    <!-- Table goes in the document BODY -->
+    <div class="tabbox">
+        <table class="imagetable">
+            <tr>
+                <th>Info Header 1</th>
+                <th>Info Header 2</th>
+                <th>Info Header 3</th>
+            </tr>
+            <tr>
+                <td>Text 1A</td>
+                <td>Text 1B</td>
+                <td>Text 1C</td>
+            </tr>
+            <tr>
+                <td>Text 2A</td>
+                <td>Text 2B</td>
+                <td>Text 2C</td>
+            </tr>
+        </table>
+    </div>
+
+
 </div>
 </body>
 </html>
