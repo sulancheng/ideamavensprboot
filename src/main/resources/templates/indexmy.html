@@ -1,0 +1,261 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <script src="http://cdn.static.runoob.com/libs/jquery/1.8.3/jquery.js"></script>
+    <script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
+    <link rel="stylesheet" href="../css/my.css">
+    <script>
+        function qingqiu(data, json) {
+            alert("开始ajax请求" + data);
+            if (json == null) return;
+            alert("开始ajax请求1" + data);
+            $.ajax({
+                url: "/test/helloworld",
+                type: "POST",
+                async: true,
+                contentType: "application/json",
+                data: JSON.stringify(json),
+                dataType: 'json',
+                success: function (data) {
+                    alert(data.name)
+                },
+                errer: function (data) {
+
+                }
+            });
+        }
+
+        function kuay() {
+            alert("开始ajax请求跨域");
+            $.ajax({
+                url: " http://localhost:8081/test/hellky",
+                type: "POST",
+                async: true,
+                contentType: "application/json",
+                data: "我能跨域吗",
+                dataType: 'text',
+                success: function (data) {
+                    alert(JSON.stringify(data))
+                },
+                errer: function (data) {
+
+                }
+            });
+        }
+
+        $(function () {
+            $(".fater").click(function () {
+                $(".tanc").toggle();
+            });
+            $(".tanc_content").click(function () {
+                $(".tanc").toggle();
+            });
+
+            // $(".right .getid").click(function () {
+            //     alert("段落被点击了。");
+            //     alert($(this).prop("id"));
+            //     // qingqiu($(this).prop("id"));
+            //     kuay();
+            // });
+            // $(".right .request").click(function(){//成功
+            //     //$(this).parent().css("background-color","#0c7cb5");动态改变点击的背景色
+            //     alert($(this).attr("data-age"));//成功
+            //     alert($(this).attr("data-obj"));//成功
+            //     var json = {
+            //         "username": "admin",
+            //         "password": 123
+            //     };
+            //     qingqiu("nihao",json);
+            // });
+            $(".right .request").on("click", function () {
+                alert($(this).attr("data-age"));//成功
+                alert($(this).attr("data-obj"));//成功
+                var json = {
+                    "username": "admin",
+                    "password": 123
+                };
+                qingqiu("nihao", json);
+            });
+
+            /*点击跳转到*/
+            $(".right .getid").on("click", function () {
+                // alert($(this).attr("data-name"));//成功
+                // alert($(this).attr("data-objb"));//成功
+                var obj = $(this).attr("data-objb");
+                // alert(obj.);
+                window.location.href = "/file/player/" + $(this).attr("data-id") + "/" + $(this).attr("data-name") + "web";
+            });
+        });
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .zong {
+            display: -webkit-flex; /* Safari */
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .request {
+            width: 60px;
+        }
+
+        .getid {
+            width: 120px;
+            height: 33px;
+        }
+
+        div.titleline {
+            width: 100%;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        div.titleline p {
+            padding: 2px;
+            border: 1px solid blue;
+        }
+
+        div.xunahun {
+            margin-top: 2px;
+        }
+
+        div.one {
+            display: -webkit-flex; /* Safari */
+            display: flex;
+            flex-direction: row;
+        }
+
+        .one .left {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .one .left img {
+            margin: 6px;
+            width: 120px;
+            height: 120px;
+        }
+
+        .one .right {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            align-content: flex-start;
+        }
+
+        .box {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .hav {
+            display: flex;
+            flex-direction: row;
+            color: red;
+            background-color: #ccc;
+            height: 60px;
+            line-height: 60px;
+            list-style: none;
+        }
+
+        .hav li {
+            display: flex;
+            justify-content: center;
+            border: 1px solid red;
+            box-sizing: border-box;
+            flex: 1;
+        }
+
+        .tanc {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.2);
+            display: none;
+            top: 0;
+            left: 0;
+            /*   top:50%;
+               left:50%;
+               margin-left:-25px; !* width的一半的相反数 *!
+               margin-top:-25px;  !* height的一半的相反数 *!*/
+            z-index: 999;
+        }
+
+        .tanc_content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 140px;
+            height: 100px;
+            border-radius: 10px;
+            background: red;
+            z-index: 1000;
+            position: fixed;left: 50%; top: 50%;
+            margin-left: -70px;
+            margin-top: -50px;
+            border: 1px solid #000000;
+        }
+    </style>
+</head>
+<body>
+<div class="zong">
+    <div class="titleline">
+        <p ng-app="">AngularJS 表达式: {{ 5 + 5 }}</p>
+    </div>
+    <div class="xunahun">
+        <div class="one" th:each="item : ${datas}">
+            <div class="left">
+                <img src="../imgs/ic.png">
+            </div>
+            <div class="right">
+                <span class='name' th:text="名字：+${item.name}"></span>
+                <div class="myclass" th:data-myclass="${item.path}" th:text="地址：+${item.path}"></div>
+                <div class="request">json</div>
+                <button class="getid" th:data-id="${item.id}" th:data-objb="${item}" th:data-name="${item.name}">获取id
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="tanc">
+    <div class="tanc_content">
+        <p>弹窗</p>
+        <div>取消</div>
+    </div>
+
+</div>
+<div class="fater" style="width: 100%">
+    <div class="box">
+        <ul class="hav">
+            <li>
+                第一
+            </li>
+            <li>
+                第er
+            </li>
+            <li>
+                第san
+            </li>
+
+        </ul>
+
+    </div>
+</div>
+
+</body>
+</html>

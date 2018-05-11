@@ -1,217 +1,66 @@
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en" data-ng-app="app">
 <head>
-    <script src="http://cdn.static.runoob.com/libs/jquery/1.8.3/jquery.js"></script>
-    <script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
-    <link rel="stylesheet" href="../css/my.css">
-    <script>
-        function qingqiu(data, json) {
-            alert("开始ajax请求" + data);
-            if (json == null) return;
-            alert("开始ajax请求1" + data);
-            $.ajax({
-                url: "/test/helloworld",
-                type: "POST",
-                async: true,
-                contentType: "application/json",
-                data: JSON.stringify(json),
-                dataType: 'json',
-                success: function (data) {
-                    alert(data.name)
-                },
-                errer: function (data) {
-
-                }
-            });
-        }
-
-        function kuay() {
-            alert("开始ajax请求跨域");
-            $.ajax({
-                url: " http://localhost:8081/test/hellky",
-                type: "POST",
-                async: true,
-                contentType: "application/json",
-                data: "我能跨域吗",
-                dataType: 'text',
-                success: function (data) {
-                    alert(JSON.stringify(data))
-                },
-                errer: function (data) {
-
-                }
-            });
-        }
-
-        $(function () {
-            // $(".right .getid").click(function () {
-            //     alert("段落被点击了。");
-            //     alert($(this).prop("id"));
-            //     // qingqiu($(this).prop("id"));
-            //     kuay();
-            // });
-            // $(".right .request").click(function(){//成功
-            //     //$(this).parent().css("background-color","#0c7cb5");动态改变点击的背景色
-            //     alert($(this).attr("data-age"));//成功
-            //     alert($(this).attr("data-obj"));//成功
-            //     var json = {
-            //         "username": "admin",
-            //         "password": 123
-            //     };
-            //     qingqiu("nihao",json);
-            // });
-            $(".right .request").on("click", function () {
-                alert($(this).attr("data-age"));//成功
-                alert($(this).attr("data-obj"));//成功
-                var json = {
-                    "username": "admin",
-                    "password": 123
-                };
-                qingqiu("nihao", json);
-            });
-
-            /*点击跳转到*/
-            $(".right .getid").on("click", function () {
-                // alert($(this).attr("data-name"));//成功
-                // alert($(this).attr("data-objb"));//成功
-                var obj = $(this).attr("data-objb");
-                // alert(obj.);
-                window.location.href = "/file/player/" + $(this).attr("data-id") + "/" + $(this).attr("data-name") + "web";
-            });
-        });
-    </script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-        }
-
-        .zong {
-            display: -webkit-flex; /* Safari */
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-        }
-
-        .request {
-            width: 60px;
-        }
-
-        .getid {
-            width: 120px;
-            height: 33px;
-        }
-
-        div.xunahun {
-            margin-top: 2px;
-        }
-
-        div.one {
-            display: -webkit-flex; /* Safari */
-            display: flex;
-            flex-direction: row;
-        }
-
-        .one .left {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .one .left img {
-            margin: 6px;
-            width: 120px;
-            height: 120px;
-        }
-
-        .one .right {
-            flex: 2;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-            align-content: flex-start;
-        }
-
-        .box {
-            position: fixed;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-        }
-
-        .hav {
-            display: flex;
-            flex-direction: row;
-            color: red;
-            background-color: #ccc;
-            height: 60px;
-            line-height: 60px;
-            list-style: none;
-        }
-
-        .hav li {
-            display: flex;
-            justify-content: center;
-            border: 1px solid red;
-            box-sizing: border-box;
-            flex: 1;
-        }
-
-        .tanc {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width:100px;
-            height:100px;
-            background-color:red;
-            position:fixed;
-            top:50%;
-            left:50%;
-            margin-left:-25px; /* width的一半的相反数 */
-            margin-top:-25px;  /* height的一半的相反数 */
-            z-index:999;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <title>Be Angular | Bootstrap Admin Web App with AngularJS</title>
+  <meta name="description" content="app, web app, responsive, responsive layout, admin, admin panel, admin dashboard, flat, flat ui, ui kit, AngularJS, ui route, charts, widgets, components" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
+  <link rel="stylesheet" href="css/animate.css" type="text/css" />
+  <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css" />
+  <link rel="stylesheet" href="css/simple-line-icons.css" type="text/css" />
+  <link rel="stylesheet" href="css/font.css" type="text/css" />
+  <link rel="stylesheet" href="css/app.css" type="text/css" />
 </head>
-<body>
-<div class="zong">
-    <div class="xunahun">
-        <div class="one" th:each="item : ${datas}">
-            <div class="left">
-                <img src="../imgs/ic.png">
-            </div>
-            <div class="right">
-                <span class='name' th:text="名字：+${item.name}"></span>
-                <div class="myclass" th:data-myclass="${item.path}" th:text="地址：+${item.path}"></div>
-                <div class="request">json</div>
-                <button class="getid" th:data-id="${item.id}" th:data-objb="${item}" th:data-name="${item.name}">获取id
-                </button>
-            </div>
-        </div>
-    </div>
+<body ng-controller="AppCtrl">
+  <div class="app" id="app" ng-class="{'app-header-fixed':app.settings.headerFixed, 'app-aside-fixed':app.settings.asideFixed, 'app-aside-folded':app.settings.asideFolded, 'app-aside-dock':app.settings.asideDock, 'container':app.settings.container}" ui-view></div>
 
-</div>
-<div class="tanc">
-    你好
-</div>
-<div class="fater" style="width: 100%">
-    <div class="box">
-        <ul class="hav">
-            <li>
-                第一
-            </li>
-            <li>
-                第er
-            </li>
-            <li>
-                第san
-            </li>
 
-        </ul>
+  <!-- jQuery -->
+  <script src="vendor/jquery/jquery.min.js"></script>
 
-    </div>
-</div>
+  <!-- Angular -->
+  <script src="vendor/angular/angular.js"></script>
+  
+  <script src="vendor/angular/angular-animate/angular-animate.js"></script>
+  <script src="vendor/angular/angular-cookies/angular-cookies.js"></script>
+  <script src="vendor/angular/angular-resource/angular-resource.js"></script>
+  <script src="vendor/angular/angular-sanitize/angular-sanitize.js"></script>
+  <script src="vendor/angular/angular-touch/angular-touch.js"></script>
+<!-- Vendor -->
+  <script src="vendor/angular/angular-ui-router/angular-ui-router.js"></script> 
+  <script src="vendor/angular/ngstorage/ngStorage.js"></script>
 
+  <!-- bootstrap -->
+  <script src="vendor/angular/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+  <!-- lazyload -->
+  <script src="vendor/angular/oclazyload/ocLazyLoad.js"></script>
+  <!-- translate -->
+  <script src="vendor/angular/angular-translate/angular-translate.js"></script>
+  <script src="vendor/angular/angular-translate/loader-static-files.js"></script>
+  <script src="vendor/angular/angular-translate/storage-cookie.js"></script>
+  <script src="vendor/angular/angular-translate/storage-local.js"></script>
+
+  <!-- App -->
+  <script src="js/app.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/config.lazyload.js"></script>
+  <script src="js/config.router.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/services/ui-load.js"></script>
+  <script src="js/filters/fromNow.js"></script>
+  <script src="js/directives/setnganimate.js"></script>
+  <script src="js/directives/ui-butterbar.js"></script>
+  <script src="js/directives/ui-focus.js"></script>
+  <script src="js/directives/ui-fullscreen.js"></script>
+  <script src="js/directives/ui-jq.js"></script>
+  <script src="js/directives/ui-module.js"></script>
+  <script src="js/directives/ui-nav.js"></script>
+  <script src="js/directives/ui-scroll.js"></script>
+  <script src="js/directives/ui-shift.js"></script>
+  <script src="js/directives/ui-toggleclass.js"></script>
+  <script src="js/directives/ui-validate.js"></script>
+  <script src="js/controllers/bootstrap.js"></script>
+  <!-- Lazy loading -->
 </body>
 </html>

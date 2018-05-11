@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>firstas</title>
+    <script src="http://cdn.static.runoob.com/libs/jquery/1.8.3/jquery.js"></script>
+    <script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
+    <link rel="stylesheet" href="../css/my.css">
+    <script src="../js/namesController.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .zong {
+            display: -webkit-flex; /* Safari */
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .zong div {
+            margin-top: 14px;
+        }
+
+        .zong.ng {
+            display: -webkit-flex; /* Safari */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+
+
+</head>
+<body>
+<div class="zong" ng-app="myApp" >
+
+    <div  ng-controller="namesCtrl">
+        名字: <input ng-model="name">
+        <h1>你输入了: {{name}}</h1>
+        <ul>
+            <li ng-repeat="x in names">
+                {{ x.name + ', ' + x.country }}
+            </li>
+        </ul>
+
+    </div>
+    <div  ng-controller="namesCtrlTwo">
+        名: <input type="text" ng-model="firstName"><br>
+        姓: <input type="text" ng-model="lastName"><br>
+        <br>
+        姓名: {{fullName()}}
+    </div>
+    <div  ng-controller="userfy">
+        请求: {{names}}
+        <ul>
+            <li ng-repeat="x in names">
+                {{ x.id + ', ' + x.name+","+x.age }}
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

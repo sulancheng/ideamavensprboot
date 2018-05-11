@@ -1,9 +1,6 @@
 package com.light.springboot.controller;
 
-import bean.FileInfo;
-import bean.Result;
-import bean.StudentBean;
-import bean.User;
+import bean.*;
 import com.light.springboot.entity.Student;
 import com.light.springboot.jpa.DbResponeBean;
 import com.light.springboot.jpa.StudentJpa;
@@ -187,7 +184,14 @@ public class TestController {
 //            }
 //        }, 2000,1000 );
         logger.info("/userfystudent记录数量自己:" + content.toString());
-        return ResultUtils.sucess("成功",content);
+        ObjBean<Student> studentObjBean = new ObjBean<>();
+        studentObjBean.setDatalist(content);
+        Map modelMap = new HashMap<>();
+        modelMap.put("one","你好");
+        modelMap.put("two","你好2");
+        modelMap.put("three","你好3");
+        studentObjBean.setMap(modelMap);
+        return ResultUtils.sucess("成功",studentObjBean);
     }
 
     /**
@@ -278,11 +282,11 @@ public class TestController {
 
 
     @RequestMapping("/wo")
-    public String index(ModelMap model) {
-        List<Student> byClass = studentJpa.findByMyclass("9");
-        logger.info("取出的数据" + byClass);
-        model.put("datas", byClass);
-        return "index";
+    public String index() {
+//        List<Student> byClass = studentJpa.findByMyclass("9");
+//        logger.info("取出的数据" + byClass);
+//        model.put("data-toggle", byClass);
+        return "angular-stripped";
     }
 
     @RequestMapping("/zidiy") //成功

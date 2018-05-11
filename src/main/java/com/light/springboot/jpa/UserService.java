@@ -1,7 +1,6 @@
 package com.light.springboot.jpa;
 
 import bean.Result;
-import com.light.springboot.entity.Student;
 
 import java.util.List;
 
@@ -11,10 +10,11 @@ import java.util.List;
  */
 
 public interface UserService<T> {
-    public  void testQuery();
+    public abstract void testQuery();
 
-    public List<DbResponeBean> mQuerylianhcx();
+    public abstract List<DbResponeBean> mQuerylianhcx();
 
-    public Result addBean(T t) throws Exception;
-    public List<Student> findAll();
+    public abstract Result addBean(T t) throws Exception;
+
+    public abstract List<T> findAll();
 }

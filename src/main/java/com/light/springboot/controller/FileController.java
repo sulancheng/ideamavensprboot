@@ -32,7 +32,7 @@ import java.util.List;
 @RequestMapping("/file")
 public class FileController {
 
-    private final String path = "d:\\springbootupload\\imgs";
+    private final String path = "d:\\springbootupload\\img";
     private final static Logger logger = LoggerFactory
             .getLogger(FileController.class);
 
@@ -53,8 +53,8 @@ public class FileController {
     public Object getMove(HttpServletRequest request, ModelMap model) throws FileNotFoundException {
         JavaLocalUtils.fileList.clear();
         //获取跟目录
-//        File path = new File(ResourceUtils.getURL("src/main/resources/static/moves").getPath());
-        File path = new File("D:\\网易云音乐");//相对地址
+        File path = new File(ResourceUtils.getURL("src/main/resources/static/moves").getPath());
+//        File path = new File("D:\\网易云音乐");//相对地址
 //        File path = new File(ResourceUtils.getURL("target/springboot-0.0.1/WEB-INF/classes/static/moves").getPath());//绝对地址
         //注意  所有的相对地址，在tomcat中失效。 要用绝对地址
 //        URL resource = this.getClass().getResource("/");
@@ -75,7 +75,7 @@ public class FileController {
             fileInfos.add(new FileInfo(files.get(x).getAbsolutePath(), files.get(x).getName(), x));
         }
         model.put("datas", fileInfos);
-        return "index";
+        return "indexmy";
     }
 
     //播放目标文件夹的所有的文件
@@ -147,7 +147,7 @@ public class FileController {
             }
             localFile = new File(pathfile, file.getOriginalFilename());
             //获取跟目录
-            File path = new File(ResourceUtils.getURL("src/main/resources/static/imgs").getPath());//成功
+            File path = new File(ResourceUtils.getURL("src/main/resources/static/img").getPath());//成功
             if (!path.exists()) {
                 path.mkdirs();
             }
@@ -159,7 +159,7 @@ public class FileController {
 //            file.transferTo(localFile);
             file.transferTo(localFiletwo);
 //           成功
-//            localFiletwo = new File("D:\\githubworksp\\ideapringb\\src\\main\\resources\\static\\imgs", file.getOriginalFilename());
+//            localFiletwo = new File("D:\\githubworksp\\ideapringb\\src\\main\\resources\\static\\img", file.getOriginalFilename());
         } else {
             return "文件是空的！";
         }
@@ -178,7 +178,7 @@ public class FileController {
             String imgName = System.currentTimeMillis() + f.getOriginalFilename();
             if (!f.isEmpty()) {
                 //获取跟目录
-                File path = new File(ResourceUtils.getURL("src/main/resources/static/imgs").getPath());//成功
+                File path = new File(ResourceUtils.getURL("src/main/resources/static/img").getPath());//成功
                 if (!path.exists()) {
                     path.mkdirs();
                 }
@@ -186,7 +186,7 @@ public class FileController {
                 localFiletwo = new File(path, imgName);
                 f.transferTo(localFiletwo);
 //           成功
-//           localFiletwo = new File("D:\\githubworksp\\ideapringb\\src\\main\\resources\\static\\imgs", file.getOriginalFilename());
+//           localFiletwo = new File("D:\\githubworksp\\ideapringb\\src\\main\\resources\\static\\img", file.getOriginalFilename());
             }
         }
     }
