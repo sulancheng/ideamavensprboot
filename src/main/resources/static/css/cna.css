@@ -37,3 +37,8 @@ html, body {
 	overflow: hidden;  /** 隐藏超出的内容 **/
 	font-size: 14px;
 }
+span.titlespan{
+	background: #778899;
+	border: 1px solid darkgreen;
+	padding: 6px;
+}
