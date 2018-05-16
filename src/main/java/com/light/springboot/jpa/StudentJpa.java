@@ -28,13 +28,15 @@ import java.util.List;
 
 //实现JpaSpecificationExecutor接口实现复杂查询
 public interface StudentJpa extends BaseRepository<Student, Integer> , JpaSpecificationExecutor<Student> {
-	@Modifying
+
+	@Query(value="select s.name from student s order by id asc",nativeQuery=true) //chengg
+	public String[] selectName();
+
 	@Query(value="select * from student where age>=?",nativeQuery=true)
 	public List<Student> myQuery(Integer age);
 	
 	
 	
-	@Modifying
 	@Transactional
 	@Query(value="select * from student where id=?",nativeQuery=true)
 	public List<Student> myQueryzong(Integer id);
@@ -43,7 +45,7 @@ public interface StudentJpa extends BaseRepository<Student, Integer> , JpaSpecif
 
 	
 	@Modifying
-	@Transactional//事务
+	@Transactional//事务  DELETE和UPDATE操作的时候必须加上@modifying注解
 	@Query(value="delete  from student where age=?",nativeQuery=true)
 	public int deleteQuery(Integer age);
 

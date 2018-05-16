@@ -18,12 +18,30 @@ import javax.servlet.http.HttpServletRequest;
 @Component//aop拦截获取各种数据的实现
 public class StudentAspect {
     private final static Logger logger = LoggerFactory.getLogger(StudentAspect.class);
-    @Pointcut("execution(public * com.light.springboot.controller.TestController.*(..))")//公用的方法
+    @Pointcut("execution(public * com.light.springboot.controller.*.*(..))")//所有的controller ,记录访问记录。
+    public void alllog(){
+    }
+
+    @Pointcut("execution(public * com.light.springboot.controller.TestController.*(..))")//所有的TestController ,记录访问记录。
     public void aoplog(){
     }
     @Pointcut("execution(public * com.light.springboot.controller.TestController.getUser(..))")//公用的方法
     public void aoplogone(){
     }
+
+    @Before("alllog()")
+    public void logbeforeAllController(JoinPoint joinPoint){
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = servletRequestAttributes.getRequest();
+        logger.info("----------------------------------------------------------------------------------------------");
+        logger.info("logbeforeOneurl={}",request.getRequestURL());
+        logger.info("logbeforeOnemethod={}",request.getMethod());
+        logger.info("logbeforeOneclass_method={}",joinPoint.getSignature()
+                .getDeclaringTypeName()+"."+joinPoint.getSignature().getName());
+        logger.info("logbeforeOneargs={}",joinPoint.getArgs());
+        logger.info("----------------------------------------------------------------------------------------------");
+    }
+
     @Before("aoplog()")
     public void logbeforeAll(){
         logger.info("aop调用全部的logbeforeAll");
@@ -32,20 +50,20 @@ public class StudentAspect {
     @Before("aoplogone()")
     public void logbeforeOne(JoinPoint joinPoint){
         logger.info("logbeforeOneaop调用getUserlogbeforeOne");
-        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = servletRequestAttributes.getRequest();
-        //url
-        logger.info("logbeforeOneurl={}",request.getRequestURL());
-
-        logger.info("logbeforeOnemethod={}",request.getMethod());
-        //ip
-        logger.info("logbeforeOneip={}",request.getRemoteAddr()+"  port=" +request.getRemotePort()+"  host=" +request.getRemoteHost());
-
-        //类方法
-        logger.info("logbeforeOneclass_method={}",joinPoint.getSignature()
-        .getDeclaringTypeName()+"."+joinPoint.getSignature().getName());
-        //参数
-        logger.info("logbeforeOneargs={}",joinPoint.getArgs());
+//        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+//        HttpServletRequest request = servletRequestAttributes.getRequest();
+//        //url
+//        logger.info("logbeforeOneurl={}",request.getRequestURL());
+//
+//        logger.info("logbeforeOnemethod={}",request.getMethod());
+//        //ip
+//        logger.info("logbeforeOneip={}",request.getRemoteAddr()+"  port=" +request.getRemotePort()+"  host=" +request.getRemoteHost());
+//
+//        //类方法
+//        logger.info("logbeforeOneclass_method={}",joinPoint.getSignature()
+//        .getDeclaringTypeName()+"."+joinPoint.getSignature().getName());
+//        //参数
+//        logger.info("logbeforeOneargs={}",joinPoint.getArgs());
     }
     @After("aoplogone()")
     public void logafterOne(){
