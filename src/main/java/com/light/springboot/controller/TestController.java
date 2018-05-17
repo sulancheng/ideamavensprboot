@@ -281,6 +281,10 @@ public class TestController {
         modelAndView.addObject("msg", "Hello Thymeleaf ModelAndView");
         return modelAndView;
     }
+    @RequestMapping("shuaxcss")
+    public String f5css() {
+        return "shuax";
+    }
 
     //	@RequestMapping   和  @GetMapping @PostMapping 区别
 //	@GetMapping是一个组合注解，是@RequestMapping(method = RequestMethod.GET)的缩写。
