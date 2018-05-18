@@ -11,6 +11,7 @@ import com.light.springboot.jpa.DbResponeBean;
 import com.light.springboot.jpa.StudentJpa;
 import com.light.springboot.jpa.TicketServiceImpl;
 import com.light.springboot.utils.HttpHelper;
+import com.light.springboot.utils.HttpRequestor;
 import com.light.springboot.utils.ResultUtils;
 import com.light.springboot.utils.UtilTools;
 import org.slf4j.Logger;
@@ -45,6 +46,8 @@ public class TestController {
     private TicketServiceImpl ticketService;
     @Autowired
     private HttpHelper myhttphelper;
+    @Autowired
+    private HttpRequestor httpRequestor;
 
     @GetMapping("")
     @ResponseBody
@@ -70,9 +73,10 @@ public class TestController {
      */
     @RequestMapping("/helloworld")
     @ResponseBody
-    public FileInfo helloworld(@RequestBody String data) {
-        logger.info("json数据" + data);
+    public FileInfo helloworld(@RequestBody String data) throws Exception {
 //        Object parse = JSON.parse(data);
+        String s = httpRequestor.doGet("http://127.0.0.1:8081/test/map");
+        logger.info("json数据" + data+ " s = "+s);
         FileInfo fileInfo = new FileInfo("dsadsad", "ssssss", 99);
         return fileInfo;
     }
@@ -157,10 +161,12 @@ public class TestController {
      * @param susu
      * @return
      */
-    @RequestMapping("/userfy")
+    @RequestMapping("/userfy/{susu}")
     @ResponseBody
-    public Result getUserfy(@RequestParam("susu") Integer susu) {
-        PageRequest of = PageRequest.of(susu - 1, 4, new Sort(
+    public Object getUserfy(@PathVariable("susu") String susu, HttpServletRequest request) {
+        String fileNameWithdian = utilTools.getFileNameWithdian(susu);
+        logger.info("susu="+susu+"   fileNameWithdian="+fileNameWithdian);
+        PageRequest of = PageRequest.of(Integer.valueOf(fileNameWithdian)- 1, 4, new Sort(
                 Sort.Direction.ASC, "id"));
         Page<Student> findAll = studentJpa.findAll(of);
 //        Page<Student> findAll = studentJpa.findByName("nide", of);
@@ -172,11 +178,23 @@ public class TestController {
 //                logger.error("split后数据的长度调度了");
 //            }
 //        }, 2000,1000 );
-        logger.info("/userfystudent记录数量自己:" + content.toString());
+        logger.info("/getUserfy:" + content.toString());
         Map modelMap = new HashMap<>();
         modelMap.put("one", "你好");
         modelMap.put("two", "你好2");
         modelMap.put("list", content);
+        String[] strings = studentJpa.selectName();
+        for (String str:strings){
+            logger.info("/getUserfy:" + str);
+        }
+        if (!utilTools.isAjax(request)){
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.addObject("list",content);
+            modelAndView.addObject("page_total",studentJpa.findAll().size());
+            modelAndView.addObject("currenpage",Integer.valueOf(fileNameWithdian));
+            modelAndView.setViewName("pagin");
+            return modelAndView;
+        }
         return ResultUtils.sucess("成功", modelMap);
     }
 
@@ -239,6 +257,10 @@ public class TestController {
         modelAndView.setViewName("myfirst");
         modelAndView.addObject("msg", "Hello Thymeleaf ModelAndView");
         return modelAndView;
+    }
+    @RequestMapping("shuaxcss")
+    public String f5css() {
+        return "shuax";
     }
 
     //	@RequestMapping   和  @GetMapping @PostMapping 区别

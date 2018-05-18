@@ -1,22 +1,23 @@
 html, body {
 	margin: 0 auto;
 	width: 100%;
-	overflow-x: hidden;
+	position:relative;
 }
-
+html {
+	overflow:hidden;
+}
+li {
+	list-style:none;
+}
 * {
 	margin: 0;
 	padding: 0;
 }
-.shujuidtext{
-	 background-color: red;
-}
-.qingq{
-	background-color: #e56c0c;
-}
-.getid{
-	color: red;
-	background-color: #01a001;
+.zong {
+	display: -webkit-flex; /* Safari */
+	display: flex;
+	flex-direction: column;
+	flex: 1;
 }
 .one .right .name{
 	word-break: break-all;
@@ -36,4 +37,9 @@ html, body {
 	-webkit-line-clamp:2 ; /** 显示的行数 **/
 	overflow: hidden;  /** 隐藏超出的内容 **/
 	font-size: 14px;
+}
+span.titlespan{
+	background: #778899;
+	border: 1px solid darkgreen;
+	padding: 6px;
 }

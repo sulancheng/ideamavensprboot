@@ -34,4 +34,12 @@ public class AngularJSController {
         modelMap.put("ab4","4");
         return gen+"second";
     }
+    @RequestMapping("swipe")
+    public String getSwipe(){
+        return "swipedemo";
+    }
+    @RequestMapping("swipetwo")
+    public String getSwipetwo(){
+        return "swipedemotwo";
+    }
 }

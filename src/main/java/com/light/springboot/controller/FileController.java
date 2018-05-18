@@ -55,8 +55,8 @@ public class FileController {
     public Object getMove(HttpServletRequest request, ModelMap model) throws FileNotFoundException {
         JavaLocalUtils.fileList.clear();
         //获取跟目录
-        File path = new File(ResourceUtils.getURL("src/main/resources/static/moves").getPath());
-//        File path = new File("D:\\网易云音乐");//相对地址
+//        File path = new File(ResourceUtils.getURL("src/main/resources/static/moves").getPath());
+        File path = new File("D:\\githubworksp\\ideapringb\\src\\main\\resources\\static\\moves");//绝对地址
 //        File path = new File(ResourceUtils.getURL("target/springboot-0.0.1/WEB-INF/classes/static/moves").getPath());//绝对地址
         //注意  所有的相对地址，在tomcat中失效。 要用绝对地址
 //        URL resource = this.getClass().getResource("/");
@@ -77,6 +77,8 @@ public class FileController {
             fileInfos.add(new FileInfo(files.get(x).getAbsolutePath(), files.get(x).getName(), x));
         }
         model.put("datas", fileInfos);
+        String[] imgs = {"1","2"};
+        model.put("imgs", fileInfos);
         return "indexmy";
     }
 
@@ -193,7 +195,7 @@ public class FileController {
         }
     }
 
-    @RequestMapping("/imgs/{id}")//这种方式可以将数据存到硬盘
+    @RequestMapping("/imgs/{id}")//这种方式可以将数据存到硬盘  从此处提供下载
     public void download(@PathVariable String id, HttpServletRequest request, HttpServletResponse response) {
         try {
             InputStream inputStream = new BufferedInputStream(new FileInputStream(new File(path, id + ".jpg")));

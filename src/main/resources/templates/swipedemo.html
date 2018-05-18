@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Swiper Playground</title>
+    <link rel="stylesheet" href="../css/swiper.min.css">
+    <meta name="viewport" content="width=device-width">
+    <script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
+</head>
+<body>
+<div class="zong">
+    <div class="swiper-container" hidden id="contn">
+        <div class="swiper-scrollbar tab"></div>
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">Slide 1</div>
+            <div class="swiper-slide">Slide 2</div>
+            <div class="swiper-slide">Slide 3</div>
+            <div class="swiper-slide">Slide 4</div>
+            <div class="swiper-slide">Slide 5</div>
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+    <div id="head" class="swiper-container">
+        <div class="swiper-container" id="nav">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <span style="color:rgba(255,72,145,1);">热卖3</span></div>
+                <div class="swiper-slide">
+                    <span>水果大萨</span></div>
+                <div class="swiper-slide">
+                    <span>乳品</span></div>
+                <div class="swiper-slide">
+                    <span>零食卡</span></div>
+                <div class="swiper-slide">
+                    <span>肉蛋</span></div>
+
+                <div class="bar">
+                    <div class="color"></div>
+                </div>
+            </div>
+        </div>
+        <div class="barmy">
+            <div class="color"></div>
+        </div>
+    </div>
+
+    <div class="swiper-container two" id="mycontent">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide two">Slide 1</div>
+            <div class="swiper-slide two">Slide 2</div>
+            <div class="swiper-slide two">Slide 3</div>
+            <div class="swiper-slide two">Slide 4</div>
+            <div class="swiper-slide two">
+                <div class="swiper-container banner">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <img src="/img/banner1.jpg"></div>
+                        <div class="swiper-slide">
+                            <img src="/img/banner2.jpg"></div>
+                        <div class="swiper-slide">
+                            <img src="/img/banner3.jpg"></div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    html {
+        overflow: hidden;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    body, html {
+        height: 100%;
+        position: relative;
+    }
+
+    li {
+        list-style: none;
+    }
+
+    .zong {
+        width: 100%;
+        height: 100%;
+        flex: 1;
+        flex-direction: column;
+    }
+
+    #nav {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        line-height: 44px;
+        height: 44px;
+        border-bottom: 1px solid #ebebeb;
+    }
+
+    #nav .swiper-slide {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #fff;
+    }
+
+    #nav .swiper-slide span {
+        margin: 0 5px 0 0;
+        display: block;
+        text-align: center;
+        line-height: 1;
+        font-size: 14px;
+        color: #333333;
+    }
+
+    #head {
+        height: 60px;
+        width: 100%;
+        position: relative;
+    }
+
+    #nav .bar {
+        width: 50px;
+        height: 3px;
+        position: absolute;
+        bottom: 0px;
+    }
+
+    .bar .color {
+        width: 40px;
+        margin: 0 auto;
+        height: 3px;
+        background: #ff4891;
+    }
+
+    #head .barmy {
+        position: absolute;
+        margin-top: 3px;
+        width: 100px;
+        height: 3px;
+    }
+
+    #head .barmy .color {
+        width: 40px;
+        margin: 0 auto;
+        height: 3px;
+        background: #ff4891;
+    }
+
+    #contn {
+        width: 100%;
+        height: 200px;
+        margin: 0 auto;
+    }
+
+    #mycontent {
+        width: 100%;
+        height: 100%;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #mycontent .two {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        background: #f1f1f1;
+        color: #000;
+        text-align: center;
+    }
+
+    .banner {
+        line-height: 160px;
+        height: 160px;
+    }
+
+    .banner img {
+        width: 100%;
+        line-height: 160px;
+        height: 160px;
+    }
+</style>
+<script src="/js/swiper.min.js"></script>
+<script>
+    function xia(sum) {
+        console.log("进度sum：" + sum);
+        $("#head .barmy").css("transition", 'translateX(' + sum + 'px)');
+        $("#head .barmy").css("-webkit-transition", 'translateX(' + sum  + 'px)');
+    }
+
+    barwidth = 36 //导航粉色条的长度px
+    tSpeed = 300 //切换速度300ms
+    var navSwiper = new Swiper('#nav', {
+        direction: 'horizontal',
+        slidesPerView: 5,
+        freeMode: true,
+        allowTouchMove: false,
+        on: {
+            init: function () {
+                navSlideWidth = this.slides.eq(0).css('width'); //导航字数需要统一,每个导航宽度一致
+                bar = this.$el.find('.bar')
+                barcolor = this.$el.find('.bar .color')
+                bar.css('width', navSlideWidth)
+                barcolor.css('width', navSlideWidth - 6)
+                $("#head .barmy").css('width', navSlideWidth);
+                bar.transition(tSpeed)
+                navSum = this.slides[this.slides.length - 1].offsetLeft //最后一个slide的位置
+                clientWidth = parseInt(this.$wrapperEl.css('width')) //Nav的可视宽度
+                navWidth = 0
+                for (i = 0; i < this.slides.length; i++) {
+                    navWidth += parseInt(this.slides.eq(i).css('width'))
+                }
+
+                topBar = this.$el.parents('body').find('#top') //页头
+
+            },
+            tap: function (event) {
+                clickIndex = this.clickedIndex
+                clickSlide = this.slides.eq(clickIndex)
+                tables.slideTo(clickIndex, 1000, false);
+                this.slides.find('span').css('color', 'rgba(51,51,51,1)');
+                clickSlide.find('span').css('color', 'rgba(255,72,145,1)');
+            },
+            touchstart: function (e) {
+                e.preventDefault() //去掉按压阴影
+            }
+
+        },
+    });
+
+    var contn = new Swiper("#contn", {
+        // initialSlide: 1,
+        // spaceBetween: 00,
+        // slidesPerView: 2,
+        centeredSlides: true,
+        slideToClickedSlide: false,
+        grabCursor: true,
+        scrollbar: {
+            el: '.swiper-scrollbar.tab',
+        },
+        mousewheel: {
+            enabled: true,
+        },
+        keyboard: {
+            enabled: true,
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            type: 'progressbar',
+        },
+        on: {
+            progress: function (progress) {
+                console.log(progress);
+            },
+        },
+        // navigation: {
+        //     nextEl: '.swiper-button-next',
+        //     prevEl: '.swiper-button-prev',
+        // },
+    });
+    var tables = new Swiper("#mycontent", {
+        watchSlidesProgress: true,
+        resistanceRatio: 0,
+        on: {
+            touchMove: function () {
+                progress = this.progress
+                // console.log("进度111：" + this.slides.eq(0).attr("class"))
+
+                console.log("进度：" + navSum * progress)
+                bar.transition(0)
+                bar.transform('translateX(' + navSum * progress + 'px)')
+                $("#head .barmy").animate({left: navSum * progress + 'px'}, 0);
+                // xia(navSum * progress);
+                // $("#head .barmy").transformmy('translateX(' + navSum * progress + 'px)');
+                //粉色255,72,145灰色51,51,51
+                for (i = 0; i < this.slides.length; i++) {
+                    slideProgress = this.slides[i].progress
+                    if (Math.abs(slideProgress) < 1) {
+                        r = Math.floor((255 - 51) * (1 - Math.pow(Math.abs(slideProgress), 2)) + 51)
+                        g = Math.floor((72 - 51) * (1 - Math.pow(Math.abs(slideProgress), 2)) + 51)
+                        b = Math.floor((145 - 51) * (1 - Math.pow(Math.abs(slideProgress), 2)) + 51)
+                        navSwiper.slides.eq(i).find('span').css('color', 'rgba(' + r + ',' + g + ',' + b + ',1)')
+                    }
+                }
+            },
+            transitionStart: function () {
+                progress = this.progress
+                console.log("进度2：" + progress)
+                activeIndex = this.activeIndex
+                activeSlidePosition = navSwiper.slides[activeIndex].offsetLeft
+                //释放时导航粉色条移动过渡
+                bar.transition(tSpeed)
+                bar.transform('translateX(' + activeSlidePosition + 'px)')
+                // xia(navSum * progress);
+                $("#head .barmy").animate({left: activeSlidePosition + 'px'}, 180);
+                //释放时文字变色过渡
+                navSwiper.slides.eq(activeIndex).find('span').transition(tSpeed)
+                navSwiper.slides.eq(activeIndex).find('span').css('color', 'rgba(255,72,145,1)')
+                if (activeIndex > 0) {
+                    navSwiper.slides.eq(activeIndex - 1).find('span').transition(tSpeed)
+                    navSwiper.slides.eq(activeIndex - 1).find('span').css('color', 'rgba(51,51,51,1)')
+                }
+                if (activeIndex < this.slides.length) {
+                    navSwiper.slides.eq(activeIndex + 1).find('span').transition(tSpeed)
+                    navSwiper.slides.eq(activeIndex + 1).find('span').css('color', 'rgba(51,51,51,1)')
+                }
+                //导航居中
+                navActiveSlideLeft = navSwiper.slides[activeIndex].offsetLeft //activeSlide距左边的距离
+
+                navSwiper.setTransition(tSpeed)
+                if (navActiveSlideLeft < (clientWidth - parseInt(navSlideWidth)) / 2) {
+                    navSwiper.setTranslate(0)
+                } else if (navActiveSlideLeft > navWidth - (parseInt(navSlideWidth) + clientWidth) / 2) {
+                    navSwiper.setTranslate(clientWidth - navWidth)
+                } else {
+                    navSwiper.setTranslate((clientWidth - parseInt(navSlideWidth)) / 2 - navActiveSlideLeft)
+                }
+
+            },
+        }
+    });
+
+    //热卖
+    var bannerSwiper = new Swiper('.banner', {
+        loop: true,
+        pagination: {
+            type: 'fraction',
+            renderFraction: function (currentClass, totalClass) {
+                return '<span class="' + currentClass + '"></span>' + '/' + '<span class="' + totalClass + '"></span>';
+            },
+
+        },
+    });
+</script>
+</body>
+</html>

@@ -2,6 +2,7 @@
 <configuration>
     <!-- 文件输出格式 -->
     <property name="PATTERN" value="%-12(%d{yyyy-MM-dd HH:mm:ss.SSS}) |-%-5level [%thread] %c [%L] -| %msg%n" />
+    <property name="LOG_HOME" value="d:/bootlogs/app/logs"/>
     <!-- test文件路径 -->
     <property name="TEST_FILE_PATH" value="d:/bootlogs" />
     <!-- pro文件路径 -->
@@ -13,6 +14,11 @@
             <encoder>
                 <pattern>${PATTERN}</pattern>
             </encoder>
+            <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                &lt;!&ndash;日志文件输出的文件名&ndash;&gt;
+                <FileNamePattern>${LOG_HOME}/dev/devlog%d{yyyy-MM-dd}.log</FileNamePattern>
+                <MaxHistory>30</MaxHistory>
+            </rollingPolicy>-->
         </appender>
         <logger name="com.light.springboot" level="debug" />
         <root level="info">

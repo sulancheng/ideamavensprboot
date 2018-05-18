@@ -74,17 +74,19 @@ public class UtilTools {
         }
     }
 
+    public  String getFileNameWithdian(String pathandname) {
+        int start = pathandname.lastIndexOf(".");
+        if (start != -1 ) {
+            return pathandname.substring(0,start);
+        } else {
+            return null;
+        }
+    }
     public synchronized void sell() {
 
         Ticket ticket = ticketService.findAll().get(0);
         Integer tkcountone = ticket.getTkcount();
         while (tkcountone > 0) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
             logger.info("线程:"+Thread.currentThread().getName() + "正在卖第" + tkcountone + "张票");
             tkcountone--;
             ticket.setTkcount(tkcountone);
