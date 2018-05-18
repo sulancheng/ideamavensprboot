@@ -1,9 +1,14 @@
 html, body {
 	margin: 0 auto;
 	width: 100%;
-	overflow-x: hidden;
+	position:relative;
 }
-
+html {
+	overflow:hidden;
+}
+li {
+	list-style:none;
+}
 * {
 	margin: 0;
 	padding: 0;

@@ -188,8 +188,13 @@
         height: 160px;
     }
 </style>
-<script src="../js/swiper.min.js"></script>
+<script src="/js/swiper.min.js"></script>
 <script>
+    function xia(sum) {
+        console.log("进度sum：" + sum);
+        $("#head .barmy").css("transition", 'translateX(' + sum + 'px)');
+        $("#head .barmy").css("-webkit-transition", 'translateX(' + sum  + 'px)');
+    }
 
     barwidth = 36 //导航粉色条的长度px
     tSpeed = 300 //切换速度300ms
@@ -269,10 +274,11 @@
                 progress = this.progress
                 // console.log("进度111：" + this.slides.eq(0).attr("class"))
 
-                console.log("进度：" + progress)
+                console.log("进度：" + navSum * progress)
                 bar.transition(0)
                 bar.transform('translateX(' + navSum * progress + 'px)')
-                $("#head .barmy").animate({left:navSum * progress +'px'},0);
+                $("#head .barmy").animate({left: navSum * progress + 'px'}, 0);
+                // xia(navSum * progress);
                 // $("#head .barmy").transformmy('translateX(' + navSum * progress + 'px)');
                 //粉色255,72,145灰色51,51,51
                 for (i = 0; i < this.slides.length; i++) {
@@ -293,7 +299,8 @@
                 //释放时导航粉色条移动过渡
                 bar.transition(tSpeed)
                 bar.transform('translateX(' + activeSlidePosition + 'px)')
-                $("#head .barmy").animate({left:activeSlidePosition +'px'},180);
+                // xia(navSum * progress);
+                $("#head .barmy").animate({left: activeSlidePosition + 'px'}, 180);
                 //释放时文字变色过渡
                 navSwiper.slides.eq(activeIndex).find('span').transition(tSpeed)
                 navSwiper.slides.eq(activeIndex).find('span').css('color', 'rgba(255,72,145,1)')

@@ -195,7 +195,7 @@ public class FileController {
         }
     }
 
-    @RequestMapping("/imgs/{id}")//这种方式可以将数据存到硬盘
+    @RequestMapping("/imgs/{id}")//这种方式可以将数据存到硬盘  从此处提供下载
     public void download(@PathVariable String id, HttpServletRequest request, HttpServletResponse response) {
         try {
             InputStream inputStream = new BufferedInputStream(new FileInputStream(new File(path, id + ".jpg")));

@@ -12,6 +12,7 @@ import com.light.springboot.jpa.DbResponeBean;
 import com.light.springboot.jpa.StudentJpa;
 import com.light.springboot.jpa.TicketServiceImpl;
 import com.light.springboot.utils.HttpHelper;
+import com.light.springboot.utils.HttpRequestor;
 import com.light.springboot.utils.ResultUtils;
 import com.light.springboot.utils.UtilTools;
 import org.slf4j.Logger;
@@ -43,6 +44,8 @@ public class TestController {
     private TicketServiceImpl ticketService;
     @Autowired
     private HttpHelper myhttphelper;
+    @Autowired
+    private HttpRequestor httpRequestor;
 
     @GetMapping("")
     @ResponseBody
@@ -97,9 +100,10 @@ public class TestController {
      */
     @RequestMapping("/helloworld")
     @ResponseBody
-    public FileInfo helloworld(@RequestBody String data) {
-        logger.info("json数据" + data);
+    public FileInfo helloworld(@RequestBody String data) throws Exception {
 //        Object parse = JSON.parse(data);
+        String s = httpRequestor.doGet("http://127.0.0.1:8081/test/map");
+        logger.info("json数据" + data+ " s = "+s);
         FileInfo fileInfo = new FileInfo("dsadsad", "ssssss", 99);
         return fileInfo;
     }

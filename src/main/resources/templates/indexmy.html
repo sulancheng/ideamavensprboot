@@ -3,7 +3,7 @@
     <script src="http://cdn.static.runoob.com/libs/jquery/1.8.3/jquery.js"></script>
     <script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
     <script src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
-    <link rel="stylesheet" href="/css/my.css">
+    <link rel="stylesheet" href="/css/cna.css">
     <title>获取电影</title>
     <script th:inline="javascript">
         function qingqiu(data, json) {
@@ -45,11 +45,15 @@
         }
 
         $(function () {
-            $(".fater").click(function () {
-                $(".tanc").toggle();
+            $(".fater .hav").children().eq(0).click(function () {
+                $(".tanc.inner").show();
+            });
+            $(".fater .hav").children().eq(1).click(function () {
+                $(".tanc.bottom").show();
             });
             $(".tanc_content").click(function () {
-                $(".tanc").toggle();
+                $(".tanc.inner").hide();
+                $(".tanc.bottom").hide();
             });
 
             // $(".right .getid").click(function () {
@@ -186,6 +190,15 @@
             z-index: 999;
         }
 
+        .tancbox {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+
         .tanc_content {
             display: flex;
             flex-direction: column;
@@ -193,17 +206,20 @@
             align-items: center;
             width: 140px;
             height: 100px;
-            border-radius: 10px;
+            border-radius: 6px;
             background: red;
             z-index: 1000;
-            position: fixed;
-            left: 50%;
-            top: 50%;
-            margin-left: -70px;
-            margin-top: -50px;
+            margin-bottom: 60px;
+            /*position: fixed;*/
+            /*left: 50%;*/
+            /*top: 50%;*/
+            /*margin-left: -70px;*/
+            /*margin-top: -50px;*/
             border: 1px solid #000000;
         }
-
+        /*.tc_bottom{*/
+            /*flex-direction: row;*/
+        /*}*/
         .liushi_box {
             display: flex;
             flex-wrap: wrap;
@@ -250,10 +266,20 @@
     </div>
 
 </div>
-<div class="tanc">
-    <div class="tanc_content">
-        <p>弹窗</p>
-        <div>取消</div>
+<div class="tanc inner">
+    <div class="tancbox">
+        <div class="tanc_content tc_inner">
+            <p>弹窗</p>
+            <div>取消</div>
+        </div>
+    </div>
+</div>
+<div class="tanc bottom">
+    <div class="tancbox">
+        <div class="tanc_content tc_bottom">
+            <p>弹窗第二个可以断底就卡萨s湿哒哒所大大萨达撒大撒大所</p>
+            <p>取消第二个</p>
+        </div>
     </div>
 </div>
 <div class="fater" style="width: 100%">
