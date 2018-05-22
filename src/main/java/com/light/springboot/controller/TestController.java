@@ -75,8 +75,8 @@ public class TestController {
     @ResponseBody
     public FileInfo helloworld(@RequestBody String data) throws Exception {
 //        Object parse = JSON.parse(data);
-        String s = httpRequestor.doGet("http://127.0.0.1:8081/test/map");
-        logger.info("json数据" + data+ " s = "+s);
+//        String s = httpRequestor.doGet("http://127.0.0.1:8081/test/map");
+        logger.info("json数据" + data);
         FileInfo fileInfo = new FileInfo("dsadsad", "ssssss", 99);
         return fileInfo;
     }

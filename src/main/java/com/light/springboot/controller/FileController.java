@@ -56,7 +56,7 @@ public class FileController {
         JavaLocalUtils.fileList.clear();
         //获取跟目录
 //        File path = new File(ResourceUtils.getURL("src/main/resources/static/moves").getPath());
-        File path = new File("D:\\githubworksp\\ideapringb\\src\\main\\resources\\static\\moves");//绝对地址
+        File path = new File("D:\\tomspringboot\\nihaospr\\WEB-INF\\classes\\static\\moves");//绝对地址
 //        File path = new File(ResourceUtils.getURL("target/springboot-0.0.1/WEB-INF/classes/static/moves").getPath());//绝对地址
         //注意  所有的相对地址，在tomcat中失效。 要用绝对地址
 //        URL resource = this.getClass().getResource("/");
