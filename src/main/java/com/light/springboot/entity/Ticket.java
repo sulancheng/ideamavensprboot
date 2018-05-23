@@ -17,7 +17,7 @@ public class Ticket implements Serializable {
     private Integer id;
 
     @Column(name = "tk_count")
-    private Integer tkcount;
+    private Integer tkcount=100;
     public Integer getId() {
         return id;
     }
