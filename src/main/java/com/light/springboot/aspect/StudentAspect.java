@@ -35,7 +35,7 @@ public class StudentAspect {
         startTime.set(System.currentTimeMillis());
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = servletRequestAttributes.getRequest();
-        logger.info("START----------------------------------------------------------------------------------------------");
+        logger.info("------------------------START-------------------------------------------------------------------------------");
         logger.info("log beforeOneurl={}",request.getRequestURL());
         logger.info("log beforeOnemethod={}",request.getMethod());
         logger.info("log beforeIP={} : " + request.getRemoteAddr());
@@ -78,6 +78,6 @@ public class StudentAspect {
         logger.info("log beforeOnedo AfterReturning={}",object.toString());
         // 处理完请求，返回内容
         logger.info("log beforeOnedo AfterReturning TIME : " + (System.currentTimeMillis() - startTime.get()));
-        logger.info("END----------------------------------------------------------------------------------------------");
+        logger.info("------------------------END-------------------------------------------------------------------------------");
     }
 }

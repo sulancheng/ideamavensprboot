@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/css/my.css">
     <link rel="stylesheet" href="/css/pagination.css">
     <script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
-    <script src="/js/jquery.pagination.js"></script>
+    <script src="/js/jquery.paginationsb1.js"></script>
     <style>
         .bottom {
             display: flex;
@@ -56,9 +56,12 @@
         }
     </style>
     <script>
+
+
         function handlePaginationClick(new_page_index, pagination_container) {
-            alert(new_page_index + 1);
-            window.location.href = "/test/userfy/" + (new_page_index + 1) + ".html";
+            // alert(new_page_index + 1);
+            // window.location.href = "/test/userfy/" + (new_page_index + 1) + ".html";
+            window.open("/test/userfy/" + (new_page_index + 1) + ".html");
             // for(var i=new_page_id;i<;i++) {
             //     $('#MyContentArea').append(content[i]);
             // }
@@ -67,12 +70,14 @@
 
         $(function () {
             $("#News-Pagination").pagination([[${page_total}]], {
-                items_per_page: 4,
+                //maxentries : [[${page_total}]],
+                items_per_page: [[${size}]],
                 current_page: [[${currenpage-1}]],
                 callback: handlePaginationClick,
                 load_first_page: false,
                 next_text: "下一页",
                 prev_text: "上一页",
+                link_to:  "__id__.html"//分页的js中会自动把"__id__"替换为当前的数。0　
             });
         });
     </script>
