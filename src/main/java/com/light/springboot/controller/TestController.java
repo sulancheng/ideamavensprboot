@@ -166,7 +166,8 @@ public class TestController {
     public Object getUserfy(@PathVariable("susu") String susu, HttpServletRequest request) {
         String fileNameWithdian = utilTools.getFileNameWithdian(susu);
         logger.info("susu="+susu+"   fileNameWithdian="+fileNameWithdian);
-        PageRequest of = PageRequest.of(Integer.valueOf(fileNameWithdian)- 1, 4, new Sort(
+        int size = 4;
+        PageRequest of = PageRequest.of(Integer.valueOf(fileNameWithdian)- 1, size, new Sort(
                 Sort.Direction.ASC, "id"));
         Page<Student> findAll = studentJpa.findAll(of);
 //        Page<Student> findAll = studentJpa.findByName("nide", of);
@@ -192,6 +193,7 @@ public class TestController {
             modelAndView.addObject("list",content);
             modelAndView.addObject("page_total",studentJpa.findAll().size());
             modelAndView.addObject("currenpage",Integer.valueOf(fileNameWithdian));
+            modelAndView.addObject("size",size);
             modelAndView.setViewName("pagin");
             return modelAndView;
         }
