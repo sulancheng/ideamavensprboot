@@ -52,7 +52,11 @@
                 $(".tanc.bottom").show();
             });
             $(".tanc_content").click(function () {
-                $(".tanc.inner").hide();
+                $(".tanc_content").animate({bottom:'16px'},"slow",function () {
+                    $(".tanc.inner").hide();
+                    $(".tanc_content").css("bottom","50%");
+                    $(".tanc_content").css("margin-bottom","-60px");
+                });
                 $(".tanc.bottom").hide();
             });
 
@@ -200,6 +204,7 @@
         }
 
         .tanc_content {
+            position: absolute;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -209,7 +214,7 @@
             border-radius: 6px;
             background: red;
             z-index: 1000;
-            margin-bottom: 60px;
+            /*margin-bottom: 60px;*/
             /*position: fixed;*/
             /*left: 50%;*/
             /*top: 50%;*/
