@@ -10,6 +10,15 @@ public class Result<T> {
     private Integer code;
     private String msg;//错误信息
     private T data;
+    private int progress;
+
+    public int getProgress() {
+        return progress;
+    }
+
+    public void setProgress(int progress) {
+        this.progress = progress;
+    }
 
     public Integer getCode() {
         return code;

@@ -100,12 +100,14 @@ public class BeanServiceImpl implements BeanService {
     public Result addBean(Object o) throws Exception {
 //        updataById("我的测试",32);//测试看会不会回滚 成功
         Student student = (Student) o;
-        if (student.getName().equals("23")) {
-//            throw new MyException(ResultEnum.ERROR);
-            return ResultUtils.erro("保存失败，名字重复");
-        }
+//        if (student.getName().equals("23")) {
+////            throw new MyException(ResultEnum.ERROR);
+//            return ResultUtils.erro("保存失败，名字重复");
+//        }
         studentJpa.save(student);
-        return ResultUtils.erro("保存成功！");
+//        if(true)
+//            throw new MyException(ResultEnum.ERROR);
+        return ResultUtils.sucess("保存成功！", 100);
     }
 
     @Override

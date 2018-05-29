@@ -73,17 +73,17 @@ public class TestController {
      */
     @RequestMapping("/helloworld")
     @ResponseBody
-    public FileInfo helloworld(@RequestBody String data) throws Exception {
+    public Object helloworld(@RequestBody String data) throws Exception {
 //        Object parse = JSON.parse(data);
 //        String s = httpRequestor.doGet("http://127.0.0.1:8081/test/map");
         logger.info("json数据" + data);
-        FileInfo fileInfo = new FileInfo("dsadsad", "ssssss", 99);
-        return fileInfo;
+        FileInfo fileInfo = new FileInfo(data, "ssssss", 99);
+        return ResultUtils.sucess("成功",data);
     }
 
     @RequestMapping("/addstu")
     @ResponseBody
-    public Result addstu(@Valid Student student) throws Exception {
+    public Result addstu(Student student) throws Exception {
         return userServiceImpl.addBean(student);
     }
 
