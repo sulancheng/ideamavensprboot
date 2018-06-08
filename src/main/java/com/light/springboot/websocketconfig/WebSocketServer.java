@@ -30,7 +30,6 @@ public class WebSocketServer extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         String uri = session.getUri().toString();
         String userName = uri.substring(uri.lastIndexOf("/") + 1);
-
         String nickname = URLDecoder.decode(userName, "utf-8");
         connections.put(session, nickname);
         String message = String.format("* %s %s", nickname, "加入聊天！");

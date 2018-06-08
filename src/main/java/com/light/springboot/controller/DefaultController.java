@@ -63,4 +63,9 @@ public class DefaultController {
 
         return ResultUtils.sucess("测试默认网页或者jsonnimeide76868", objectstwo);
     }
+//    @GetMapping("socket")
+//    @ResponseBody
+//    public void connsocket(){
+//        SocketServer.startService();
+//    }
 }

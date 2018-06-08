@@ -62,6 +62,7 @@
         });
         function connection(userName) {
             var host = window.location.host;
+            alert(host);
             if ('WebSocket' in window) {
                 websocket = new WebSocket("ws://" + host +
                     "/webSocketServer/" + userName);
