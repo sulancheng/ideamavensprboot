@@ -43,12 +43,14 @@
                 }
             });
         }
+
         $(function () {
             $(".fater .hav").children().eq(0).click(function () {
                 $(".tanc.inner").show();
             });
             $(".fater .hav").children().eq(1).click(function () {
                 $(".tanc.bottom").show();
+                $(".center_progress").css("display", "none");
             });
             $(".tanc_content").click(function () {
                 $(".tanc_content").animate({bottom: '16px'}, "slow", function () {
@@ -181,6 +183,19 @@
             flex: 1;
         }
 
+        .center_progress {
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            display: block;
+        }
+
+        .center_progress progress {
+           margin-bottom: 60px;
+        }
+
         .tanc {
             position: fixed;
             width: 100%;
@@ -271,7 +286,8 @@
         <div>
             <h1>人体时钟</h1>
             <div>
-                <script charset="Shift_JIS" src="http://chabudai.sakura.ne.jp/blogparts/honehoneclock/honehone_clock_wh.js"></script>
+                <script charset="Shift_JIS"
+                        src="http://chabudai.sakura.ne.jp/blogparts/honehoneclock/honehone_clock_wh.js"></script>
             </div>
         </div>
         <a href="http://www.runoob.com" class="aname">访问菜鸟教程!</a>
@@ -299,6 +315,11 @@
             <p>弹窗第二个可以断底就卡萨s湿哒哒所大大萨达撒大撒大所</p>
             <p>取消第二个</p>
         </div>
+    </div>
+</div>
+<div class="center_progress">
+    <div class="tancbox">
+        <progress></progress>
     </div>
 </div>
 <div class="fater" style="width: 100%">

@@ -31,9 +31,11 @@
             font-size: 11px;
             width: 96%;
             color: #333333;
-            border-width: 1px;
-            border-color: #999999;
-            border-collapse: collapse;
+            /*border-width: 1px;*//*注销使得frame="hsides"生效*/
+            /*border-style:solid;*/
+            border-color: #ff0000;
+            border-top-width: 10px;
+            border-collapse: collapse;/*是否合并边框*/
             box-sizing: border-box;
             /*margin: 16px 14px 0px 14px;*/
         }
@@ -87,7 +89,8 @@
 <div class="zong">
     <div>[[${list}]]</div>
     <div class="tabbox">
-        <table class="imagetable">
+        <!--hsides上下的线不显示-->
+        <table class="imagetable" frame="hsides">
             <tr>
                 <th>姓名</th>
                 <th>年龄</th>
@@ -97,6 +100,16 @@
                 <td th:text="${item.name}"></td>
                 <td th:text="${item.age}"></td>
                 <td th:text="${item.myclass}"></td>
+            </tr>
+        </table>
+        <table frame="above">
+            <tr>
+                <th>姓名</th>
+                <th>爱好</th>
+            </tr>
+            <tr>
+                <td>小慕</td>
+                <td>绘画</td>
             </tr>
         </table>
     </div>

@@ -71,14 +71,14 @@ public class TestController {
      *
      * @return
      */
-    @RequestMapping("/helloworld")
+    @PostMapping("/helloworld")
     @ResponseBody
     public Object helloworld(@RequestBody String data) throws Exception {
 //        Object parse = JSON.parse(data);
 //        String s = httpRequestor.doGet("http://127.0.0.1:8081/test/map");
         logger.info("json数据" + data);
         FileInfo fileInfo = new FileInfo(data, "ssssss", 99);
-        return ResultUtils.sucess("成功",data);
+        return ResultUtils.sucess("成功","返回:"+data);
     }
 
     @RequestMapping("/addstu")

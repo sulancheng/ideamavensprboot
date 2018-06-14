@@ -1,5 +1,8 @@
 package com.light.springboot.websocketconfig;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -15,8 +18,11 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by Administrator
  * on 2018/4/24.
  */
-
+@Component
 public class WebSocketServer extends TextWebSocketHandler {
+    private final static Logger logger = LoggerFactory
+            .getLogger(WebSocketServer.class);
+
     private static final Map<WebSocketSession, String> connections = new ConcurrentHashMap<>();
     private static String getDatetime(Date date) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -28,6 +34,8 @@ public class WebSocketServer extends TextWebSocketHandler {
      */
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        String id = session.getId();
+        logger.info("id= "+id);
         String uri = session.getUri().toString();
         String userName = uri.substring(uri.lastIndexOf("/") + 1);
         String nickname = URLDecoder.decode(userName, "utf-8");
@@ -54,7 +62,7 @@ public class WebSocketServer extends TextWebSocketHandler {
 
         broadcast(new TextMessage(msg));
     }
-    private static void broadcast(TextMessage msg) {
+    public static void broadcast(TextMessage msg) {
         // 广播形式发送消息
         for (WebSocketSession session : connections.keySet()) {
             try {
