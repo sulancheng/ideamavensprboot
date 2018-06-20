@@ -8,7 +8,7 @@ import com.light.springboot.enums.ResultEnum;
  */
 
 public class NoPermissions extends RuntimeException {
-    private Integer code = 2;
+    private Integer code;
 
     public Integer getCode() {
         return code;

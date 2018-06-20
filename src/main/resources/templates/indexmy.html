@@ -80,6 +80,9 @@
             $(".right .request").on("click", function () {
                 alert($(this).attr("data-age"));//成功
                 alert($(this).attr("data-obj"));
+                //成功
+                $(this).parent().css("background-color","#0c7cb5");//动态改变点击的背景色
+                $(this).parent().siblings(".left").children(".imgmy").prop("src","http://img07.tooopen.com/images/20170316/tooopen_sy_201956178977.jpg");
                 var json = {
                     "username": "admin",
                     "password": 123
@@ -226,11 +229,12 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            width: 140px;
-            height: 100px;
+            width: 260px;
+            height: 160px;
             border-radius: 6px;
-            background: red;
+            background: #fff;
             z-index: 1000;
+            padding: 16px 4px;
             /*margin-bottom: 60px;*/
             /*position: fixed;*/
             /*left: 50%;*/
@@ -272,7 +276,7 @@
     <div class="xunahun">
         <div class="one" th:each="item : ${datas}">
             <div class="left">
-                <img src="../imgs/ic.png">
+                <img class="imgmy" src="../imgs/ic.png">
             </div>
             <div class="right">
                 <span class='name' th:text="名字：+${item.name}"></span>
@@ -312,7 +316,8 @@
 <div class="tanc bottom">
     <div class="tancbox">
         <div class="tanc_content tc_bottom">
-            <p>弹窗第二个可以断底就卡萨s湿哒哒所大大萨达撒大撒大所</p>
+            <p>弹窗第二个可以断底就卡萨
+                s湿哒哒所大大萨达撒大撒大所</p>
             <p>取消第二个</p>
         </div>
     </div>

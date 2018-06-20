@@ -77,7 +77,6 @@ public class FileController {
             fileInfos.add(new FileInfo(files.get(x).getAbsolutePath(), files.get(x).getName(), x));
         }
         model.put("datas", fileInfos);
-        String[] imgs = {"1","2"};
         model.put("imgs", fileInfos);
         return "indexmy";
     }
