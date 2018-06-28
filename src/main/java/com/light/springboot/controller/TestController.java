@@ -10,10 +10,7 @@ import com.light.springboot.jpa.BeanServiceImpl;
 import com.light.springboot.jpa.DbResponeBean;
 import com.light.springboot.jpa.StudentJpa;
 import com.light.springboot.jpa.TicketServiceImpl;
-import com.light.springboot.utils.HttpHelper;
-import com.light.springboot.utils.HttpRequestor;
-import com.light.springboot.utils.ResultUtils;
-import com.light.springboot.utils.UtilTools;
+import com.light.springboot.utils.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +23,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -78,7 +76,7 @@ public class TestController {
 //        String s = httpRequestor.doGet("http://127.0.0.1:8081/test/map");
         logger.info("json数据" + data);
         FileInfo fileInfo = new FileInfo(data, "ssssss", 99);
-        return ResultUtils.sucess("成功","返回:"+data);
+        return ResultUtils.sucess("成功", "返回:" + data);
     }
 
     @RequestMapping("/addstu")
@@ -165,9 +163,9 @@ public class TestController {
     @ResponseBody
     public Object getUserfy(@PathVariable("susu") String susu, HttpServletRequest request) {
         String fileNameWithdian = utilTools.getFileNameWithdian(susu);
-        logger.info("susu="+susu+"   fileNameWithdian="+fileNameWithdian);
+        logger.info("susu=" + susu + "   fileNameWithdian=" + fileNameWithdian);
         int size = 4;
-        PageRequest of = PageRequest.of(Integer.valueOf(fileNameWithdian)- 1, size, new Sort(
+        PageRequest of = PageRequest.of(Integer.valueOf(fileNameWithdian) - 1, size, new Sort(
                 Sort.Direction.ASC, "id"));
         Page<Student> findAll = studentJpa.findAll(of);
 //        Page<Student> findAll = studentJpa.findByName("nide", of);
@@ -185,15 +183,15 @@ public class TestController {
         modelMap.put("two", "你好2");
         modelMap.put("list", content);
         String[] strings = studentJpa.selectName();
-        for (String str:strings){
+        for (String str : strings) {
             logger.info("/getUserfy:" + str);
         }
-        if (!utilTools.isAjax(request)){
+        if (!utilTools.isAjax(request)) {
             ModelAndView modelAndView = new ModelAndView();
-            modelAndView.addObject("list",content);
-            modelAndView.addObject("page_total",studentJpa.findAll().size());
-            modelAndView.addObject("currenpage",Integer.valueOf(fileNameWithdian));
-            modelAndView.addObject("size",size);
+            modelAndView.addObject("list", content);
+            modelAndView.addObject("page_total", studentJpa.findAll().size());
+            modelAndView.addObject("currenpage", Integer.valueOf(fileNameWithdian));
+            modelAndView.addObject("size", size);
             modelAndView.setViewName("pagin");
             return modelAndView;
         }
@@ -260,6 +258,7 @@ public class TestController {
         modelAndView.addObject("msg", "Hello Thymeleaf ModelAndView");
         return modelAndView;
     }
+
     @RequestMapping("shuaxcss")
     public String f5css() {
         return "shuax";
@@ -285,8 +284,15 @@ public class TestController {
     @ResponseBody
     @RequestMapping("*/xinghao")
     public String testWildcard(HttpServletRequest request, HttpServletResponse response, HttpSession httpSession) {
-        httpSession.setAttribute("存储one", "nide-one");
-        logger.info("wildcard------------");
+        Cookie where = CookieUtil.get(request, "where");
+        if (where != null && where.getValue() != null) {
+            logger.info("wildcard------------1111" + where.getValue());
+        }
+        CookieUtil.set(response, "where", request.getRequestURL().toString(), 7200);
+        response.addCookie(new Cookie("where", request.getRequestURL().toString()));
+        logger.info("wildcard------------222" + httpSession.getAttribute("one"));
+        httpSession.setAttribute("one", "nide-one");
+        logger.info("wildcard------------333");
         return request.getRequestURI();
     }
 
@@ -295,7 +301,9 @@ public class TestController {
 
     @RequestMapping("/wo")
     @ResponseBody
-    public Object index() {
+    public Object index(HttpServletResponse response) {
+        //清除cookie
+        CookieUtil.set(response, "where", null, 0);
 //        List<Student> byClass = studentJpa.findByMyclass("9");
 //        logger.info("取出的数据" + byClass);
 //        model.put("data-toggle", byClass);
