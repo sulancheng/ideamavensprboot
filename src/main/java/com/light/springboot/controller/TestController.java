@@ -11,6 +11,9 @@ import com.light.springboot.jpa.DbResponeBean;
 import com.light.springboot.jpa.StudentJpa;
 import com.light.springboot.jpa.TicketServiceImpl;
 import com.light.springboot.utils.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
+@Api(value = "所有的test测试", tags = { "多种接收前面传过来的数据" })
 @Controller  //@RestController 的意思就是controller里面的方法都以json格式输出，不用再写什么jackjson配置的了！
 @RequestMapping("test")
 public class TestController {
@@ -47,6 +50,8 @@ public class TestController {
     @Autowired
     private HttpRequestor httpRequestor;
 
+    @ApiOperation(value = "设定的默认的json数据回复", notes = "默认json")
+//    @ApiImplicitParam(name = "susu", value = "后面的页数", required = true, dataType = "String")
     @GetMapping("")
     @ResponseBody
     public Result defaultpage() {
@@ -54,7 +59,8 @@ public class TestController {
     }
 
     //    @CrossOrigin(origins="http://localhost:63343")//成功
-    @RequestMapping("/hellky")
+    @ApiOperation(value = "ajax跨域的测试", notes = "ajax跨域的测试")
+    @RequestMapping(value = "/hellky",method = RequestMethod.GET)
     @ResponseBody
     public String helloworld() {
         return "跨域访问";
@@ -69,6 +75,8 @@ public class TestController {
      *
      * @return
      */
+    @ApiOperation(value = "测试接收前端发来的json字符串", notes = "测试接收前端发来的json字符串成功")
+    @ApiImplicitParam(name = "data", value = "发送的json字符串", required = true, dataType = "String")
     @PostMapping("/helloworld")
     @ResponseBody
     public Object helloworld(@RequestBody String data) throws Exception {
@@ -78,15 +86,16 @@ public class TestController {
         FileInfo fileInfo = new FileInfo(data, "ssssss", 99);
         return ResultUtils.sucess("成功", "返回:" + data);
     }
-
-    @RequestMapping("/addstu")
+    @ApiOperation(value = "添加对象", notes = "添加对象")
+    @ApiImplicitParam(name = "student", value = "添加多个关于student中变量的参数", required = true, dataType = "Student")
+    @RequestMapping(value="/addstu", method=RequestMethod.POST)
     @ResponseBody
-    public Result addstu(Student student) throws Exception {
+    public Result addstu(@RequestBody Student student) throws Exception {
         return userServiceImpl.addBean(student);
     }
 
     //表单验证 与aop的demo   统一异常的类
-    @RequestMapping("/user")
+    @RequestMapping(value = "/user",method = RequestMethod.POST)
     @ResponseBody
     public Result<Object> getUser(@Valid Student studentcs, BindingResult bindingResult) {//表示要验证此参数对象,二。获取错误信息  postman用x-www发送
         if (bindingResult.hasErrors()) {
@@ -106,7 +115,7 @@ public class TestController {
     }
 
     //乐观锁的测试
-    @RequestMapping("/userlg")
+    @GetMapping("/userlg")
     @ResponseBody
     public Object getUserlg() {
         Optional<Student> byId = studentJpa.findById(19);
@@ -138,7 +147,7 @@ public class TestController {
         return student;
     }
 
-    @RequestMapping("/userzong")
+    @PostMapping("/userzong")
     @ResponseBody
     public Object getUserzong(@RequestParam("susu") Integer susu) {
         logger.error("测试你妹的");
@@ -159,7 +168,9 @@ public class TestController {
      * @param susu
      * @return
      */
-    @RequestMapping("/userfy/{susu}")
+    @ApiOperation(value = "页面表格", notes = "换页面")
+//    @ApiImplicitParam(name = "susu", value = "后面的页数", required = true, dataType = "String")
+    @RequestMapping(value = "/userfy/{susu}", method = RequestMethod.GET)
     @ResponseBody
     public Object getUserfy(@PathVariable("susu") String susu, HttpServletRequest request) {
         String fileNameWithdian = utilTools.getFileNameWithdian(susu);
@@ -204,15 +215,15 @@ public class TestController {
      * @param susu
      * @return
      */
-    @RequestMapping("/userfyby/{susu}")
-    @ResponseBody
+    @ApiOperation(value = "分页和自定义查询 失败", notes = "分页和自定义查询 失败")
+    @GetMapping("/userfyby/{susu}")
     public List<Object> getUserfypath(@PathVariable("susu") Integer susu) {
         List<Object> findpages = userServiceImpl.findpages("student", "class", 9, 1, 5);
         logger.info("/userfystudent记录数量自己:" + findpages.toString());
         return findpages;
     }
 
-    @RequestMapping("/deluser")
+    @GetMapping("/deluser")
     @ResponseBody
     public String delUser(@RequestParam("susu") Integer susu) {
         int issu = studentJpa.deleteQuery(susu);
@@ -225,13 +236,14 @@ public class TestController {
      * @param id
      * @return
      */
-    @RequestMapping("/upuser")
+    @ApiOperation(value = "测试数据库jpa的事务", notes = "测试数据库jpa的事务")
+    @PostMapping("/upuser")
     @ResponseBody
     public Object upUser(@RequestParam("id") Integer id) throws Exception {
         return userServiceImpl.updataById("业务逻辑到抛出异常1", id);
     }
 
-    @RequestMapping("/map")
+    @GetMapping("/map")
     @ResponseBody
     public Result getMap(HttpServletRequest request) {
         logger.info("myjson2 = " + request.getAttribute("mydata"));
@@ -259,7 +271,7 @@ public class TestController {
         return modelAndView;
     }
 
-    @RequestMapping("shuaxcss")
+    @GetMapping("shuaxcss")
     public String f5css() {
         return "shuax";
     }
@@ -268,7 +280,7 @@ public class TestController {
 //	@GetMapping是一个组合注解，是@RequestMapping(method = RequestMethod.GET)的缩写。
 //	@PostMapping是一个组合注解，是@RequestMapping(method = RequestMethod.POST)的缩写。
     // 有view的
-    @RequestMapping("/six/{id}")
+    @GetMapping("/six/{id}")
     public String six(Map<String, Object> map, @PathVariable("id") Integer idInteger) {
         map.put("hitCounter", "搞好了");
         List<Student> findAll = studentJpa.findAll();
@@ -282,7 +294,7 @@ public class TestController {
      * 使用*号
      */
     @ResponseBody
-    @RequestMapping("*/xinghao")
+    @PostMapping("*/xinghao")
     public String testWildcard(HttpServletRequest request, HttpServletResponse response, HttpSession httpSession) {
         Cookie where = CookieUtil.get(request, "where");
         if (where != null && where.getValue() != null) {
@@ -299,7 +311,7 @@ public class TestController {
     @Autowired
     UtilTools utilTools;
 
-    @RequestMapping("/wo")
+    @GetMapping("/wo")
     @ResponseBody
     public Object index(HttpServletResponse response) {
         //清除cookie
@@ -316,16 +328,16 @@ public class TestController {
 //        utilTools.sell();
         return "nimei";
     }
-
-    @RequestMapping("/zidiy") //成功
+    @ApiOperation(value = "自定义联合查询的调用", notes = "自定义联合查询的调用")
+    @GetMapping("/zidiy") //成功
     @ResponseBody
     public Object mQuery() {
         List<DbResponeBean> dbResponeBeans = userServiceImpl.mQuerylianhcx();
         if (dbResponeBeans == null) return "我是空的";
         return dbResponeBeans;
     }
-
-    @RequestMapping("/zidiyxz") //成功
+    @ApiOperation(value = "自定义dao层方法", notes = "自定义dao层方法")
+    @GetMapping("/zidiyxz") //成功
     @ResponseBody
     public Object mQueryxz() {
         List<Student> byNameOrderByIdDesc = studentJpa.findByNameOrderByIdDesc("sdas");
@@ -334,7 +346,8 @@ public class TestController {
     }
 
     //Session存储：可以利用HttpServletReequest的getSession()方法
-    @RequestMapping("/sessiontest")
+    @ApiOperation(value = "测试session的作用域", notes = "测试session的作用域")
+    @PostMapping("/sessiontest")
     public String sessionTest(String name, String pwd, ModelMap model, HttpServletRequest request) {
 
         HttpSession session = request.getSession();
