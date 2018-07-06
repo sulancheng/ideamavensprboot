@@ -6,6 +6,7 @@ import com.light.springboot.entity.Student;
 import com.light.springboot.jpa.BeanServiceImpl;
 import com.light.springboot.jpa.StudentJpa;
 import com.light.springboot.utils.ResultUtils;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -13,12 +14,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * Created by sucheng
  * on 2018/5/5.
  */
+@Api(value = "DefaultController", tags = { "默认相关" })
 @Controller  //@RestController 的意思就是controller里面的方法都以json格式输出，不用再写什么jackjson配置的了！
 @RequestMapping()
 public class DefaultController {
