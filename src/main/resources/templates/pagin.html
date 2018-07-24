@@ -35,7 +35,7 @@
             /*border-style:solid;*/
             border-color: #ff0000;
             border-top-width: 10px;
-            border-collapse: collapse;/*是否合并边框*/
+            border-collapse: collapse; /*是否合并边框*/
             box-sizing: border-box;
             /*margin: 16px 14px 0px 14px;*/
         }
@@ -80,7 +80,7 @@
                 load_first_page: false,
                 next_text: "下一页",
                 prev_text: "上一页",
-                link_to:  "__id__.html"//分页的js中会自动把"__id__"替换为当前的数。0　
+                link_to: "__id__.html"//分页的js中会自动把"__id__"替换为当前的数。0　
             });
         });
     </script>
@@ -96,7 +96,12 @@
                 <th>年龄</th>
                 <th>班级</th>
             </tr>
-            <tr th:each="item : ${list}">
+            <!-- 关系操作符
+                小于90的舍弃
+            　　> , < , >= , <= (gt , lt , ge , le)
+
+            　　== , != (eq, ne)-->
+            <tr th:each="item : ${list}" th:if="${item.age lt 90}">
                 <td th:text="${item.name}"></td>
                 <td th:text="${item.age}"></td>
                 <td th:text="${item.myclass}"></td>

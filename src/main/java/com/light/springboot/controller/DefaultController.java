@@ -23,7 +23,7 @@ import java.util.List;
  * Created by sucheng
  * on 2018/5/5.
  */
-@Api(value = "DefaultController", tags = { "默认相关" })
+@Api(value = "DefaultController", tags = {"默认相关"})
 @Controller  //@RestController 的意思就是controller里面的方法都以json格式输出，不用再写什么jackjson配置的了！
 @RequestMapping()
 public class DefaultController {
@@ -31,9 +31,10 @@ public class DefaultController {
     private StudentJpa studentJpa;
     @Autowired
     private BeanServiceImpl userServiceImpl;
+
     @GetMapping("")
     @ResponseBody
-    public Result defaultpage(){
+    public Result defaultpage() {
         List<Student> all = userServiceImpl.findAll();
         HashMap<String, List<Student>> stringListHashMap = new LinkedHashMap<>();
         for (Student student : all) {
@@ -65,9 +66,26 @@ public class DefaultController {
 
         return ResultUtils.sucess("测试默认网页或者jsonnimeide76868", objectstwo);
     }
-//    @GetMapping("socket")
+
+    //    @GetMapping("socket")
 //    @ResponseBody
-//    public void connsocket(){
-//        SocketServer.startService();
-//    }
+    public void connsocket() {
+        ArrayList<String> strings = new ArrayList<>();//顶级
+        xunhuan(strings);
+    }
+
+    private void xunhuan(List<String> data) {
+        for (String str : data) {
+            List<String> getshujuk = getshujuk(str + "where");
+            if (getshujuk.size()>0){
+                xunhuan(getshujuk);
+            }
+        }
+
+
+    }
+
+    private List<String> getshujuk(String s) {
+        return null;
+    }
 }

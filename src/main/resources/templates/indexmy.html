@@ -3,7 +3,9 @@
     <script src="http://cdn.static.runoob.com/libs/jquery/1.8.3/jquery.js"></script>
     <script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
     <script src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
+    <script src="/js/myjquery.js"></script>
     <link rel="stylesheet" href="/css/cna.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>获取电影</title>
     <script th:inline="javascript">
         function qingqiu(data, json) {
@@ -25,7 +27,11 @@
                 }
             });
         }
-
+        //输入框，限金额
+        function only_number(obj) {
+            //先把非数字的都替换掉，除了数字和.
+            obj.value   //成功。
+        }
         function kuay() {
             alert("开始ajax请求跨域");
             $.ajax({
@@ -38,7 +44,7 @@
                 success: function (data) {
                     alert(JSON.stringify(data))
                 },
-                errer: function (data) {
+                error: function (data) {
 
                 }
             });
@@ -46,6 +52,13 @@
 
         $(function () {
             $(".fater .hav").children().eq(0).click(function () {
+                //使用自定义post请求。
+              $.fn.myPost("1111",function (data) {
+                   console.log(data);
+                },function (data) {
+
+
+                });
                 $(".tanc.inner").show();
             });
             $(".fater .hav").children().eq(1).click(function () {
@@ -81,8 +94,8 @@
                 alert($(this).attr("data-age"));//成功
                 alert($(this).attr("data-obj"));
                 //成功
-                $(this).parent().css("background-color","#0c7cb5");//动态改变点击的背景色
-                $(this).parent().siblings(".left").children(".imgmy").prop("src","http://img07.tooopen.com/images/20170316/tooopen_sy_201956178977.jpg");
+                $(this).parent().css("background-color", "#0c7cb5");//动态改变点击的背景色
+                $(this).parent().siblings(".left").children(".imgmy").prop("src", "http://img07.tooopen.com/images/20170316/tooopen_sy_201956178977.jpg");
                 var json = {
                     "username": "admin",
                     "password": 123
@@ -173,6 +186,7 @@
             flex-direction: row;
             color: red;
             background-color: #ccc;
+            width: 100%;
             height: 60px;
             line-height: 60px;
             list-style: none;
@@ -185,7 +199,6 @@
             box-sizing: border-box;
             flex: 1;
         }
-
         .center_progress {
             top: 0;
             left: 0;
@@ -196,7 +209,7 @@
         }
 
         .center_progress progress {
-           margin-bottom: 60px;
+            margin-bottom: 60px;
         }
 
         .tanc {
@@ -211,7 +224,7 @@
                left:50%;
                margin-left:-25px; !* width的一半的相反数 *!
                margin-top:-25px;  !* height的一半的相反数 *!*/
-            z-index: 999;
+            z-index: 999; /*只有在relative  fixed  abselut有用*/
         }
 
         .tancbox {
@@ -294,6 +307,7 @@
                         src="http://chabudai.sakura.ne.jp/blogparts/honehoneclock/honehone_clock_wh.js"></script>
             </div>
         </div>
+        <a href="app://huichubang/nimei">启动我们的应用程序app </a>
         <a href="http://www.runoob.com" class="aname">访问菜鸟教程!</a>
     </div>
     <div class="liushi_box" th:each="item : ${datas}">
@@ -305,28 +319,32 @@
     </div>
 
 </div>
-<div class="tanc inner">
-    <div class="tancbox">
-        <div class="tanc_content tc_inner">
-            <p>弹窗</p>
-            <div>取消</div>
+<div style="position: relative">
+    <div class="tanc inner">
+        <div class="tancbox">
+            <div class="tanc_content tc_inner">
+                <p>弹窗</p>
+                <div>取消</div>
+            </div>
         </div>
     </div>
-</div>
-<div class="tanc bottom">
-    <div class="tancbox">
-        <div class="tanc_content tc_bottom">
-            <p>弹窗第二个可以断底就卡萨
-                s湿哒哒所大大萨达撒大撒大所</p>
-            <p>取消第二个</p>
+    <div class="tanc bottom">
+        <div class="tancbox">
+            <div class="tanc_content tc_bottom">
+                <p>弹窗第二个可以断底就卡萨
+                    s湿哒哒所大大萨达撒大撒大所</p>
+                <p>取消第二个</p>
+            </div>
         </div>
     </div>
-</div>
-<div class="center_progress">
-    <div class="tancbox">
-        <progress></progress>
+    <div class="center_progress">
+        <div class="tancbox">
+            <progress></progress>
+        </div>
     </div>
+    <input type="text" placeholder="请输入金额" value="" oninput="only_number(this)">
 </div>
+
 <div class="fater" style="width: 100%">
     <div class="box">
         <ul class="hav">
