@@ -98,6 +98,12 @@
             <version>1.3.0.RELEASE</version>
             <scope>provided</scope>
         </dependency>
+        <!--邮件mail-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
         <!--对websocket的支持 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

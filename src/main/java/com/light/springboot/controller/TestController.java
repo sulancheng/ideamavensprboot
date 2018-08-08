@@ -55,7 +55,55 @@ public class TestController {
     @GetMapping("")
     @ResponseBody
     public Result defaultpage() {
+        byte[] data = "AT+BOND".getBytes();
+        byte[] data2 = "at+bond".getBytes();
+        StringBuilder stringBuilder = null;
+        if (data != null && data.length > 0) {
+            stringBuilder = new StringBuilder(data.length);
+            for (byte byteChar : data) {
+                stringBuilder.append(byteChar);
+                stringBuilder.append(",");
+            }
+        }
+        StringBuilder stringBuilder2 = null;
+        if (data2 != null && data2.length > 0) {
+            stringBuilder2 = new StringBuilder(data2.length);
+            for (byte byteChar : data2) {
+                stringBuilder2.append(byteChar);
+                stringBuilder2.append(",");
+            }
+        }
+        String s = bytesToHexFun1(data);
+        logger.info("stringBuilder = "+stringBuilder+"      stringBuilder2 = "+stringBuilder2);
+        logger.info( " 16进制："+s);
         return ResultUtils.sucess("测试默认网页或者json", null);
+    }
+    private static final char[] HEX_CHAR = {'0', '1', '2', '3', '4', '5',
+            '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+    /**
+     * 方法一：
+     * byte[] to hex string
+     *
+     * @param bytes
+     * @return
+     */
+    public static String bytesToHexFun1(byte[] bytes) {
+        // 一个byte为8位，可用两个十六进制位标识
+        char[] buf = new char[bytes.length * 2];
+        int a = 0;
+        int index = 0;
+        for(byte b : bytes) { // 使用除与取余进行转换
+            if(b < 0) {
+                a = 256 + b;
+            } else {
+                a = b;
+            }
+
+            buf[index++] = HEX_CHAR[a / 16];
+            buf[index++] = HEX_CHAR[a % 16];
+        }
+
+        return new String(buf);
     }
 
     //    @CrossOrigin(origins="http://localhost:63343")//成功
@@ -259,7 +307,7 @@ public class TestController {
     public String hello(ModelMap map, @PathVariable String id) {
         logger.info("id=" + id);
         map.put("msg", "Hello Thymeleaf ModelMap");
-        return "myfirst";
+        return "test/myfirst";
     }
 
     // 有view的
