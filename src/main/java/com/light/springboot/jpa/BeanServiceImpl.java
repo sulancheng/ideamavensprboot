@@ -107,7 +107,7 @@ public class BeanServiceImpl implements BeanService {
         studentJpa.save(student);
 //        if(true)
 //            throw new MyException(ResultEnum.ERROR);
-        return ResultUtils.sucess("保存成功！", 100);
+        return ResultUtils.sucess("保存成功！", o,100);
     }
 
     @Override

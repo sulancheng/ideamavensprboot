@@ -194,7 +194,7 @@ public class TestController {
         }
         return student;
     }
-
+//request.getParameter()取得是通过容器的实现来取得通过类似post，get等方式传入的数据，，  request.setAttribute()和getAttribute()只是在web容器内部流转，仅仅是请求处理阶段，这个的确是正解.
     @PostMapping("/userzong")
     @ResponseBody
     public Object getUserzong(@RequestParam("susu") Integer susu) {

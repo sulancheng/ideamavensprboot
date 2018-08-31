@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Calendar;
+
 /**
  * Created by Administrator
  * on 2018/5/8.
@@ -48,5 +50,15 @@ public class JavaTest {
         Animal dog = new Dog();
         dog.work();
         dog.eat();
+    }
+    @Test
+    public void CalanderTest(){
+
+        Calendar lastDate = Calendar.getInstance();
+        lastDate.set(Calendar.YEAR, 2018);
+        lastDate.set(Calendar.DATE, 24);// 设为当前月的1号
+        lastDate.set(Calendar.MONTH, 8-1);
+        int i = lastDate.get(Calendar.DAY_OF_WEEK);
+        logger.info("日期相关："+i);
     }
 }
