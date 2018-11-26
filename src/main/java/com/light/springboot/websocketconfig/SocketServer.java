@@ -1,68 +1,105 @@
 package com.light.springboot.websocketconfig;
 
-import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
-import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
+import java.nio.charset.Charset;
+import java.util.Set;
 
 /**
  * Created by Administrator
  * on 2018/6/6.
  */
 public class SocketServer {
-    static ServerSocket serverSocket = null;
+    //解码buffer
+    private Charset cs = Charset.forName("UTF-8");
+    //接受数据缓冲区
+    private static ByteBuffer sBuffer = ByteBuffer.allocate(1024);
+    //发送数据缓冲区
+    private static ByteBuffer rBuffer = ByteBuffer.allocate(1024);
+    //选择器（叫监听器更准确些吧应该）
+    private static Selector selector;
 
     /**
-     * 启动服务监听，等待客户端连接
+     * 启动socket服务，开启监听
+     *
+     * @param port
+     * @throws IOException
      */
-    public static void startService() {
-        if (serverSocket != null) return;
+    public void startSocketServer(int port) {
         try {
-            // 创建ServerSocket
-            serverSocket = new ServerSocket(9999);
-            System.out.println("--开启服务器，监听端口 9999--");
+            //打开通信信道
+            ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+            //设置为非阻塞
+            serverSocketChannel.configureBlocking(false);
+            //获取套接字
+            ServerSocket serverSocket = serverSocketChannel.socket();
+            //绑定端口号
+            serverSocket.bind(new InetSocketAddress(port));
+            System.out.println("服务器正常启动。。。。端口："+ port);
+            //打开监听器
+            selector = Selector.open();
+            //将通信信道注册到监听器
+            serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
 
-            // 监听端口，等待客户端连接
+            //监听器会一直监听，如果客户端有请求就会进入相应的事件处理
             while (true) {
-                System.out.println("--等待客户端连接--");
-                Socket socket = serverSocket.accept(); //等待客户端连接
-                System.out.println("得到客户端连接：" + socket);
-
-                startReader(socket);
+                selector.select();//select方法会一直阻塞直到有相关事件发生或超时
+                Set<SelectionKey> selectionKeys = selector.selectedKeys();//监听到的事件
+                for (SelectionKey key : selectionKeys) {
+                    handle(key);
+                }
+                selectionKeys.clear();//清除处理过的事件
             }
-
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
+
+
     }
 
     /**
-     * 从参数的Socket里获取最新的消息
+     * 处理不同的事件
+     *
+     * @param selectionKey
+     * @throws IOException
      */
-    private static void startReader(final Socket socket) {
+    private void handle(SelectionKey selectionKey) throws IOException {
 
-        new Thread() {
-            @Override
-            public void run() {
-                DataInputStream reader;
-                try {
-                    // 获取读取流
-                    reader = new DataInputStream(socket.getInputStream());
-                    while (true) {
-                        System.out.println("*等待客户端输入*");
-                        // 读取数据
-                        String msg = reader.readUTF();
-                        System.out.println("获取到客户端的信息：" + msg);
-                        //发送反馈给客户端
-                        OutputStream out = null;
-                        out = socket.getOutputStream();
-                        out.write("包裹已收到".getBytes());
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+
+        ServerSocketChannel serverSocketChannel = null;
+        SocketChannel socketChannel = null;
+        String requestMsg = "";
+        int count = 0;
+        if (selectionKey.isAcceptable()) {
+            //每有客户端连接，即注册通信信道为可读
+            serverSocketChannel = (ServerSocketChannel) selectionKey.channel();
+            socketChannel = serverSocketChannel.accept();
+            socketChannel.configureBlocking(false);
+            socketChannel.register(selector, SelectionKey.OP_READ);
+            System.out.println(" 客户端地址 ："+socketChannel.getLocalAddress());
+        } else if (selectionKey.isReadable()) {
+            socketChannel = (SocketChannel) selectionKey.channel();
+            rBuffer.clear();
+            count = socketChannel.read(rBuffer);
+            //读取数据
+            if (count > 0) {
+                rBuffer.flip();
+                requestMsg = String.valueOf(cs.decode(rBuffer).array());
             }
-        }.start();
+            String responseMsg = "已收到客户端的消息:" + requestMsg;
+            System.out.println(responseMsg);
+            //返回数据
+            sBuffer = ByteBuffer.allocate(responseMsg.getBytes("UTF-8").length);
+            sBuffer.put(responseMsg.getBytes("UTF-8"));
+            sBuffer.flip();
+            socketChannel.write(sBuffer);
+//            socketChannel.close();
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.light.springboot;
 
+import com.light.springboot.websocketconfig.SocketServer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -10,7 +11,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @ComponentScan(basePackages =  "com.light.springboot")
 @SpringBootApplication
-@EnableScheduling
+//@EnableScheduling
 public class DemoApplication extends SpringBootServletInitializer {
 
 	@Override
@@ -19,5 +20,13 @@ public class DemoApplication extends SpringBootServletInitializer {
 	}
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
+//		//起socket服务
+//		SocketServer server = new SocketServer();
+//		server.startService(8889);
+
+		//起socket服务
+//		SocketServer server = new SocketServer();
+//		server.startSocketServer(8889);
+
 	}
 }

@@ -101,11 +101,19 @@
             　　> , < , >= , <= (gt , lt , ge , le)
 
             　　== , != (eq, ne)-->
-            <tr th:each="item : ${list}" th:if="${item.age lt 90}">
-                <td th:text="${item.name}"></td>
-                <td th:text="${item.age}"></td>
-                <td th:text="${item.myclass}"></td>
-            </tr>
+            <div th:each="item : ${list}" >
+                <tr th:if="${item.age lt 33}">
+                    <td th:text="${item.name}"></td>
+                    <td th:text="${item.age}"></td>
+                    <td th:text="${item.myclass}"></td>
+                </tr>
+                <tr th:if="${item.age ge 33}">
+                    <td th:text="${item.name}+else"></td>
+                    <td th:text="${item.age}"></td>
+                    <td th:text="${item.myclass}"></td>
+                </tr>
+            </div>
+
         </table>
         <table frame="above">
             <tr>

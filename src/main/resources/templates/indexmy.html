@@ -4,7 +4,7 @@
     <script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
     <script src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
     <script src="/js/myjquery.js"></script>
-    <link rel="stylesheet" href="/css/cna.css">
+    <link rel="stylesheet" type="text/css" href="/css/cna.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>获取电影</title>
     <script th:inline="javascript">
@@ -138,10 +138,7 @@
             align-items: center;
         }
 
-        div.titleline p {
-            padding: 2px;
-            border: 1px solid blue;
-        }
+
 
         div.xunahun {
             margin-top: 2px;
@@ -290,7 +287,7 @@
     <div class="xunahun">
         <div class="one" th:each="item : ${datas}">
             <div class="left">
-                <img class="imgmy" src="../imgs/ic.png">
+                <img class="imgmy" src="/img/index1.png">
             </div>
             <div class="right">
                 <span class='name' th:text="名字：+${item.name}"></span>

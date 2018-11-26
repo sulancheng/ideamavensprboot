@@ -1,0 +1,21 @@
+html, body {
+    margin: 0 auto;
+    width: 100%;
+    position:relative;
+}
+html {
+    overflow:hidden;
+}
+li {
+    list-style:none;
+}
+* {
+    margin: 0;
+    padding: 0;
+}
+.zong {
+    display: -webkit-flex; /* Safari */
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
