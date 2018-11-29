@@ -1,9 +1,8 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <script src="http://cdn.static.runoob.com/libs/jquery/1.8.3/jquery.js"></script>
-    <script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
     <script src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
     <script src="/js/myjquery.js"></script>
+    <script src="/js/publicjs.js"></script><!--//将需要的共用的js提取到一起-->
     <link rel="stylesheet" type="text/css" href="/css/cna.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>获取电影</title>
@@ -51,6 +50,7 @@
         }
 
         $(function () {
+            // $.fn.myFun1("");
             $(".fater .hav").children().eq(0).click(function () {
                 //使用自定义post请求。
               $.fn.myPost("1111",function (data) {

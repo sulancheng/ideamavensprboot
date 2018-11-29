@@ -6,11 +6,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 
 @ComponentScan(basePackages =  "com.light.springboot")
 @SpringBootApplication
+//@EnableAsync 开启异步
 //@EnableScheduling
 public class DemoApplication extends SpringBootServletInitializer {
 

@@ -19,3 +19,8 @@ li {
     flex-direction: column;
     flex: 1;
 }
+.tijiao{
+    width: 120px;
+    height: 34px;
+    background: #ff0000;
+}
