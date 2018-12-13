@@ -28,8 +28,13 @@ public class StudentTest {
     public void testmyinquery() {
 //        List<DbResponeBean> dbResponeBeans = userServiceImpl.mQuerylianhcx();
 //        logger.info("自己定义的数据测试service="+dbResponeBeans.toString());
-        fileinp();
-        fileout("沃日你打野丁你给");
+//        fileinp();
+//        fileout("沃日你打野丁你给");
+        int i = Integer.parseInt("7e", 16);
+        logger.info("装换进制"+i);
+        Integer x = i;
+        String hex = x.toHexString(x);
+        logger.info("装换进制"+hex);
     }
     public void fileinp(){
         //读取  BufferedInputStream
