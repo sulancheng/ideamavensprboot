@@ -26,11 +26,6 @@
                 }
             });
         }
-        //输入框，限金额
-        function only_number(obj) {
-            //先把非数字的都替换掉，除了数字和.
-            obj.value   //成功。
-        }
         function kuay() {
             alert("开始ajax请求跨域");
             $.ajax({
@@ -259,15 +254,18 @@
         /*flex-direction: row;*/
         /*}*/
         .liushi_box {
+            margin-bottom: 60px;
             display: flex;
-            flex-wrap: wrap;
+            /*flex-wrap: wrap;*/
             flex-direction: row;
             align-items: center;
             /*justify-content: space-around;*/
             box-sizing: border-box;
             justify-content: flex-start;
         }
-
+        .liushi_box div{
+           flex: 1;
+        }
         .liushi_box img {
             width: 30%;
             max-width: 32%;
@@ -308,13 +306,12 @@
         <a href="app://huichubang/nimei">启动我们的应用程序app </a>
         <a href="http://www.runoob.com" class="aname">访问菜鸟教程!</a>
     </div>
-    <div class="liushi_box" th:each="item : ${datas}">
-        <img src="/img/timg.jpg">
-        <img src="/img/timg.jpg">
-        <img src="/img/timg.jpg">
-        <img src="/img/timg.jpg">
-        <img src="/img/timg.jpg">
+    <div class="liushi_box">
+        <div th:each="item : ${datas}">
+            <img src="/img/timg.jpg">
+        </div>
     </div>
+
 
 </div>
 <div style="position: relative">
@@ -340,7 +337,6 @@
             <progress></progress>
         </div>
     </div>
-    <input type="text" placeholder="请输入金额" value="" oninput="only_number(this)">
 </div>
 
 <div class="fater" style="width: 100%">

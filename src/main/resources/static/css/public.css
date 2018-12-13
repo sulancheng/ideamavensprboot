@@ -4,7 +4,7 @@ html, body {
     position:relative;
 }
 html {
-    overflow:hidden;
+    overflow:auto;
 }
 li {
     list-style:none;
@@ -18,9 +18,4 @@ li {
     display: flex;
     flex-direction: column;
     flex: 1;
-}
-.tijiao{
-    width: 120px;
-    height: 34px;
-    background: #ff0000;
 }

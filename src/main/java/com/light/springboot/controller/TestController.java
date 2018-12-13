@@ -117,6 +117,17 @@ public class TestController {
     private final static Logger logger = LoggerFactory
             .getLogger(TestController.class);
 
+
+
+    @ApiOperation(value = "无聊写的测试", notes = "无聊写的测试html")
+    @ApiImplicitParam(name = "data", value = "发送的json字符串", required = true, dataType = "String")
+    @GetMapping("/test01")
+    public Object test01() throws Exception {
+        return "1206test1";
+    }
+
+
+
     /**
      * 可以直接返回整个html标签
      * 测试接收body里面的json数据
@@ -127,7 +138,7 @@ public class TestController {
     @ApiImplicitParam(name = "data", value = "发送的json字符串", required = true, dataType = "String")
     @PostMapping("/helloworld")
     @ResponseBody
-    public Object helloworld(@RequestBody String data) throws Exception {
+    public Object get(@RequestBody String data) throws Exception {
 //        Object parse = JSON.parse(data);
 //        String s = httpRequestor.doGet("http://127.0.0.1:8081/test/map");
         logger.info("json数据" + data);
