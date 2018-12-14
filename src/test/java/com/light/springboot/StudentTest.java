@@ -99,7 +99,7 @@ public class StudentTest {
         for (int c = 0; c < bytes1.length; c++) {
             bytehex[c]=Integer.toHexString(bytes1[c]);
         }
-        logger.info("测试字符串转16进制字节数组4"+Arrays.toString(bytehex));
+        logger.debug("测试字符串转16进制字节数组4"+Arrays.toString(bytehex));
 
 
 
@@ -109,19 +109,23 @@ public class StudentTest {
             long dec_num = Long.parseLong(bytehex[c], 16);
             byteshex[c] = dec_num;
         }
-        logger.info("测试字符串转16进制字节数组4"+Arrays.toString(byteshex));//十进制在通过(char) byteChar可以成字符。
+        logger.debug("测试字符串转16进制字节数组5"+Arrays.toString(byteshex));//十进制在通过(char) byteChar可以成字符。
 
         StringBuilder  stringBuilder4= new StringBuilder();
         for (long byteChar : byteshex)
             stringBuilder4.append((char) byteChar);
-        logger.info("测试字符串转16进制字节数组5"+stringBuilder4);
+        logger.debug("测试字符串转16进制字节数组6"+stringBuilder4);
 
 
-        byte[] datas = {0x57, 0x58, 0x06, 0x0D, 0x0A};
+        byte[] datas = {0x57, 0x58, 0x3D, 0x53, 0x55};
         StringBuilder  stringBuilder3= new StringBuilder();
         for (byte byteChar : datas)
             stringBuilder3.append((char) byteChar);
-        logger.info("测试字符串转16进制字节数组6"+stringBuilder3);
+        logger.debug("测试字符串转16进制字节数组7"+stringBuilder3);
+
+        //自己封装使十六进制转换成十进制的字节数组并且转化成char
+        StringBuilder mydatas = bytehexToCharByte(datas);
+        logger.debug("测试字符串转16进制字节数组8"+mydatas);
 
 
 //        String strHex2 = String.format("%08x", valueTen);
@@ -137,5 +141,17 @@ public class StudentTest {
 //            stringBuilder2.append(String.format("%02X ", data));
 //        }
 
+    }
+
+    private StringBuilder bytehexToCharByte(byte[] datas) {
+        long[] byteshex = new long[datas.length];
+        for (int c = 0; c < datas.length; c++){
+            long dec_num = Long.parseLong(String.valueOf(datas[c]), 10);
+            byteshex[c] = dec_num;
+        }
+        StringBuilder  stringBuilder4= new StringBuilder();
+        for (long byteChar : byteshex)
+            stringBuilder4.append((char) byteChar);
+        return stringBuilder4;
     }
 }
