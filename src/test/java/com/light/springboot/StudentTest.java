@@ -88,12 +88,12 @@ public class StudentTest {
         byte[] bytes = BytesHexStrTranslate.toBytes("0000000300001000800000805f9b34fb");//notify测试
         logger.debug("测试字符串转16进制字节数组"+Arrays.toString(bytes));
         byte[] bytes1 = "AT_BOND".getBytes();
-        logger.debug("测试字符串转16进制字节数组2"+Arrays.toString(bytes1));
+        logger.debug("测试字符串转16进制字节数组2"+Arrays.toString(bytes1));//十进制的字节数组
         StringBuilder shuju1 = new StringBuilder();
         for (byte data : bytes1) {
             shuju1.append((char) data);//十进制字节转化为字符
         }
-        logger.debug("测试字符串转16进制字节数组3"+shuju1);
+        logger.debug("测试字符串转16进制字节数组3"+shuju1); //正常变回
 
         String[] bytehex = new String[bytes1.length];
         for (int c = 0; c < bytes1.length; c++) {
