@@ -35,6 +35,24 @@ spring:
           starttls:
             enable: true
             required: true
+#rabbitmq
+  rabbitmq:
+    addresses: 127.0.0.1:5672
+    username: susu
+    password: 123456
+    virtual-host: /
+    publisher-confirms: true
+    publisher-returns: true
+    template:
+      mandatory: true
+    listener:
+      simple:
+        concurrency: 5
+        max-concurrency: 10 #最大的并发
+        acknowledge-mode: manual #签收的模式 手工签收
+        prefetch: 1 #节流的
+
+#rabbitmq
 logging:
   config: classpath:logback-spring.xml
 

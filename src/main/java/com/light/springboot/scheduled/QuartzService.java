@@ -13,7 +13,7 @@ import java.util.Date;
 @Component
 public class QuartzService {
 
-    @Scheduled(fixedRate = 700000)
+    @Scheduled(fixedRate = 1000)
     public void timerToNow(){
         /*思想：对于邮箱验证过期，在生成一个识别码的时候生成当时的时间存储在数据库，这里循环执行，当前时间与存储时间
         * 的时间差大于某个值的时候可以产出识别码 也就是失效*/
