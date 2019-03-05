@@ -40,31 +40,38 @@ public class GlobalDefaultExceptionHandler {
         //除了我们定义的异常只能返回json数据，当时页面时，我们可以返回自己定义的异常页面
         //试验成功 可以判断是不是ajax 请求
         //判断是否为ajax请求，默认不是
-        boolean ajax = utilTools.isAjax(request);
-        if (!ajax) {
-            ModelAndView modelAndView = new ModelAndView();
-            logger.error("【自定义异常网页】 {}", e);//方便定位异常  成功
-            modelAndView.addObject("exp",e);
-            modelAndView.addObject("url",request.getRequestURL());
-            modelAndView.setViewName("401");
-            return modelAndView;
-        }
-        if (e instanceof MyException) {
-            logger.error("【自定义异常】 {}", e);//方便定位异常  成功
-            MyException myException = (MyException) e;
-            return ResultUtils.error(myException.getCode(), "服务器罢工了," + myException.getMessage());
-        } else if (e instanceof NoPermissions) {
-            logger.error("【自定义异常无权限】 {}", e);//方便定位异常  成功
-            NoPermissions myException = (NoPermissions) e;
-            return ResultUtils.error(myException.getCode(), "服务器罢工了你去权限," + myException.getMessage());
-        } else {
-            logger.error("【系统异常】 {}", e);//方便定位异常  成功
-            return ResultUtils.error(ResultEnum.UNKNOW_ERROR.getCode(), "服务器罢工了," + e.getMessage());
-        }
+//        boolean ajax = utilTools.isAjax(request);
+        String userAgent = request.getHeader("user-agent");
+        logger.error("【网络请求来自于 异常】 {}", userAgent);//方便定位异常  成功
+        if (userAgent.contains("Android") || userAgent.contains("iPhone")
+                || userAgent.contains("iPad")
+                || userAgent.contains("PostmanRuntime")) {
+            if (e instanceof MyException) {
+                logger.error("【自定义异常】 {}", e);//方便定位异常  成功
+                MyException myException = (MyException) e;
+                return ResultUtils.error(myException.getCode(), "服务器罢工了," + myException.getMessage());
+            } else if (e instanceof NoPermissions) {
+                logger.error("【自定义异常无权限】 {}", e);//方便定位异常  成功
+                NoPermissions myException = (NoPermissions) e;
+                return ResultUtils.error(myException.getCode(), "服务器罢工了你去权限," + myException.getMessage());
+            } else {
+                logger.error("【系统异常】 {}", e);//方便定位异常  成功
+                return ResultUtils.error(ResultEnum.UNKNOW_ERROR.getCode(), "服务器罢工了," + e.getMessage());
+            }
 //			Map<String, Object> map = new HashMap<String, Object>();
 //			map.put("code", 500);
 //			map.put("msg", e.getMessage());
 //			map.put("msglong", "出异常了");
 //			return map;
+        } else {
+            ModelAndView modelAndView = new ModelAndView();
+            logger.error("【自定义异常网页】 {}", e);//方便定位异常  成功
+            modelAndView.addObject("exp", e);
+            modelAndView.addObject("url", request.getRequestURL());
+            modelAndView.setViewName("401");
+            return modelAndView;
+        }
+
+
     }
 }

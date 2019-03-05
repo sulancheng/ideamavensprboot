@@ -1,6 +1,7 @@
 package com.light.springboot.utils;
 
 import bean.Result;
+import com.light.springboot.enums.ResultEnum;
 
 /**
  * Created by Administrator
@@ -10,7 +11,7 @@ import bean.Result;
 public class ResultUtils {
     public static Result sucess(String msg,Object object,int progress){
         Result<Object> objectResult = new Result<>();
-        objectResult.setCode(0);
+        objectResult.setCode(ResultEnum.SUCCESS.getCode());
         objectResult.setMsg(msg);
         objectResult.setData(object);
         objectResult.setProgress(progress);
