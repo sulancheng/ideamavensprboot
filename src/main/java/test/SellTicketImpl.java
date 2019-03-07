@@ -25,7 +25,6 @@ public class SellTicketImpl implements Runnable {
                         try {
                             Thread.sleep(100);
                         } catch (InterruptedException e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                         System.out.println(Thread.currentThread().getName() + "正在卖第" + tkcountone + "张票");

@@ -31,10 +31,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+
 @Api(value = "所有的test测试", tags = { "多种接收前面传过来的数据" })
 @Controller  //@RestController 的意思就是controller里面的方法都以json格式输出，不用再写什么jackjson配置的了！
 @RequestMapping("test")
@@ -150,18 +148,21 @@ public class TestController {
     @RequestMapping(value="/addstu", method=RequestMethod.POST)
     @ResponseBody
     public Result addstu(@RequestBody Student student) throws Exception {
+        logger.info("收到了的学生信息：" + student.toString());//打印错误信息成功
+        student.setStarttime(new Date());
         return userServiceImpl.addBean(student);
     }
 
     //表单验证 与aop的demo   统一异常的类
     @RequestMapping(value = "/user",method = RequestMethod.POST)
     @ResponseBody
-    public Result<Object> getUser(@Valid Student studentcs, BindingResult bindingResult) {//表示要验证此参数对象,二。获取错误信息  postman用x-www发送
+    public Result<Object> getUser(@RequestBody @Valid Student studentcs, BindingResult bindingResult) {//表示要验证此参数对象,二。获取错误信息  postman用x-www发送
         if (bindingResult.hasErrors()) {
             String defaultMessage = bindingResult.getFieldError().getDefaultMessage();
             logger.info("表单错误信息：" + defaultMessage);//打印错误信息成功
             return ResultUtils.error(ResultEnum.ERROR.getCode(), defaultMessage);
         }
+        userServiceImpl.addBean(studentcs);
         List<Student> findAll = studentJpa.findAll();
         // logger.info(findAll.toString());
 //        Optional<Student> myfnd = studentJpa.findById(19);

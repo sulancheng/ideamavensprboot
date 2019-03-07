@@ -77,15 +77,15 @@
         }
     </style>
     <script>
-        // $(document).ready(function(){
-        //     $(".getid").on("click",function(){
-        //         alert("在点吗？");
-        //         var id = $(this).attr("data-id");
-        //         alert(id);
-        //         $(".divplayer video").prop("src", "/file/startmove/" + id);
-        //         // $(".divplayer video").play();
-        //     });
-        // });
+        $(document).ready(function(){
+            $(".getid").on("click",function(){
+                alert("在点吗？");
+                var id = $(this).attr("data-id");
+                alert(id);
+                $(".divplayer video").prop("src", "/file/startmove/" + id);
+                // $(".divplayer video").play();
+            });
+        });
         $(function () {
             $(".divplayer video").click(function () {
                 alert("段落被点击了。");

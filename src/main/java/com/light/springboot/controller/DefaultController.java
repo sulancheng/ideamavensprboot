@@ -14,10 +14,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by sucheng
@@ -56,9 +55,15 @@ public class DefaultController {
 
         //此种比较简便  不用new 对象
         ArrayList<Object> objectstwo = new ArrayList<>();//以班级来区分开
+        DateFormat bf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         for (String str : stringListHashMap.keySet()) {
             ModelMap modelMap = new ModelMap();
             List<Student> students = stringListHashMap.get(str);
+            students.forEach(student->{
+                Date starttime = student.getStarttime();
+                if (starttime!=null)
+                    student.setStarttimes(bf.format(starttime));
+            });
             modelMap.put("banjitwo", str);
             modelMap.put("listtwo", students);
             objectstwo.add(modelMap);

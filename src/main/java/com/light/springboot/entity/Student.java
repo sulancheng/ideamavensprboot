@@ -2,7 +2,10 @@ package com.light.springboot.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name = "student")
@@ -11,24 +14,47 @@ public class Student implements Serializable {
     private static final long serialVersionUID = -6826119197709479975L;
     @Id
     @Column(name = "id")
-    @GeneratedValue//主键
+    @GeneratedValue(strategy = GenerationType.AUTO)//主键
+//    @NotNull(message = "id不能为空")
     private Integer id;
-
+    @NotBlank(message = "姓名不能为空")
     @Column(name = "name")
     private String name;
-
+    @NotNull(message = "班级不能为空")
     @Column(name = "tfclass")
     private String myclass;
 
     @Min(value = 8, message = "此人太小了!")
     @Column(name = "age")
+    @NotNull
     private Integer age;
+
+    @Column(name = "start_time")
+    @NotNull(message = "时间不能为空")
+    private Date starttime;
+    private String starttimes;
+
+    public String getStarttimes() {
+        return starttimes;
+    }
+
+    public void setStarttimes(String starttimes) {
+        this.starttimes = starttimes;
+    }
 
     @Version
     private int version;
 
     @Transient
     private Integer sumid;
+
+    public Date getStarttime() {
+        return starttime;
+    }
+
+    public void setStarttime(Date starttime) {
+        this.starttime = starttime;
+    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;

@@ -97,14 +97,13 @@ public class BeanServiceImpl implements BeanService {
 
     @Transactional(rollbackFor = Exception.class)//事务与回滚  成功  默认只有runtimeexception才会进行事务回滚
     @Override
-    public Result addBean(Object o) throws Exception {
+    public Result addBean(Object o){
 //        updataById("我的测试",32);//测试看会不会回滚 成功
-        Student student = (Student) o;
 //        if (student.getName().equals("23")) {
 ////            throw new MyException(ResultEnum.ERROR);
 //            return ResultUtils.erro("保存失败，名字重复");
 //        }
-        studentJpa.save(student);
+        studentJpa.saveAndFlush((Student) o);
 //        if(true)
 //            throw new MyException(ResultEnum.ERROR);
         return ResultUtils.sucess("保存成功！", o,100);
