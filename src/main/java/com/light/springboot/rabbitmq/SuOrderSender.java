@@ -3,8 +3,8 @@ package com.light.springboot.rabbitmq;
 import com.light.springboot.entity.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.rabbit.support.CorrelationData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +14,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class SuOrderSender {
+    /***
+     * username : susu
+     * password :123456
+     */
     private final static Logger logger = LoggerFactory.getLogger(SuOrderSender.class);
     @Autowired
     private RabbitTemplate rabbitTemplate;

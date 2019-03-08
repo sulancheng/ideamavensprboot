@@ -7,6 +7,8 @@ import com.light.springboot.jpa.BeanServiceImpl;
 import com.light.springboot.jpa.StudentJpa;
 import com.light.springboot.utils.ResultUtils;
 import io.swagger.annotations.Api;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -31,6 +33,8 @@ public class DefaultController {
     @Autowired
     private BeanServiceImpl userServiceImpl;
 
+    private final static Logger logger = LoggerFactory
+            .getLogger(DefaultController.class);
     @GetMapping("")
     @ResponseBody
     public Result defaultpage() {
@@ -63,12 +67,13 @@ public class DefaultController {
                 Date starttime = student.getStarttime();
                 if (starttime!=null)
                     student.setStarttimes(bf.format(starttime));
+                else
+                    student.setStarttimes("2019-03-08 00:00:00");
             });
             modelMap.put("banjitwo", str);
             modelMap.put("listtwo", students);
             objectstwo.add(modelMap);
         }
-
         return ResultUtils.sucess("测试默认网页或者jsonnimeide76868", objectstwo);
     }
     @GetMapping("api")

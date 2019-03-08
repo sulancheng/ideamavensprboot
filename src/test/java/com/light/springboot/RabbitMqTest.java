@@ -1,5 +1,6 @@
 package com.light.springboot;
 
+import com.light.springboot.entity.Order;
 import com.light.springboot.rabbitmq.SuOrderSender;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,16 +26,16 @@ public class RabbitMqTest {
 
     @Test
     public void testSendOrder() {
-//        Order order = new Order();
-//        order.setId(2);
-//        order.setMessageId("2019011716307");
-//        order.setName("老子会打算");
-//        suOrderSender.sendSuOrder(order);
+        Order order = new Order();
+        order.setId(2);
+        order.setMessageId("2019011716307");
+        order.setName("老子会打算");
+        suOrderSender.sendSuOrder(order);
 
-        int[] arr = new int[] { 5, 3, 6, 2, 10, 2, 1 };
-        int[] arr2 = new int[] { 5, 3, 6, 2, 10, 2, 1 };
-        selectSort2(arr);
-        maop(arr2);
+//        int[] arr = new int[] { 5, 3, 6, 2, 10, 2, 1 };
+//        int[] arr2 = new int[] { 5, 3, 6, 2, 10, 2, 1 };
+//        selectSort2(arr);
+//        maop(arr2);
     }
 
     public void selectSort2(int[] arr) {

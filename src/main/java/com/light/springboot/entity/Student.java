@@ -32,6 +32,8 @@ public class Student implements Serializable {
     @Column(name = "start_time")
     @NotNull(message = "时间不能为空")
     private Date starttime;
+
+    @Transient
     private String starttimes;
 
     public String getStarttimes() {
@@ -117,12 +119,17 @@ public class Student implements Serializable {
         this.age = age;
     }
 
-
     @Override
     public String toString() {
-        return "Student [id=" + id + ", name=" + name + ", myclass=" + myclass
-                + ", age=" + age + ", sumid=" + sumid + "]";
+        return "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", myclass='" + myclass + '\'' +
+                ", age=" + age +
+                ", starttime=" + starttime +
+                ", starttimes='" + starttimes + '\'' +
+                ", version=" + version +
+                ", sumid=" + sumid +
+                '}';
     }
-
-
 }

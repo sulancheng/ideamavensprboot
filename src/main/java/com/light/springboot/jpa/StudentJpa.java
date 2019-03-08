@@ -58,7 +58,7 @@ public interface StudentJpa extends BaseRepository<Student, Integer> , JpaSpecif
 	 * @param name
 	 * @return
 	 */
-	List<Student> findByname(String name);
+	List<Student> findByName(String name);
 	List<Student> findByMyclass(String myclass);
 
 	/**

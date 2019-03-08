@@ -111,6 +111,8 @@ public class BeanServiceImpl implements BeanService {
 
     @Override
     public List<Student> findAll() {
+//        List<Student> names = studentJpa.findByName("张飞");
+//        logger.info("名字是："+names.size()+"==="+names.toString());
         return studentJpa.findByOrderByMyclassAsc();
     }
 
