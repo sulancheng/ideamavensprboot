@@ -180,21 +180,18 @@ public class TestController {
     public Object getUserlg() {
         Optional<Student> byId = studentJpa.findById(19);
         Student student = byId.get();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Optional<Student> byId1 = studentJpa.findById(19);
-                    Student student1 = byId1.get();
-                    student1.setName("在吗");
-                    student1.setAge(35);
-                    studentJpa.save(student1);
-                } catch (Exception e) {
-                    logger.info("修改已经被人捷足先登了。抢到第一了");
-                    e.printStackTrace();
-                }
-
+        new Thread(() -> {
+            try {
+                Optional<Student> byId1 = studentJpa.findById(19);
+                Student student1 = byId1.get();
+                student1.setName("在吗");
+                student1.setAge(35);
+                studentJpa.save(student1);
+            } catch (Exception e) {
+                logger.info("修改已经被人捷足先登了。抢到第一了");
+                e.printStackTrace();
             }
+
         }).start();
         try {
             student.setAge(12);

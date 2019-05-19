@@ -1,5 +1,6 @@
 server:
   port: 8081
+#  address: ghj.oo.com
 #server.address=192.168.16.11
 spring:
   thymeleaf:
