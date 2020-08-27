@@ -101,7 +101,7 @@
             　　> , < , >= , <= (gt , lt , ge , le)
 
             　　== , != (eq, ne)-->
-            <div th:each="item : ${list}" >
+            <div th:each="item : ${list}">
                 <tr th:if="${item.age lt 33}">
                     <td th:text="${item.name}"></td>
                     <td th:text="${item.age}"></td>

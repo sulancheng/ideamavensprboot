@@ -37,6 +37,6 @@ public class OneController {
         String userAgent = request.getHeader("user-agent");
         logger.error("【网络请求来自于】 {}", userAgent);//方便定位异常  成功
         logger.info("ttel=" + tel + " & optcode =" + otpCode);
-        return ResultUtils.sucess("随机数测试sucess");
+        return ResultUtils.sucess("userAgent = " + userAgent + "  ttel=" + tel + "   otpCode =" + otpCode);
     }
 }

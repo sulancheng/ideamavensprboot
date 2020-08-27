@@ -33,7 +33,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.*;
 
-@Api(value = "所有的test测试", tags = { "多种接收前面传过来的数据" })
+@Api(value = "所有的test测试", tags = {"多种接收前面传过来的数据"})
 @Controller  //@RestController 的意思就是controller里面的方法都以json格式输出，不用再写什么jackjson配置的了！
 @RequestMapping("test")
 public class TestController {
@@ -72,12 +72,14 @@ public class TestController {
             }
         }
         String s = bytesToHexFun1(data);
-        logger.info("stringBuilder = "+stringBuilder+"      stringBuilder2 = "+stringBuilder2);
-        logger.info( " 16进制："+s);
+        logger.info("stringBuilder = " + stringBuilder + "      stringBuilder2 = " + stringBuilder2);
+        logger.info(" 16进制：" + s);
         return ResultUtils.sucess("测试默认网页或者json", null);
     }
+
     private static final char[] HEX_CHAR = {'0', '1', '2', '3', '4', '5',
             '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+
     /**
      * 方法一：
      * byte[] to hex string
@@ -90,8 +92,8 @@ public class TestController {
         char[] buf = new char[bytes.length * 2];
         int a = 0;
         int index = 0;
-        for(byte b : bytes) { // 使用除与取余进行转换
-            if(b < 0) {
+        for (byte b : bytes) { // 使用除与取余进行转换
+            if (b < 0) {
                 a = 256 + b;
             } else {
                 a = b;
@@ -106,7 +108,7 @@ public class TestController {
 
     //    @CrossOrigin(origins="http://localhost:63343")//成功
     @ApiOperation(value = "ajax跨域的测试", notes = "ajax跨域的测试")
-    @RequestMapping(value = "/hellky",method = RequestMethod.GET)
+    @RequestMapping(value = "/hellky", method = RequestMethod.GET)
     @ResponseBody
     public String helloworld() {
         return "跨域访问";
@@ -116,14 +118,12 @@ public class TestController {
             .getLogger(TestController.class);
 
 
-
     @ApiOperation(value = "无聊写的测试", notes = "无聊写的测试html")
     @ApiImplicitParam(name = "data", value = "发送的json字符串", required = true, dataType = "String")
     @GetMapping("/test01")
     public Object test01() throws Exception {
         return "1206test1";
     }
-
 
 
     /**
@@ -143,9 +143,10 @@ public class TestController {
         FileInfo fileInfo = new FileInfo(data, "ssssss", 99);
         return ResultUtils.sucess("成功", "返回:" + data);
     }
+
     @ApiOperation(value = "添加对象", notes = "添加对象")
     @ApiImplicitParam(name = "student", value = "添加多个关于student中变量的参数", required = true, dataType = "Student")
-    @RequestMapping(value="/addstu", method=RequestMethod.POST)
+    @RequestMapping(value = "/addstu", method = RequestMethod.POST)
     @ResponseBody
     public Result addstu(@RequestBody Student student) throws Exception {
         logger.info("收到了的学生信息：" + student.toString());//打印错误信息成功
@@ -154,7 +155,7 @@ public class TestController {
     }
 
     //表单验证 与aop的demo   统一异常的类
-    @RequestMapping(value = "/user",method = RequestMethod.POST)
+    @RequestMapping(value = "/user", method = RequestMethod.POST)
     @ResponseBody
     public Result<Object> getUser(@RequestBody @Valid Student studentcs, BindingResult bindingResult) {//表示要验证此参数对象,二。获取错误信息  postman用x-www发送
         if (bindingResult.hasErrors()) {
@@ -203,7 +204,8 @@ public class TestController {
         }
         return student;
     }
-//request.getParameter()取得是通过容器的实现来取得通过类似post，get等方式传入的数据，，  request.setAttribute()和getAttribute()只是在web容器内部流转，仅仅是请求处理阶段，这个的确是正解.
+
+    //request.getParameter()取得是通过容器的实现来取得通过类似post，get等方式传入的数据，，  request.setAttribute()和getAttribute()只是在web容器内部流转，仅仅是请求处理阶段，这个的确是正解.
     @PostMapping("/userzong")
     @ResponseBody
     public Object getUserzong(@RequestParam("susu") Integer susu) {
@@ -385,6 +387,7 @@ public class TestController {
 //        utilTools.sell();
         return "nimei";
     }
+
     @ApiOperation(value = "自定义联合查询的调用", notes = "自定义联合查询的调用")
     @GetMapping("/zidiy") //成功
     @ResponseBody
@@ -393,6 +396,7 @@ public class TestController {
         if (dbResponeBeans == null) return "我是空的";
         return dbResponeBeans;
     }
+
     @ApiOperation(value = "自定义dao层方法", notes = "自定义dao层方法")
     @GetMapping("/zidiyxz") //成功
     @ResponseBody
