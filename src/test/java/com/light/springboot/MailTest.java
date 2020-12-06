@@ -20,6 +20,6 @@ public class MailTest {
 
     @Test
     public void test() {
-        this.javaMailComponent.sendMail("247175121@qq.com");
+//        this.javaMailComponent.sendMail("247175121@qq.com");
     }
 }

@@ -26,6 +26,7 @@
                 }
             });
         }
+
         function kuay() {
             alert("开始ajax请求跨域");
             $.ajax({
@@ -48,9 +49,9 @@
             // $.fn.myFun1("");
             $(".fater .hav").children().eq(0).click(function () {
                 //使用自定义post请求。
-              $.fn.myPost("1111",function (data) {
-                   console.log(data);
-                },function (data) {
+                $.fn.myPost("1111", function (data) {
+                    console.log(data);
+                }, function (data) {
 
 
                 });
@@ -99,17 +100,24 @@
                 qingqiu("nihao", json);
             });
             var username = [[${datas}]][0].name; //  <script th:inline="javascript">
-            // var alldata = [[${datas}]];
-            // alert(JSON.stringify(alldata));
+            var alldata = [[${datas}]];
+            // var datasStr = JSON.stringify(alldata);
+            // alert("json字符串=" + JSON.stringify(alldata));
+            //
+            // var jsonObj = $.parseJSON(datasStr);
+            // alert("对象=" + jsonObj);
             /*点击跳转到*/
             $(".right .getid").on("click", function () {
                 // alert($(this).attr("data-name"));//成功
                 // alert($(this).attr("data-objb"));//成功
                 var obj = $(this).attr("data-objb");
                 // $(".aname").text("你妹的仙人板板");
-                alert(username);
+                // alert(obj);//FileInfo{path='D:\电影\donot\FSLV-002.avi', name='FSLV-002.avi', id=4}
                 // var user = /*[[${session.user}]]*/ null;
-                window.location.href = "/file/player/" + $(this).attr("data-id") + "/" + $(this).attr("data-name") + "web";
+                // window.location.href = "/file/player/" + $(this).attr("data-id") + "/" + $(this).attr("data-name") + "web";
+
+                window.open("/file/player/" + $(this).attr("data-id") + "/" + $(this).attr("data-name") + "web");
+                // window.open("/file/startmove/" + $(this).attr("data-id"));
             });
         });
     </script>
@@ -132,8 +140,6 @@
             justify-content: center;
             align-items: center;
         }
-
-
 
         div.xunahun {
             margin-top: 2px;
@@ -192,6 +198,7 @@
             box-sizing: border-box;
             flex: 1;
         }
+
         .center_progress {
             top: 0;
             left: 0;
@@ -263,9 +270,11 @@
             box-sizing: border-box;
             justify-content: flex-start;
         }
-        .liushi_box div{
-           flex: 1;
+
+        .liushi_box div {
+            flex: 1;
         }
+
         .liushi_box img {
             width: 30%;
             max-width: 32%;

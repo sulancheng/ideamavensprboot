@@ -39,7 +39,7 @@ public class FileController {
             .getLogger(FileController.class);
 
     @RequestMapping("/zjplay")
-    public ModelAndView rejPlay(){
+    public ModelAndView rejPlay() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("datas", "1");
         modelAndView.addObject("id", "1");
@@ -56,7 +56,8 @@ public class FileController {
         JavaLocalUtils.fileList.clear();
         //获取跟目录
 //        File path = new File(ResourceUtils.getURL("src/main/resources/static/moves").getPath());
-        File path = new File("G:\\chengxunyuan\\springboot\\mydemo\\target\\springboot-0.0.1\\WEB-INF\\classes\\static\\moves");//绝对地址
+//        File path = new File("G:\\chengxunyuan\\springboot\\mydemo\\target\\springboot-0.0.1\\WEB-INF\\classes\\static\\moves");//绝对地址
+        File path = new File("D:\\servermovies\\springboot_war_exploded\\WEB-INF\\classes\\static\\moives");//绝对地址
 //        File path = new File(ResourceUtils.getURL("target/springboot-0.0.1/WEB-INF/classes/static/moves").getPath());//绝对地址
         //注意  所有的相对地址，在tomcat中失效。 要用绝对地址
 //        URL resource = this.getClass().getResource("/");
@@ -90,9 +91,14 @@ public class FileController {
         File playing = files.get(id);
         String absolutePath = playing.getAbsolutePath();
         logger.info("正需要播放的地址：" + absolutePath);
+        //D:\servermovies\springboot_war_exploded\WEB-INF\classes\static\moives\donot\Big.Open.House.Real.Estate.Lady.JUC-579.Jav.Censored.DVDRip.XviD-MotTto\mottto-juc579-cd2.avi
         if (files != null && files.size() > 0) {
             for (int x = 0; x < files.size(); x++) {
-                String fileNameWithSuffix = "/moves/" + utilTools.getFileNameWithSuffixtwo(files.get(x).getAbsolutePath());
+//                String fileNameWithSuffix = "/moves/" + utilTools.getFileNameWithSuffixtwo(files.get(x).getAbsolutePath());
+                String[] moives = files.get(x).getAbsolutePath().split("moives");
+                String moivePath = moives[1];
+                String s = moivePath.replaceAll("\\\\", "\\/");
+                String fileNameWithSuffix = "/moives" + s;
                 fileInfos.add(new FileInfo(fileNameWithSuffix, files.get(x).getName(), x));
             }
         }
@@ -102,11 +108,15 @@ public class FileController {
             modelAndView.addObject("id", id);
             modelAndView.addObject("name", name);
             String fileNameWithSuffix = utilTools.getFileNameWithSuffixtwo(absolutePath);
-            modelAndView.addObject("playingpath", "/moves/" + fileNameWithSuffix);
+            String[] moives = absolutePath.split("moives");
+            String moivePath = moives[1];
+            String s = moivePath.replaceAll("\\\\", "\\/");
+            logger.info("正需要播放的地址end：" + s);
+            modelAndView.addObject("playingpath", "/moives" + s);
             modelAndView.setViewName("play");
             return modelAndView;
         }
-        return  ResultUtils.sucess("sucess", fileInfos.get(id));
+        return ResultUtils.sucess("sucess", fileInfos.get(id));
     }
 
 
